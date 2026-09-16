@@ -1,0 +1,17 @@
+doc count: 2
+--- NPJBshiW6Dxwig4ZaY1j ---
+{
+  "landmarkId": "diriyah",
+  "userId": "9kIOiCo9VdeCLQMyWbUefejnVO33",
+  "createdAt": "2026-09-15T07:02:08.032Z",
+  "ageGroup": "adult",
+  "landmarkName": "الدرعية (At-Turaif District)"
+}
+--- bnOqpeVqqHpH1xa8ns0R ---
+{
+  "landmarkId": "diriyah",
+  "userId": "9kIOiCo9VdeCLQMyWbUefejnVO33",
+  "ageGroup": "child",
+  "createdAt": "2026-09-15T07:01:34.496Z",
+  "landmarkName": "الدرعية (At-Turaif District)"
+}

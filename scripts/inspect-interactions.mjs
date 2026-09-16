@@ -1,0 +1,23 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, query, orderBy } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const snap = await getDocs(query(collection(db, "interactions"), orderBy("createdAt", "desc")));
+console.log("doc count:", snap.docs.length);
+snap.docs.forEach((d) => {
+  const data = d.data();
+  console.log("---", d.id, "---");
+  console.log(JSON.stringify({ ...data, createdAt: data.createdAt?.toDate?.().toISOString() }, null, 2));
+});
+process.exit(0);
