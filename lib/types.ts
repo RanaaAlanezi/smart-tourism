@@ -3,7 +3,7 @@ export type AgeGroup = "child" | "teen" | "adult";
 export interface Landmark {
   id: string;
   name: string;
-  category: "heritage" | "nature" | "historic-district";
+  category: "heritage" | "nature" | "historic-district" | "urban";
   city: string;
   summary: string;
   facts: string;

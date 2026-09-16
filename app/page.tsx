@@ -10,6 +10,7 @@ import {
   Search,
   Star,
   Building2,
+  Building,
   Trophy,
   Thermometer,
 } from "lucide-react";
@@ -23,12 +24,14 @@ const CATEGORY_LABEL: Record<Landmark["category"], string> = {
   heritage: "موقع تراثي",
   nature: "معلم طبيعي",
   "historic-district": "حي تاريخي",
+  urban: "معلم حضري",
 };
 
 const CATEGORY_GRADIENT: Record<Landmark["category"], string> = {
   heritage: "linear-gradient(135deg,#0B5D48,#0E7A5C)",
   nature: "linear-gradient(135deg,#0E4D63,#147A87)",
   "historic-district": "linear-gradient(135deg,#7A4A1E,#B8873B)",
+  urban: "linear-gradient(135deg,#1F2937,#C08A34)",
 };
 
 const QUICK_CATEGORIES: {
@@ -40,6 +43,7 @@ const QUICK_CATEGORIES: {
   { label: "المدن السياحية", icon: Building2, category: "historic-district" },
   { label: "الثقافة والتراث", icon: Trophy, category: "heritage" },
   { label: "الطبيعة والمناظر الخلابة", icon: Mountain, category: "nature" },
+  { label: "معالم حضرية حديثة", icon: Building, category: "urban" },
 ];
 
 export default function Home() {
@@ -127,7 +131,7 @@ export default function Home() {
             </div>
 
             {/* quick categories */}
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-5">
               {QUICK_CATEGORIES.map(({ label, icon: Icon, category: cat }) => (
                 <button
                   key={label}
