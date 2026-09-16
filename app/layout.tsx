@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthProvider";
-import { Navbar } from "@/lib/components/Navbar";
 import "./globals.css";
 
 const cairo = Cairo({

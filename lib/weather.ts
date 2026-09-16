@@ -4,6 +4,7 @@ const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
   جدة: { lat: 21.4858, lon: 39.1925 },
   أبها: { lat: 18.2164, lon: 42.5053 },
   أملج: { lat: 25.0213, lon: 37.2685 },
+  الطائف: { lat: 21.2703, lon: 40.4158 },
 };
 
 export async function getCityTemperature(city: string): Promise<number | null> {

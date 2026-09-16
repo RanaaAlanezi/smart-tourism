@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { X, MapPin } from "lucide-react";
@@ -22,15 +22,12 @@ export function SaudiMap({
   height?: number;
   initialSelectedId?: string;
 }) {
-  const [selected, setSelected] = useState<Landmark | null>(null);
-
-  useEffect(() => {
-    if (initialSelectedId) {
-      const match = landmarks.find((l) => l.id === initialSelectedId);
-      if (match) setSelected(match);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialSelectedId, landmarks.length]);
+  // The map is only ever mounted once `landmarks` has finished loading (see
+  // the map/homepage pages), so a lazy initializer is enough here — no
+  // effect needed to sync a prop that won't change after mount.
+  const [selected, setSelected] = useState<Landmark | null>(() =>
+    initialSelectedId ? landmarks.find((l) => l.id === initialSelectedId) ?? null : null
+  );
 
   return (
     <div
