@@ -44,7 +44,6 @@ export default function LandmarkPage({
   const [landmark, setLandmark] = useState<Landmark | null>(null);
   const [ageGroup, setAgeGroup] = useState<AgeGroup>("adult");
   const [explanation, setExplanation] = useState<string | null>(null);
-  const [model, setModel] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,7 +75,6 @@ export default function LandmarkPage({
       if (!res.ok) throw new Error(data.error || "unknown error");
 
       setExplanation(data.explanation);
-      setModel(data.model);
 
       if (user) {
         await addDoc(collection(db, "interactions"), {
@@ -186,7 +184,7 @@ export default function LandmarkPage({
       <p className="mb-6 mt-2" style={{ color: "var(--foreground)" }}>{landmark.facts}</p>
 
       <div className="rounded-lg border p-5" style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}>
-        <h2 className="font-medium mb-3">شرح مخصص حسب العمر (Qwen)</h2>
+        <h2 className="font-medium mb-3">شرح مخصص حسب العمر</h2>
 
         <div className="flex gap-2 mb-4">
           {AGE_OPTIONS.map((opt) => (
@@ -219,7 +217,6 @@ export default function LandmarkPage({
         {explanation && (
           <div className="mt-5 rounded-lg p-4" style={{ background: "var(--surface-2)" }}>
             <p className="whitespace-pre-wrap">{explanation}</p>
-            <p className="text-xs mt-3" style={{ color: "var(--text-muted)" }}>النموذج: {model}</p>
           </div>
         )}
       </div>
