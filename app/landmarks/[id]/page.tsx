@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState, use as useUnwrap } from "react";
+import Image from "next/image";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/AuthProvider";
 import { getLandmark } from "@/lib/landmarks";
 import { AgeGroup, Landmark } from "@/lib/types";
 import { Navbar } from "@/lib/components/Navbar";
+import { LANDMARK_IMAGES } from "@/lib/landmark-images";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
   { value: "child", label: "طفل" },
@@ -80,14 +82,30 @@ export default function LandmarkPage({
     );
   }
 
+  const heroImage = LANDMARK_IMAGES[landmark.id];
+
   return (
     <>
       <Navbar />
+      {heroImage && (
+        <div className="relative h-56 w-full overflow-hidden md:h-80">
+          <Image src={heroImage} alt={landmark.name} fill priority className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-6 pb-5">
+            <h1 className="text-2xl font-bold text-white md:text-3xl">{landmark.name}</h1>
+            <p className="text-white/80">{landmark.city}</p>
+          </div>
+        </div>
+      )}
       <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full">
-      <h1 className="text-2xl font-semibold mb-1">{landmark.name}</h1>
-      <p className="text-zinc-500 mb-6">{landmark.city}</p>
+      {!heroImage && (
+        <>
+          <h1 className="text-2xl font-semibold mb-1">{landmark.name}</h1>
+          <p className="text-zinc-500 mb-6">{landmark.city}</p>
+        </>
+      )}
 
-      <p className="mb-6 text-zinc-700 dark:text-zinc-300">{landmark.facts}</p>
+      <p className="mb-6 mt-2 text-zinc-700 dark:text-zinc-300">{landmark.facts}</p>
 
       <div className="border border-black/10 dark:border-white/10 rounded-lg p-5">
         <h2 className="font-medium mb-3">شرح مخصص حسب العمر (Qwen)</h2>

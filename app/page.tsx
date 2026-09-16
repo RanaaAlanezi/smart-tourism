@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,6 +16,7 @@ import {
 import { Navbar } from "@/lib/components/Navbar";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
+import { LANDMARK_IMAGES } from "@/lib/landmark-images";
 
 const CATEGORY_LABEL: Record<Landmark["category"], string> = {
   heritage: "موقع تراثي",
@@ -70,59 +72,28 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden" style={{ background: "var(--brand-green-dark)" }}>
-        <Navbar transparent />
-
-        {/* decorative skyline silhouette */}
-        <svg
-          className="absolute inset-x-0 bottom-0 w-full opacity-25"
-          viewBox="0 0 1440 220"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M0 220V150l40-10 20-40h15V70h20V40l15-20 15 20v30h20v30h15l20 40 40 10v40H0Z"
-            fill="var(--brand-gold)"
-          />
-          <path
-            d="M700 220V120h10V90h10V60h10V90h10v30h10v100Z"
-            fill="var(--brand-gold)"
-          />
-          <path
-            d="M900 220V100l60-20 60 20v120Z"
-            fill="var(--brand-gold)"
-            opacity="0.7"
-          />
-          <rect x="1150" y="60" width="14" height="160" fill="var(--brand-gold)" opacity="0.6" />
-          <rect x="1180" y="90" width="10" height="130" fill="var(--brand-gold)" opacity="0.5" />
-        </svg>
+      <section className="relative overflow-hidden min-h-[560px] flex flex-col md:min-h-[680px]">
+        <Image
+          src="/hero.png"
+          alt="الدرعية عند الغروب وأفق الرياض"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 30% 20%, rgba(192,138,52,0.18), transparent 55%)",
+              "linear-gradient(180deg, rgba(7,62,49,0.15) 0%, rgba(7,62,49,0.15) 45%, rgba(7,62,49,0.85) 82%, rgba(7,62,49,0.96) 100%)",
           }}
         />
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-10 md:pt-36">
-          <div className="max-w-2xl">
-            <span
-              className="mb-4 inline-block rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide"
-              style={{ background: "rgba(245,242,234,0.12)", color: "var(--brand-gold-light)" }}
-            >
-              أرض تروي قصصًا لا تنتهي
-            </span>
-            <h1
-              className="text-4xl font-extrabold leading-tight text-white md:text-5xl"
-              style={{ textWrap: "balance" }}
-            >
-              اكتشف السعودية <span style={{ color: "var(--brand-gold-light)" }}>بذكاء</span>
-            </h1>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-white/80 md:text-lg">
-              وجهات مميزة، تجارب فريدة، وقصص ملهمة — مدعومة بالذكاء الاصطناعي ليشرح لك كل معلم
-              بالطريقة التي تناسبك.
-            </p>
+        <Navbar transparent />
 
+        <div className="relative mt-auto w-full">
+          <div className="mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10">
+          <div className="max-w-2xl">
             {/* search */}
             <div className="mt-8 flex flex-col gap-3 rounded-2xl bg-white/95 p-2.5 shadow-xl backdrop-blur sm:flex-row">
               <div className="flex flex-1 items-center gap-2 px-3">
@@ -206,6 +177,7 @@ export default function Home() {
               </div>
             </div>
           )}
+          </div>
         </div>
       </section>
 
@@ -253,10 +225,26 @@ export default function Home() {
                 style={{ borderColor: "var(--brand-line)" }}
               >
                 <div
-                  className="relative flex h-36 items-end p-4"
-                  style={{ background: CATEGORY_GRADIENT[landmark.category] }}
+                  className="relative flex h-36 items-end overflow-hidden p-4"
+                  style={
+                    LANDMARK_IMAGES[landmark.id]
+                      ? undefined
+                      : { background: CATEGORY_GRADIENT[landmark.category] }
+                  }
                 >
-                  <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
+                  {LANDMARK_IMAGES[landmark.id] && (
+                    <>
+                      <Image
+                        src={LANDMARK_IMAGES[landmark.id]}
+                        alt={landmark.name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                        className="object-cover transition group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                    </>
+                  )}
+                  <span className="relative rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
                     {CATEGORY_LABEL[landmark.category]}
                   </span>
                 </div>
