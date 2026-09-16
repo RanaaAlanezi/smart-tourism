@@ -6,17 +6,18 @@ import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
-  Landmark as LandmarkIcon,
   Mountain,
   Search,
   Star,
   Building2,
   Trophy,
+  Thermometer,
 } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { LANDMARK_IMAGES } from "@/lib/landmark-images";
+import { getCityTemperature } from "@/lib/weather";
 
 const CATEGORY_LABEL: Record<Landmark["category"], string> = {
   heritage: "موقع تراثي",
@@ -39,7 +40,6 @@ const QUICK_CATEGORIES: {
   { label: "المدن السياحية", icon: Building2, category: "historic-district" },
   { label: "الثقافة والتراث", icon: Trophy, category: "heritage" },
   { label: "الطبيعة والمناظر الخلابة", icon: Mountain, category: "nature" },
-  { label: "المواقع التاريخية", icon: LandmarkIcon, category: "heritage" },
 ];
 
 export default function Home() {
@@ -49,6 +49,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState(0);
+  const [temps, setTemps] = useState<Record<string, number>>({});
 
   useEffect(() => {
     getLandmarks()
@@ -56,6 +57,17 @@ export default function Home() {
       .catch((err) => setError(String(err)))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    const cities = [...new Set(landmarks.map((l) => l.city))];
+    cities.forEach((city) => {
+      if (city in temps) return;
+      getCityTemperature(city).then((t) => {
+        if (t !== null) setTemps((prev) => ({ ...prev, [city]: t }));
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [landmarks]);
 
   const filtered = useMemo(() => {
     const q = query.trim();
@@ -115,7 +127,7 @@ export default function Home() {
             </div>
 
             {/* quick categories */}
-            <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-5">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {QUICK_CATEGORIES.map(({ label, icon: Icon, category: cat }) => (
                 <button
                   key={label}
@@ -144,7 +156,18 @@ export default function Home() {
           {spotlightLandmark && (
             <div className="mt-14 flex items-end justify-between gap-4 border-t border-white/15 pt-6">
               <div>
-                <div className="text-lg font-bold text-white">{spotlightLandmark.name}</div>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-white">{spotlightLandmark.name}</span>
+                  {temps[spotlightLandmark.city] !== undefined && (
+                    <span
+                      className="flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                      style={{ background: "rgba(245,242,234,0.15)", color: "var(--brand-gold-light)" }}
+                    >
+                      <Thermometer size={12} />
+                      {Math.round(temps[spotlightLandmark.city])}°
+                    </span>
+                  )}
+                </div>
                 <div className="text-sm text-white/70">{spotlightLandmark.summary}</div>
               </div>
               <div className="flex shrink-0 items-center gap-3">
@@ -247,6 +270,12 @@ export default function Home() {
                   <span className="relative rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
                     {CATEGORY_LABEL[landmark.category]}
                   </span>
+                  {temps[landmark.city] !== undefined && (
+                    <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
+                      <Thermometer size={12} />
+                      {Math.round(temps[landmark.city])}°
+                    </span>
+                  )}
                 </div>
                 <div className="p-4">
                   <div className="mb-1 text-xs text-zinc-400">{landmark.city}</div>
