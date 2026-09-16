@@ -42,22 +42,22 @@ export default function SavedPage() {
       <main className="flex-1 w-full" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
           <h1 className="text-2xl font-extrabold md:text-3xl">وجهاتي المحفوظة</h1>
-          <p className="mt-1 mb-8 text-sm text-zinc-500">
+          <p className="mt-1 mb-8 text-sm" style={{ color: "var(--text-muted)" }}>
             الوجهات التي حفظتِها لتراجعيها لاحقًا.
           </p>
 
-          {isLoading && <p className="text-sm text-zinc-500">جارٍ التحميل...</p>}
+          {isLoading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ التحميل...</p>}
 
           {!isLoading && saved.length === 0 && (
             <div className="flex flex-col items-center gap-3 rounded-2xl border py-20 text-center" style={{ borderColor: "var(--brand-line)" }}>
               <span
                 className="flex h-14 w-14 items-center justify-center rounded-full"
-                style={{ background: "var(--brand-line)" }}
+                style={{ background: "var(--surface)" }}
               >
-                <HeartOff size={22} className="text-zinc-500" />
+                <HeartOff size={22} style={{ color: "var(--text-muted)" }} />
               </span>
               <p className="font-semibold">لم تحفظ أي وجهات بعد</p>
-              <p className="max-w-sm text-sm text-zinc-500">
+              <p className="max-w-sm text-sm" style={{ color: "var(--text-muted)" }}>
                 ابدأ باكتشاف وجهات جديدة واحفظ الأماكن التي تهمك.
               </p>
             </div>

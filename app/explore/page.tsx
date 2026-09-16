@@ -61,7 +61,7 @@ function ExplorePageInner() {
       <main className="flex-1 w-full" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
           <h1 className="text-2xl font-extrabold md:text-3xl">استكشف السعودية</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
             اكتشف المعالم والتجارب السياحية في مختلف مناطق المملكة.
           </p>
 
@@ -71,13 +71,13 @@ function ExplorePageInner() {
               className="flex flex-1 items-center gap-2 rounded-xl border px-3 py-2.5"
               style={{ borderColor: "var(--brand-line)" }}
             >
-              <Search size={18} className="text-zinc-400 shrink-0" />
+              <Search size={18} className="shrink-0" style={{ color: "var(--text-muted)" }} />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="ابحث عن معلم، مدينة، أو تجربة سياحية..."
-                className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-400"
+                className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-500"
               />
             </div>
 
@@ -85,7 +85,7 @@ function ExplorePageInner() {
               value={city}
               onChange={(e) => setCity(e.target.value)}
               className="rounded-xl border px-4 py-2.5 text-sm"
-              style={{ borderColor: "var(--brand-line)", background: "var(--background)" }}
+              style={{ borderColor: "var(--brand-line)", background: "var(--surface)", color: "var(--foreground)" }}
             >
               <option value="all">كل المدن</option>
               {cities.map((c) => (
@@ -103,7 +103,7 @@ function ExplorePageInner() {
               className="rounded-full border px-4 py-1.5 text-sm font-semibold"
               style={
                 category === "all"
-                  ? { background: "var(--brand-green)", color: "white", borderColor: "var(--brand-green)" }
+                  ? { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" }
                   : { borderColor: "var(--brand-line)" }
               }
             >
@@ -116,7 +116,7 @@ function ExplorePageInner() {
                 className="rounded-full border px-4 py-1.5 text-sm font-semibold"
                 style={
                   category === c
-                    ? { background: "var(--brand-green)", color: "white", borderColor: "var(--brand-green)" }
+                    ? { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" }
                     : { borderColor: "var(--brand-line)" }
                 }
               >
@@ -127,10 +127,10 @@ function ExplorePageInner() {
 
           {/* results */}
           <div className="mt-8">
-            {loading && <p className="text-sm text-zinc-500">جارٍ التحميل من Firestore...</p>}
-            {error && <p className="text-sm text-red-600">خطأ: {error}</p>}
+            {loading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ التحميل من Firestore...</p>}
+            {error && <p className="text-sm text-red-400">خطأ: {error}</p>}
             {!loading && !error && filtered.length === 0 && (
-              <p className="text-sm text-zinc-500">لا توجد نتائج مطابقة لبحثك.</p>
+              <p className="text-sm" style={{ color: "var(--text-muted)" }}>لا توجد نتائج مطابقة لبحثك.</p>
             )}
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -139,7 +139,6 @@ function ExplorePageInner() {
                   key={landmark.id}
                   landmark={landmark}
                   temp={temps[landmark.city]}
-                  variant="full"
                   favorited={favoriteIds.has(landmark.id)}
                   signedIn={signedIn}
                   onToggleFavorite={toggleFavorite}

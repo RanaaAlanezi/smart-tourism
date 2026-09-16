@@ -61,21 +61,21 @@ export default function Dashboard() {
       ) : (
         <>
           <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="border border-black/10 dark:border-white/10 rounded-lg p-4 text-center">
+            <div className="border border-[var(--brand-line)] rounded-lg p-4 text-center">
               <div className="text-3xl font-bold">{rows.length}</div>
-              <div className="text-sm text-zinc-500">إجمالي الطلبات</div>
+              <div className="text-sm text-[var(--text-muted)]">إجمالي الطلبات</div>
             </div>
             {(["child", "teen", "adult"] as AgeGroup[]).map((g) => (
-              <div key={g} className="border border-black/10 dark:border-white/10 rounded-lg p-4 text-center">
+              <div key={g} className="border border-[var(--brand-line)] rounded-lg p-4 text-center">
                 <div className="text-3xl font-bold">{byAge[g] || 0}</div>
-                <div className="text-sm text-zinc-500">{AGE_LABEL[g]}</div>
+                <div className="text-sm text-[var(--text-muted)]">{AGE_LABEL[g]}</div>
               </div>
             ))}
           </div>
 
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="text-right border-b border-black/10 dark:border-white/10">
+              <tr className="text-right border-b border-[var(--brand-line)]">
                 <th className="py-2">المعلم</th>
                 <th className="py-2">الفئة العمرية</th>
                 <th className="py-2">المستخدم (uid)</th>
@@ -84,7 +84,7 @@ export default function Dashboard() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-black/5 dark:border-white/5">
+                <tr key={r.id} className="border-b border-[var(--brand-line)]">
                   <td className="py-2">{r.landmarkName}</td>
                   <td className="py-2">{AGE_LABEL[r.ageGroup]}</td>
                   <td className="py-2 font-mono text-xs">{r.userId.slice(0, 10)}...</td>
@@ -96,7 +96,7 @@ export default function Dashboard() {
             </tbody>
           </table>
           {rows.length === 0 && (
-            <p className="text-zinc-500 mt-4">
+            <p className="text-[var(--text-muted)] mt-4">
               ما فيه تفاعلات مسجلة بعد. جربي توليد شرح من صفحة أي معلم أول.
             </p>
           )}

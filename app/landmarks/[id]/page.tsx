@@ -125,7 +125,9 @@ export default function LandmarkPage({
     return (
       <>
         <Navbar />
-        <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full">جارٍ التحميل...</main>
+        <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full" style={{ background: "var(--background)" }}>
+          جارٍ التحميل...
+        </main>
       </>
     );
   }
@@ -156,7 +158,7 @@ export default function LandmarkPage({
       {heroImage && (
         <div className="relative h-56 w-full overflow-hidden md:h-80">
           <Image src={heroImage} alt={landmark.name} fill priority className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 mx-auto flex max-w-3xl items-end justify-between px-6 pb-5">
             <div>
               <h1 className="text-2xl font-bold text-white md:text-3xl">{landmark.name}</h1>
@@ -168,12 +170,12 @@ export default function LandmarkPage({
           </div>
         </div>
       )}
-      <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full">
+      <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full" style={{ background: "var(--background)" }}>
       {!heroImage && (
         <div className="mb-6 flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-semibold mb-1">{landmark.name}</h1>
-            <p className="text-zinc-500">
+            <p style={{ color: "var(--text-muted)" }}>
               {landmark.city} · {CATEGORY_LABEL[landmark.category]}
             </p>
           </div>
@@ -181,9 +183,9 @@ export default function LandmarkPage({
         </div>
       )}
 
-      <p className="mb-6 mt-2 text-zinc-700 dark:text-zinc-300">{landmark.facts}</p>
+      <p className="mb-6 mt-2" style={{ color: "var(--foreground)" }}>{landmark.facts}</p>
 
-      <div className="border border-black/10 dark:border-white/10 rounded-lg p-5">
+      <div className="rounded-lg border p-5" style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}>
         <h2 className="font-medium mb-3">شرح مخصص حسب العمر (Qwen)</h2>
 
         <div className="flex gap-2 mb-4">
@@ -191,11 +193,12 @@ export default function LandmarkPage({
             <button
               key={opt.value}
               onClick={() => setAgeGroup(opt.value)}
-              className={`px-3 py-1.5 rounded-full text-sm border ${
+              className="px-3 py-1.5 rounded-full text-sm border"
+              style={
                 ageGroup === opt.value
-                  ? "bg-black text-white dark:bg-white dark:text-black"
-                  : "border-black/20 dark:border-white/20"
-              }`}
+                  ? { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" }
+                  : { borderColor: "var(--brand-line)" }
+              }
             >
               {opt.label}
             </button>
@@ -205,23 +208,24 @@ export default function LandmarkPage({
         <button
           onClick={handleExplain}
           disabled={loading}
-          className="px-4 py-2 rounded-lg bg-emerald-600 text-white disabled:opacity-50"
+          className="px-4 py-2 rounded-lg text-white disabled:opacity-50"
+          style={{ background: "var(--brand-green)" }}
         >
           {loading ? "جارٍ توليد الشرح..." : "ولّد الشرح"}
         </button>
 
-        {error && <p className="text-red-600 mt-4 text-sm">خطأ: {error}</p>}
+        {error && <p className="text-red-400 mt-4 text-sm">خطأ: {error}</p>}
 
         {explanation && (
-          <div className="mt-5 bg-black/[.03] dark:bg-white/[.05] rounded-lg p-4">
+          <div className="mt-5 rounded-lg p-4" style={{ background: "var(--surface-2)" }}>
             <p className="whitespace-pre-wrap">{explanation}</p>
-            <p className="text-xs text-zinc-500 mt-3">النموذج: {model}</p>
+            <p className="text-xs mt-3" style={{ color: "var(--text-muted)" }}>النموذج: {model}</p>
           </div>
         )}
       </div>
 
       {/* AI Q&A */}
-      <div className="mt-6 border border-black/10 dark:border-white/10 rounded-lg p-5">
+      <div className="mt-6 rounded-lg border p-5" style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}>
         <h2 className="font-medium mb-3 flex items-center gap-2">
           <Sparkles size={16} style={{ color: "var(--brand-gold)" }} />
           اسأل الذكاء الاصطناعي عن هذا المعلم
@@ -233,7 +237,7 @@ export default function LandmarkPage({
               <button
                 key={q}
                 onClick={() => askAboutLandmark(q)}
-                className="rounded-xl border p-2.5 text-right text-sm transition hover:bg-black/[.03] dark:hover:bg-white/[.05]"
+                className="rounded-xl border p-2.5 text-right text-sm transition hover:brightness-110"
                 style={{ borderColor: "var(--brand-line)" }}
               >
                 {q}
@@ -251,18 +255,18 @@ export default function LandmarkPage({
                   style={
                     m.role === "user"
                       ? { background: "var(--brand-green)", color: "white" }
-                      : { background: "var(--surface-2,#EFEAE0)" }
+                      : { background: "var(--surface-2)" }
                   }
                 >
                   {m.content}
                 </div>
               </div>
             ))}
-            {qaLoading && <p className="text-sm text-zinc-500">جارٍ الكتابة...</p>}
+            {qaLoading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ الكتابة...</p>}
           </div>
         )}
 
-        {qaError && <p className="text-red-600 mb-3 text-sm">خطأ: {qaError}</p>}
+        {qaError && <p className="text-red-400 mb-3 text-sm">خطأ: {qaError}</p>}
 
         <form
           onSubmit={(e) => {
@@ -279,7 +283,7 @@ export default function LandmarkPage({
             name="q"
             type="text"
             placeholder="اسأل سؤالك عن هذا المعلم..."
-            className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
+            className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none placeholder:text-zinc-500"
             style={{ borderColor: "var(--brand-line)", background: "var(--background)" }}
           />
           <button

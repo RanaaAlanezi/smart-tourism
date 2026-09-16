@@ -1,28 +1,26 @@
 @import "tailwindcss";
 
+/* Smart Tourism commits to one dark, premium look — not a light/dark
+   toggle — so these tokens are fixed rather than gated behind
+   prefers-color-scheme. */
 :root {
-  --background: #FBF8F2;
-  --foreground: #16241E;
+  --background: #0D1A15;
+  --foreground: #F1EDE1;
+  --surface: #142821;
+  --surface-2: #1B332A;
   --brand-green: #0B5D48;
-  --brand-green-dark: #073E31;
-  --brand-gold: #C08A34;
+  --brand-green-dark: #05100C;
+  --brand-gold: #C79A45;
   --brand-gold-light: #E4C892;
   --brand-cream: #FBF8F2;
-  --brand-line: #E4DCC8;
+  --brand-line: #24392F;
+  --text-muted: #A7B3AB;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-cairo);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0E1512;
-    --foreground: #EDEAE0;
-    --brand-line: #26332C;
-  }
 }
 
 body {

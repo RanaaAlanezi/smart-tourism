@@ -82,12 +82,12 @@ function AssistantPageInner() {
             <div className="flex flex-col items-center text-center">
               <span
                 className="mb-4 flex h-14 w-14 items-center justify-center rounded-full"
-                style={{ background: "var(--accent-tint,#E4EEEC)" }}
+                style={{ background: "var(--surface)" }}
               >
-                <Sparkles size={24} color="var(--brand-green)" />
+                <Sparkles size={24} color="var(--brand-gold-light)" />
               </span>
               <h1 className="text-2xl font-extrabold md:text-3xl">كيف يمكنني مساعدتك؟</h1>
-              <p className="mt-2 text-sm text-zinc-500">
+              <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
                 اسألني عن الوجهات والمعالم السياحية في السعودية.
               </p>
             </div>
@@ -95,7 +95,7 @@ function AssistantPageInner() {
 
           {/* age selector */}
           <div className="mt-6 flex items-center justify-center gap-2">
-            <span className="text-xs font-semibold text-zinc-500">اختر مستوى الشرح:</span>
+            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>اختر مستوى الشرح:</span>
             {AGE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
@@ -103,7 +103,7 @@ function AssistantPageInner() {
                 className="rounded-full border px-4 py-1.5 text-sm font-semibold"
                 style={
                   ageGroup === opt.value
-                    ? { background: "var(--brand-green)", color: "white", borderColor: "var(--brand-green)" }
+                    ? { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" }
                     : { borderColor: "var(--brand-line)" }
                 }
               >
@@ -119,7 +119,7 @@ function AssistantPageInner() {
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className="rounded-xl border p-3 text-right text-sm transition hover:bg-black/[.03] dark:hover:bg-white/[.05]"
+                  className="rounded-xl border p-3 text-right text-sm transition hover:brightness-110"
                   style={{ borderColor: "var(--brand-line)" }}
                 >
                   {q}
@@ -147,14 +147,14 @@ function AssistantPageInner() {
             {loading && (
               <div className="flex justify-start">
                 <div
-                  className="rounded-2xl px-4 py-2.5 text-sm text-zinc-500"
-                  style={{ background: "var(--surface-2,#EFEAE0)" }}
+                  className="rounded-2xl px-4 py-2.5 text-sm"
+                  style={{ color: "var(--text-muted)", background: "var(--surface-2)" }}
                 >
                   جارٍ الكتابة...
                 </div>
               </div>
             )}
-            {error && <p className="text-sm text-red-600">خطأ: {error}</p>}
+            {error && <p className="text-sm text-red-400">خطأ: {error}</p>}
             <div ref={bottomRef} />
           </div>
 
@@ -172,7 +172,7 @@ function AssistantPageInner() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="اكتب سؤالك هنا..."
-              className="w-full bg-transparent px-3 py-2 text-sm outline-none"
+              className="w-full bg-transparent px-3 py-2 text-sm outline-none placeholder:text-zinc-500"
             />
             <button
               type="submit"

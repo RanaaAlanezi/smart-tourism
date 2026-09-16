@@ -6,7 +6,7 @@ async function main() {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   await page.goto("http://localhost:3000/", { waitUntil: "load" });
-  await page.waitForSelector("text=اكتشف السعودية");
+  await page.waitForSelector('input[placeholder*="ابحث"]');
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${OUT}/redesign-home.png`, fullPage: true });
   console.log("done");

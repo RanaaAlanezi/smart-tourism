@@ -1,3 +1,4 @@
+import { Landmark as LandmarkIcon, Mountain, Waves, Building2, Palette } from "lucide-react";
 import { Landmark } from "./types";
 
 // The Explore/homepage filters use a coarser, Arabic-first grouping than the
@@ -18,6 +19,14 @@ export const FILTER_LABELS: Record<FilterCategory, string> = {
   beach: "شواطئ",
   urban: "حضري",
   cultural: "ثقافي",
+};
+
+export const CATEGORY_ICON: Record<FilterCategory, typeof Mountain> = {
+  historical: LandmarkIcon,
+  natural: Mountain,
+  beach: Waves,
+  urban: Building2,
+  cultural: Palette,
 };
 
 export const CATEGORY_LABEL: Record<Landmark["category"], string> = {

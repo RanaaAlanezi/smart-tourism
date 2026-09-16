@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function Logo({ light = false }: { light?: boolean }) {
+export function Logo() {
   return (
     <Image
       src="/logo.png"
@@ -9,7 +9,7 @@ export function Logo({ light = false }: { light?: boolean }) {
       height={1285}
       priority
       className="h-12 w-auto md:h-14"
-      style={light ? { filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.35))" } : undefined}
+      style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.35))" }}
     />
   );
 }
