@@ -64,7 +64,7 @@ async function main() {
 
   for (const landmark of SEED_LANDMARKS) {
     const { id, ...data } = landmark;
-    await setDoc(doc(db, "landmarks", id), data);
+    await setDoc(doc(db, "landmarks", id), data, { merge: true });
     console.log(`seeded: ${id}`);
   }
 

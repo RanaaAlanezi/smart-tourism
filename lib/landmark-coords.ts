@@ -1,18 +1,6 @@
-// Approximate real coordinates per landmark (not just city centers) so
-// landmarks sharing a city — e.g. four are all in/around Riyadh — don't
-// collapse onto the same map pixel.
-export const LANDMARK_COORDS: Record<string, { lat: number; lon: number }> = {
-  diriyah: { lat: 24.7332, lon: 46.5719 },
-  "edge-of-world": { lat: 24.9686, lon: 46.2989 },
-  "kingdom-tower": { lat: 24.7113, lon: 46.6748 },
-  "faisaliah-tower": { lat: 24.6919, lon: 46.6853 },
-  "madain-saleh": { lat: 26.7944, lon: 37.9531 },
-  "red-sea": { lat: 25.0213, lon: 37.2685 },
-  "asir-mountains": { lat: 18.2409, lon: 42.36 },
-  "jeddah-historic": { lat: 21.4858, lon: 39.1925 },
-  "jabal-al-hada": { lat: 21.3891, lon: 40.3033 },
-};
-
+// Per-landmark coordinates now live directly on each Firestore landmark
+// document (latitude/longitude fields) — this file only holds the map
+// projection math and the illustrative country outline.
 const BOUNDS = { minLon: 34, maxLon: 55, minLat: 16, maxLat: 32 };
 export const MAP_VIEW = { width: 600, height: 500 };
 

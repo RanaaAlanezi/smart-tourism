@@ -24,7 +24,7 @@ async function main() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const { id, ...data } = LANDMARK;
-  await setDoc(doc(db, "landmarks", id), data);
+  await setDoc(doc(db, "landmarks", id), data, { merge: true });
   console.log(`seeded: ${id}`);
   process.exit(0);
 }
