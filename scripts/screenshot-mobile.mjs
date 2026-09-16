@@ -7,8 +7,8 @@ page.on("pageerror", (e) => errors.push(String(e)));
 
 for (const [name, url, wait] of [
   ["home", "/", "text=استكشف حسب النوع"],
-  ["explore", "/explore", "text=استكشف معالم السعودية"],
-  ["map", "/map", "text=خريطة معالم السعودية"],
+  ["explore", "/explore", "text=استكشف السعودية"],
+  ["map", "/map", "text=استكشف السعودية على الخريطة"],
   ["assistant", "/assistant", "text=كيف يمكنني مساعدتك؟"],
 ]) {
   await page.goto(`http://localhost:3000${url}`, { waitUntil: "load" });

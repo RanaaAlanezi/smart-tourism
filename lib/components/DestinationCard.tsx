@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Thermometer } from "lucide-react";
 import { Landmark } from "@/lib/types";
-import { LANDMARK_IMAGES } from "@/lib/landmark-images";
 import { CATEGORY_LABEL, CATEGORY_GRADIENT } from "@/lib/categories";
 import { FavoriteButton } from "./FavoriteButton";
 
@@ -13,15 +12,17 @@ export function DestinationCard({
   temp,
   variant = "compact",
   favorited = false,
+  signedIn = true,
   onToggleFavorite,
 }: {
   landmark: Landmark;
   temp?: number;
   variant?: "compact" | "full";
   favorited?: boolean;
+  signedIn?: boolean;
   onToggleFavorite?: (id: string) => void;
 }) {
-  const image = LANDMARK_IMAGES[landmark.id];
+  const image = landmark.image;
 
   return (
     <Link
@@ -56,7 +57,11 @@ export function DestinationCard({
         )}
         {onToggleFavorite && (
           <div className="absolute top-3 right-3">
-            <FavoriteButton active={favorited} onToggle={() => onToggleFavorite(landmark.id)} />
+            <FavoriteButton
+              active={favorited}
+              signedIn={signedIn}
+              onToggle={() => onToggleFavorite(landmark.id)}
+            />
           </div>
         )}
       </div>

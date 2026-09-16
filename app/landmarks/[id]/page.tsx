@@ -11,21 +11,20 @@ import { getLandmark } from "@/lib/landmarks";
 import { AgeGroup, Landmark } from "@/lib/types";
 import { Navbar } from "@/lib/components/Navbar";
 import { FavoriteButton } from "@/lib/components/FavoriteButton";
-import { LANDMARK_IMAGES } from "@/lib/landmark-images";
 import { CATEGORY_LABEL } from "@/lib/categories";
 import { useFavorites } from "@/lib/favorites";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
-  { value: "child", label: "طفل" },
-  { value: "teen", label: "مراهق" },
-  { value: "adult", label: "بالغ" },
+  { value: "child", label: "👧 طفل" },
+  { value: "teen", label: "🧑 مراهق" },
+  { value: "adult", label: "👨 بالغ" },
 ];
 
 const SUGGESTED_QUESTIONS = [
   "اشرح لي هذا المكان",
-  "هل المكان مناسب للأطفال؟",
-  "ما أهم شيء يمكنني رؤيته هنا؟",
-  "ما تاريخ هذا المعلم؟",
+  "ما أهميته التاريخية؟",
+  "هل هو مناسب للأطفال؟",
+  "ما الذي يمكنني رؤيته هنا؟",
 ];
 
 interface QaMessage {
@@ -131,12 +130,16 @@ export default function LandmarkPage({
     );
   }
 
-  const heroImage = LANDMARK_IMAGES[landmark.id];
+  const heroImage = landmark.image;
   const favorited = favoriteIds.has(landmark.id);
 
   const actionButtons = (
     <div className="flex items-center gap-2">
-      <FavoriteButton active={favorited} onToggle={() => signedIn && toggleFavorite(landmark.id)} />
+      <FavoriteButton
+        active={favorited}
+        signedIn={signedIn}
+        onToggle={() => toggleFavorite(landmark.id)}
+      />
       <Link
         href={`/map?id=${landmark.id}`}
         className="flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-800 shadow-sm hover:bg-white"

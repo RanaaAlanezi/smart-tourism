@@ -60,9 +60,9 @@ function ExplorePageInner() {
       <Navbar />
       <main className="flex-1 w-full" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-          <h1 className="text-2xl font-extrabold md:text-3xl">استكشف معالم السعودية</h1>
+          <h1 className="text-2xl font-extrabold md:text-3xl">استكشف السعودية</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            ابحثي، صفّي حسب المدينة أو النوع، واحفظي الوجهات التي تهمك.
+            اكتشف المعالم والتجارب السياحية في مختلف مناطق المملكة.
           </p>
 
           {/* controls */}
@@ -76,7 +76,7 @@ function ExplorePageInner() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث عن معلم أو مدينة..."
+                placeholder="ابحث عن معلم، مدينة، أو تجربة سياحية..."
                 className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-400"
               />
             </div>
@@ -141,7 +141,8 @@ function ExplorePageInner() {
                   temp={temps[landmark.city]}
                   variant="full"
                   favorited={favoriteIds.has(landmark.id)}
-                  onToggleFavorite={signedIn ? toggleFavorite : undefined}
+                  signedIn={signedIn}
+                  onToggleFavorite={toggleFavorite}
                 />
               ))}
             </div>

@@ -32,7 +32,7 @@ async function main() {
 
   // 3. Explore page
   await page.click('nav >> text=استكشف');
-  await page.waitForSelector("text=استكشف معالم السعودية");
+  await page.waitForSelector("text=استكشف السعودية");
   await page.waitForSelector('button[aria-label="حفظ في المحفوظات"]', { timeout: 20000 });
   await page.screenshot({ path: path.join(EVIDENCE_DIR, "03-explore.png"), fullPage: true });
   console.log("03-explore OK");
@@ -44,6 +44,12 @@ async function main() {
   console.log("04-explore-filtered OK");
 
   // 4. favorite a card from explore
+  // Anonymous sign-in can still be a few hundred ms from resolving right
+  // after a fresh page load even though content (public Firestore reads)
+  // is already visible, so give it a moment before testing an auth-gated
+  // action — otherwise the button correctly (not buggily) shows the
+  // sign-in notice instead of toggling.
+  await page.waitForTimeout(1500);
   const heartButtons = page.locator('button[aria-label="حفظ في المحفوظات"]');
   const heartCount = await heartButtons.count();
   console.log("heart buttons found:", heartCount);
@@ -52,6 +58,12 @@ async function main() {
     const card = page.locator('a[href^="/landmarks/"]').first();
     favoritedName = await card.locator(".font-bold").first().innerText();
     await heartButtons.first().click();
+    await page.waitForTimeout(300);
+    if (await page.locator("text=سجّلي الدخول لحفظ هذا المعلم").count()) {
+      // Sign-in still finishing — wait it out and retry once.
+      await page.waitForTimeout(1500);
+      await heartButtons.first().click();
+    }
     await page.waitForTimeout(1500);
     const nowActive = await page.locator('button[aria-label="إزالة من المحفوظات"]').count();
     console.log("favorited landmark:", favoritedName, "| now-active hearts:", nowActive);
@@ -59,7 +71,7 @@ async function main() {
 
   // 5. Map page
   await page.goto("http://localhost:3000/map", { waitUntil: "load" });
-  await page.waitForSelector("text=خريطة معالم السعودية");
+  await page.waitForSelector("text=استكشف السعودية على الخريطة");
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(EVIDENCE_DIR, "05-map.png"), fullPage: true });
   console.log("05-map OK");

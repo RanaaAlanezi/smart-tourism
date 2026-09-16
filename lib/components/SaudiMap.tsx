@@ -5,8 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { X, MapPin } from "lucide-react";
 import { Landmark } from "@/lib/types";
-import { LANDMARK_COORDS, MAP_VIEW, project, SAUDI_BORDER, smoothClosedPath } from "@/lib/landmark-coords";
-import { LANDMARK_IMAGES } from "@/lib/landmark-images";
+import { MAP_VIEW, project, SAUDI_BORDER, smoothClosedPath } from "@/lib/landmark-coords";
 import { CATEGORY_LABEL } from "@/lib/categories";
 
 const BORDER_PATH = smoothClosedPath(SAUDI_BORDER.map(([lon, lat]) => project(lat, lon)));
@@ -54,9 +53,8 @@ export function SaudiMap({
         />
 
         {landmarks.map((l) => {
-          const coords = LANDMARK_COORDS[l.id];
-          if (!coords) return null;
-          const { x, y } = project(coords.lat, coords.lon);
+          if (l.latitude === undefined || l.longitude === undefined) return null;
+          const { x, y } = project(l.latitude, l.longitude);
           const isSelected = selected?.id === l.id;
           return (
             <g
@@ -80,7 +78,7 @@ export function SaudiMap({
       )}
 
       {selected && (
-        <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white p-4 shadow-xl sm:right-4 sm:left-auto sm:w-72">
+        <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white p-4 shadow-xl sm:right-4 sm:left-auto sm:w-80">
           <button
             onClick={() => setSelected(null)}
             aria-label="إغلاق"
@@ -89,23 +87,24 @@ export function SaudiMap({
             <X size={16} />
           </button>
 
-          {LANDMARK_IMAGES[selected.id] && (
+          {selected.image && (
             <div className="relative mb-3 h-28 w-full overflow-hidden rounded-lg">
-              <Image src={LANDMARK_IMAGES[selected.id]} alt={selected.name} fill className="object-cover" />
+              <Image src={selected.image} alt={selected.name} fill className="object-cover" />
             </div>
           )}
 
           <div className="mb-1 text-xs text-zinc-400">
             {selected.city} · {CATEGORY_LABEL[selected.category]}
           </div>
-          <div className="mb-3 font-bold leading-snug">{selected.name}</div>
+          <div className="mb-1.5 font-bold leading-snug">{selected.name}</div>
+          <p className="mb-3 line-clamp-2 text-xs text-zinc-500">{selected.summary}</p>
 
           <Link
             href={`/landmarks/${selected.id}`}
             className="block rounded-lg px-4 py-2 text-center text-sm font-semibold text-white"
             style={{ background: "var(--brand-green)" }}
           >
-            عرض المعلم
+            عرض التفاصيل
           </Link>
         </div>
       )}

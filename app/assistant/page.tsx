@@ -1,21 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Send, Sparkles } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
 import { AgeGroup } from "@/lib/types";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
-  { value: "child", label: "طفل" },
-  { value: "teen", label: "مراهق" },
-  { value: "adult", label: "بالغ" },
+  { value: "child", label: "👧 طفل" },
+  { value: "teen", label: "🧑 مراهق" },
+  { value: "adult", label: "👨 بالغ" },
 ];
 
 const SUGGESTED_QUESTIONS = [
   "ما أفضل الأماكن التاريخية في العلا؟",
-  "اشرح لي الدرعية بطريقة بسيطة لطفل.",
-  "ما الأماكن المناسبة للعائلات في السعودية؟",
-  "ما الفرق بين الدرعية ومدائن صالح؟",
+  "أبغى أماكن مناسبة للعائلة.",
+  "اشرح لي الدرعية بطريقة بسيطة.",
+  "أبغى وجهة طبيعية وهادئة.",
 ];
 
 interface Message {
@@ -23,13 +24,15 @@ interface Message {
   content: string;
 }
 
-export default function AssistantPage() {
+function AssistantPageInner() {
+  const searchParams = useSearchParams();
   const [ageGroup, setAgeGroup] = useState<AgeGroup>("adult");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const autoSentRef = useRef(false);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,6 +63,15 @@ export default function AssistantPage() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && !autoSentRef.current) {
+      autoSentRef.current = true;
+      sendMessage(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   return (
     <>
@@ -175,5 +187,13 @@ export default function AssistantPage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function AssistantPage() {
+  return (
+    <Suspense fallback={null}>
+      <AssistantPageInner />
+    </Suspense>
   );
 }

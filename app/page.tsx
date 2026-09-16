@@ -99,7 +99,7 @@ export default function Home() {
 
         <div className="relative mt-auto w-full">
           <div className="mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10">
-            <div className="max-w-2xl">
+            <div className="relative max-w-2xl">
               {/* search */}
               <div className="mt-8 flex flex-col gap-3 rounded-2xl bg-white/95 p-2.5 shadow-xl backdrop-blur sm:flex-row">
                 <div className="flex flex-1 items-center gap-2 px-3">
@@ -108,7 +108,7 @@ export default function Home() {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="ابحث عن وجهات، مدن، أو تجارب..."
+                    placeholder="ابحث عن معلم، مدينة، أو تجربة سياحية..."
                     className="w-full bg-transparent py-2 text-sm text-zinc-800 outline-none placeholder:text-zinc-400"
                   />
                 </div>
@@ -120,6 +120,29 @@ export default function Home() {
                   بحث
                 </Link>
               </div>
+
+              {/* live results dropdown */}
+              {query.trim() && (
+                <div
+                  className="absolute inset-x-0 top-full z-30 mt-2 max-h-72 overflow-y-auto rounded-2xl bg-white p-2 shadow-xl"
+                  role="listbox"
+                >
+                  {filtered.length === 0 ? (
+                    <p className="px-3 py-3 text-sm text-zinc-500">لا توجد نتائج مطابقة لبحثك.</p>
+                  ) : (
+                    filtered.slice(0, 6).map((l) => (
+                      <Link
+                        key={l.id}
+                        href={`/landmarks/${l.id}`}
+                        className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-black/[.04]"
+                      >
+                        <span className="font-semibold text-zinc-800">{l.name}</span>
+                        <span className="text-xs text-zinc-400">{l.city}</span>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
 
             {/* spotlight strip */}
@@ -176,7 +199,7 @@ export default function Home() {
 
       <main className="flex-1" style={{ background: "var(--background)" }}>
         {/* استكشف حسب النوع */}
-        <div className="mx-auto max-w-7xl px-6 pt-14 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 pt-12 md:px-10">
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--brand-gold)" }}>
             تصفح حسب النوع
           </span>
@@ -202,7 +225,7 @@ export default function Home() {
         </div>
 
         {/* DESTINATIONS */}
-        <div className="mx-auto max-w-7xl px-6 py-14 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--brand-gold)" }}>
@@ -234,39 +257,22 @@ export default function Home() {
                 landmark={landmark}
                 temp={temps[landmark.city]}
                 favorited={favoriteIds.has(landmark.id)}
-                onToggleFavorite={signedIn ? toggleFavorite : undefined}
+                signedIn={signedIn}
+                onToggleFavorite={toggleFavorite}
               />
             ))}
           </div>
         </div>
 
-        {/* وجهاتي المحفوظة */}
-        {favoriteLandmarks.length > 0 && (
-          <div className="mx-auto max-w-7xl px-6 pb-14 md:px-10">
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--brand-gold)" }}>
-              خاص بك
-            </span>
-            <h2 className="mt-1 mb-6 text-2xl font-extrabold md:text-3xl">وجهاتي المحفوظة</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {favoriteLandmarks.map((landmark) => (
-                <DestinationCard
-                  key={landmark.id}
-                  landmark={landmark}
-                  temp={temps[landmark.city]}
-                  favorited
-                  onToggleFavorite={toggleFavorite}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* استكشف السعودية على الخريطة */}
-        <div className="mx-auto max-w-7xl px-6 pb-14 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--brand-gold)" }}>
             نظرة من الأعلى
           </span>
-          <h2 className="mt-1 mb-6 text-2xl font-extrabold md:text-3xl">استكشف السعودية على الخريطة</h2>
+          <h2 className="mt-1 text-2xl font-extrabold md:text-3xl">استكشف السعودية على الخريطة</h2>
+          <p className="mt-1 mb-6 text-sm text-zinc-500">
+            اكتشف مواقع المعالم السياحية في مختلف مناطق المملكة.
+          </p>
           <SaudiMap landmarks={landmarks} height={380} />
           <Link
             href="/map"
@@ -279,7 +285,7 @@ export default function Home() {
         </div>
 
         {/* AI teaser */}
-        <div className="mx-auto max-w-7xl px-6 pb-16 md:px-10">
+        <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
           <div
             className="flex flex-col items-center gap-4 rounded-2xl px-6 py-12 text-center"
             style={{ background: "linear-gradient(135deg,#0A3F3E,#0B5D48)" }}
@@ -294,6 +300,18 @@ export default function Home() {
             <p className="max-w-md text-white/75">
               دع المساعد الذكي يساعدك في اكتشاف وجهتك القادمة.
             </p>
+            <div className="mt-1 flex flex-wrap justify-center gap-2">
+              {["أبغى مكان تاريخي", "وجهة مناسبة للعائلة", "أبغى طبيعة وأجواء باردة"].map((prompt) => (
+                <Link
+                  key={prompt}
+                  href={`/assistant?q=${encodeURIComponent(prompt)}`}
+                  className="rounded-full px-4 py-1.5 text-xs font-medium text-white/90"
+                  style={{ background: "rgba(245,242,234,0.12)", border: "1px solid rgba(245,242,234,0.25)" }}
+                >
+                  {prompt}
+                </Link>
+              ))}
+            </div>
             <Link
               href="/assistant"
               className="mt-2 rounded-full px-7 py-3 text-sm font-bold"
@@ -303,6 +321,28 @@ export default function Home() {
             </Link>
           </div>
         </div>
+
+        {/* وجهاتي المحفوظة — للمستخدمين المسجّلين فقط */}
+        {signedIn && favoriteLandmarks.length > 0 && (
+          <div className="mx-auto max-w-7xl px-6 pb-12 md:px-10">
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--brand-gold)" }}>
+              خاص بك
+            </span>
+            <h2 className="mt-1 mb-6 text-2xl font-extrabold md:text-3xl">وجهاتي المحفوظة</h2>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {favoriteLandmarks.map((landmark) => (
+                <DestinationCard
+                  key={landmark.id}
+                  landmark={landmark}
+                  temp={temps[landmark.city]}
+                  favorited
+                  signedIn={signedIn}
+                  onToggleFavorite={toggleFavorite}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
