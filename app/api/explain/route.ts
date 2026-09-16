@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AgeGroup } from "@/lib/types";
+import { askQwen } from "@/lib/services/aiService";
 
 // Instructions are written in English on purpose: the local quantized Qwen
 // model follows English instructions far more reliably and stays on-topic,
@@ -28,65 +29,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // PoC note: OpenRouter's Qwen models require paid credits (no free tier for
-  // Qwen there). For this TRL3 PoC we run Qwen locally via Ollama instead,
-  // which is functionally the same model swapped to a free local provider.
-  // Set QWEN_PROVIDER=openrouter + OPENROUTER_API_KEY to switch back.
-  const provider = process.env.QWEN_PROVIDER || "ollama";
-
-  const endpoint =
-    provider === "openrouter"
-      ? "https://openrouter.ai/api/v1/chat/completions"
-      : `${process.env.OLLAMA_BASE_URL || "http://localhost:11434"}/v1/chat/completions`;
-
-  const model =
-    provider === "openrouter"
-      ? process.env.OPENROUTER_MODEL || "qwen/qwen-2.5-7b-instruct"
-      : process.env.OLLAMA_MODEL || "qwen2.5:7b-instruct";
-
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (provider === "openrouter" && !apiKey) {
-    return NextResponse.json(
-      { error: "OPENROUTER_API_KEY is not configured on the server" },
-      { status: 500 }
-    );
+  try {
+    const result = await askQwen([
+      {
+        role: "user",
+        content: `Landmark: ${landmarkName}. Facts: ${facts}\n\n${AGE_PROMPTS[ageGroup]}`,
+      },
+    ]);
+    return NextResponse.json({ explanation: result.content, model: result.model });
+  } catch (err) {
+    return NextResponse.json({ error: String(err) }, { status: 502 });
   }
-
-  const upstream = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      ...(provider === "openrouter" ? { Authorization: `Bearer ${apiKey}` } : {}),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.3,
-      messages: [
-        {
-          role: "user",
-          content: `Landmark: ${landmarkName}. Facts: ${facts}\n\n${AGE_PROMPTS[ageGroup]}`,
-        },
-      ],
-    }),
-  });
-
-  if (!upstream.ok) {
-    const errText = await upstream.text();
-    return NextResponse.json(
-      { error: `${provider} error (${upstream.status}): ${errText}` },
-      { status: 502 }
-    );
-  }
-
-  const data = await upstream.json();
-  const explanation: string | undefined = data?.choices?.[0]?.message?.content;
-
-  if (!explanation) {
-    return NextResponse.json(
-      { error: "No explanation returned from model", raw: data },
-      { status: 502 }
-    );
-  }
-
-  return NextResponse.json({ explanation, model });
 }
