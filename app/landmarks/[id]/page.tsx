@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/AuthProvider";
 import { getLandmark } from "@/lib/landmarks";
 import { AgeGroup, Landmark } from "@/lib/types";
+import { Navbar } from "@/lib/components/Navbar";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
   { value: "child", label: "طفل" },
@@ -71,11 +72,18 @@ export default function LandmarkPage({
   }
 
   if (!landmark) {
-    return <main className="flex-1 max-w-3xl mx-auto px-6 py-10">جارٍ التحميل...</main>;
+    return (
+      <>
+        <Navbar />
+        <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full">جارٍ التحميل...</main>
+      </>
+    );
   }
 
   return (
-    <main className="flex-1 max-w-3xl mx-auto px-6 py-10">
+    <>
+      <Navbar />
+      <main className="flex-1 max-w-3xl mx-auto px-6 py-10 w-full">
       <h1 className="text-2xl font-semibold mb-1">{landmark.name}</h1>
       <p className="text-zinc-500 mb-6">{landmark.city}</p>
 
@@ -117,6 +125,7 @@ export default function LandmarkPage({
           </div>
         )}
       </div>
-    </main>
+      </main>
+    </>
   );
 }

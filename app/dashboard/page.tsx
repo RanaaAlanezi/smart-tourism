@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { AgeGroup } from "@/lib/types";
+import { Navbar } from "@/lib/components/Navbar";
 
 interface Row {
   id: string;
@@ -50,7 +51,9 @@ export default function Dashboard() {
   }, {});
 
   return (
-    <main className="flex-1 max-w-4xl mx-auto px-6 py-10">
+    <>
+      <Navbar />
+      <main className="flex-1 max-w-4xl mx-auto px-6 py-10 w-full">
       <h1 className="text-2xl font-semibold mb-6">لوحة النتائج (Interactions من Firestore)</h1>
 
       {loading ? (
@@ -99,6 +102,7 @@ export default function Dashboard() {
           )}
         </>
       )}
-    </main>
+      </main>
+    </>
   );
 }

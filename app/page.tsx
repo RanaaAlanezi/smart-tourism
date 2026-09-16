@@ -2,6 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Landmark as LandmarkIcon,
+  Mountain,
+  Search,
+  Star,
+  Building2,
+  Trophy,
+} from "lucide-react";
+import { Navbar } from "@/lib/components/Navbar";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 
@@ -11,11 +22,31 @@ const CATEGORY_LABEL: Record<Landmark["category"], string> = {
   "historic-district": "حي تاريخي",
 };
 
+const CATEGORY_GRADIENT: Record<Landmark["category"], string> = {
+  heritage: "linear-gradient(135deg,#0B5D48,#0E7A5C)",
+  nature: "linear-gradient(135deg,#0E4D63,#147A87)",
+  "historic-district": "linear-gradient(135deg,#7A4A1E,#B8873B)",
+};
+
+const QUICK_CATEGORIES: {
+  label: string;
+  icon: typeof Star;
+  category: Landmark["category"] | "all";
+}[] = [
+  { label: "أشهر الوجهات", icon: Star, category: "all" },
+  { label: "المدن السياحية", icon: Building2, category: "historic-district" },
+  { label: "الثقافة والتراث", icon: Trophy, category: "heritage" },
+  { label: "الطبيعة والمناظر الخلابة", icon: Mountain, category: "nature" },
+  { label: "المواقع التاريخية", icon: LandmarkIcon, category: "heritage" },
+];
+
 export default function Home() {
   const [landmarks, setLandmarks] = useState<Landmark[]>([]);
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<Landmark["category"] | "all">("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [spotlight, setSpotlight] = useState(0);
 
   useEffect(() => {
     getLandmarks()
@@ -26,51 +57,219 @@ export default function Home() {
 
   const filtered = useMemo(() => {
     const q = query.trim();
-    if (!q) return landmarks;
-    return landmarks.filter(
-      (l) => l.name?.includes(q) || l.city?.includes(q) || l.summary?.includes(q)
-    );
-  }, [landmarks, query]);
+    return landmarks.filter((l) => {
+      const matchesQuery =
+        !q || l.name?.includes(q) || l.city?.includes(q) || l.summary?.includes(q);
+      const matchesCategory = category === "all" || l.category === category;
+      return matchesQuery && matchesCategory;
+    });
+  }, [landmarks, query, category]);
+
+  const spotlightLandmark = landmarks[spotlight % Math.max(landmarks.length, 1)];
 
   return (
-    <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-semibold mb-2">اكتشف المعالم السياحية السعودية</h1>
-      <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-        ابحثي بالاسم أو المدينة، ثم افتحي أي معلم لتحصلي على شرح مخصص لعمرك.
-      </p>
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden" style={{ background: "var(--brand-green-dark)" }}>
+        <Navbar transparent />
 
-      <input
-        type="text"
-        placeholder="ابحث عن معلم أو مدينة..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="w-full border border-black/10 dark:border-white/20 rounded-lg px-4 py-2 mb-6 bg-transparent"
-      />
+        {/* decorative skyline silhouette */}
+        <svg
+          className="absolute inset-x-0 bottom-0 w-full opacity-25"
+          viewBox="0 0 1440 220"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 220V150l40-10 20-40h15V70h20V40l15-20 15 20v30h20v30h15l20 40 40 10v40H0Z"
+            fill="var(--brand-gold)"
+          />
+          <path
+            d="M700 220V120h10V90h10V60h10V90h10v30h10v100Z"
+            fill="var(--brand-gold)"
+          />
+          <path
+            d="M900 220V100l60-20 60 20v120Z"
+            fill="var(--brand-gold)"
+            opacity="0.7"
+          />
+          <rect x="1150" y="60" width="14" height="160" fill="var(--brand-gold)" opacity="0.6" />
+          <rect x="1180" y="90" width="10" height="130" fill="var(--brand-gold)" opacity="0.5" />
+        </svg>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 30% 20%, rgba(192,138,52,0.18), transparent 55%)",
+          }}
+        />
 
-      {loading && <p>جارٍ التحميل من Firestore...</p>}
-      {error && <p className="text-red-600">خطأ: {error}</p>}
-      {!loading && !error && filtered.length === 0 && (
-        <p className="text-zinc-500">لا توجد نتائج مطابقة.</p>
-      )}
-
-      <ul className="grid gap-4 sm:grid-cols-2">
-        {filtered.map((landmark) => (
-          <li key={landmark.id}>
-            <Link
-              href={`/landmarks/${landmark.id}`}
-              className="block border border-black/10 dark:border-white/10 rounded-lg p-4 hover:bg-black/[.03] dark:hover:bg-white/[.05] transition"
+        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-28 md:px-10 md:pt-36">
+          <div className="max-w-2xl">
+            <span
+              className="mb-4 inline-block rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide"
+              style={{ background: "rgba(245,242,234,0.12)", color: "var(--brand-gold-light)" }}
             >
-              <div className="text-xs text-zinc-500 mb-1">
-                {CATEGORY_LABEL[landmark.category]} · {landmark.city}
+              أرض تروي قصصًا لا تنتهي
+            </span>
+            <h1
+              className="text-4xl font-extrabold leading-tight text-white md:text-5xl"
+              style={{ textWrap: "balance" }}
+            >
+              اكتشف السعودية <span style={{ color: "var(--brand-gold-light)" }}>بذكاء</span>
+            </h1>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-white/80 md:text-lg">
+              وجهات مميزة، تجارب فريدة، وقصص ملهمة — مدعومة بالذكاء الاصطناعي ليشرح لك كل معلم
+              بالطريقة التي تناسبك.
+            </p>
+
+            {/* search */}
+            <div className="mt-8 flex flex-col gap-3 rounded-2xl bg-white/95 p-2.5 shadow-xl backdrop-blur sm:flex-row">
+              <div className="flex flex-1 items-center gap-2 px-3">
+                <Search size={18} className="text-zinc-400 shrink-0" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="ابحث عن وجهات، مدن، أو تجارب..."
+                  className="w-full bg-transparent py-2 text-sm text-zinc-800 outline-none placeholder:text-zinc-400"
+                />
               </div>
-              <div className="font-medium mb-1">{landmark.name}</div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                {landmark.summary}
+              <button
+                className="rounded-xl px-6 py-2.5 text-sm font-bold text-white shrink-0"
+                style={{ background: "var(--brand-green)" }}
+              >
+                بحث
+              </button>
+            </div>
+
+            {/* quick categories */}
+            <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-5">
+              {QUICK_CATEGORIES.map(({ label, icon: Icon, category: cat }) => (
+                <button
+                  key={label}
+                  onClick={() => setCategory(cat)}
+                  className="flex flex-col items-center gap-2 rounded-xl px-2 py-3 text-center transition"
+                  style={{
+                    background:
+                      category === cat ? "rgba(245,242,234,0.18)" : "rgba(245,242,234,0.08)",
+                  }}
+                >
+                  <span
+                    className="flex h-9 w-9 items-center justify-center rounded-full"
+                    style={{ background: "var(--brand-gold-light)" }}
+                  >
+                    <Icon size={16} color="var(--brand-green-dark)" />
+                  </span>
+                  <span className="text-[0.72rem] font-medium leading-tight text-white/90">
+                    {label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* spotlight strip */}
+          {spotlightLandmark && (
+            <div className="mt-14 flex items-end justify-between gap-4 border-t border-white/15 pt-6">
+              <div>
+                <div className="text-lg font-bold text-white">{spotlightLandmark.name}</div>
+                <div className="text-sm text-white/70">{spotlightLandmark.summary}</div>
               </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
+              <div className="flex shrink-0 items-center gap-3">
+                <div
+                  className="hidden sm:flex items-center gap-1.5 text-xs font-semibold"
+                  style={{ color: "var(--brand-gold-light)" }}
+                >
+                  {landmarks.map((_, i) => (
+                    <span key={i} className={i === spotlight % landmarks.length ? "" : "opacity-40"}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  aria-label="السابق"
+                  onClick={() =>
+                    setSpotlight((s) => (s - 1 + landmarks.length) % Math.max(landmarks.length, 1))
+                  }
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
+                >
+                  <ChevronRight size={16} />
+                </button>
+                <button
+                  aria-label="التالي"
+                  onClick={() => setSpotlight((s) => (s + 1) % Math.max(landmarks.length, 1))}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* DESTINATIONS */}
+      <main className="flex-1" style={{ background: "var(--background)" }}>
+        <div className="mx-auto max-w-7xl px-6 py-14 md:px-10">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span
+                className="text-xs font-bold uppercase tracking-widest"
+                style={{ color: "var(--brand-gold)" }}
+              >
+                وجهات مميزة
+              </span>
+              <h2 className="mt-1 text-2xl font-extrabold md:text-3xl">
+                اكتشف أجمل الوجهات في السعودية
+              </h2>
+            </div>
+            {(query || category !== "all") && (
+              <button
+                onClick={() => {
+                  setQuery("");
+                  setCategory("all");
+                }}
+                className="rounded-full border px-5 py-2 text-sm font-semibold"
+                style={{ borderColor: "var(--brand-line)", color: "var(--brand-green)" }}
+              >
+                عرض جميع الوجهات ←
+              </button>
+            )}
+          </div>
+
+          {loading && <p className="text-sm text-zinc-500">جارٍ التحميل من Firestore...</p>}
+          {error && <p className="text-sm text-red-600">خطأ: {error}</p>}
+          {!loading && !error && filtered.length === 0 && (
+            <p className="text-sm text-zinc-500">لا توجد نتائج مطابقة.</p>
+          )}
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {filtered.map((landmark) => (
+              <Link
+                key={landmark.id}
+                href={`/landmarks/${landmark.id}`}
+                className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:bg-white/5"
+                style={{ borderColor: "var(--brand-line)" }}
+              >
+                <div
+                  className="relative flex h-36 items-end p-4"
+                  style={{ background: CATEGORY_GRADIENT[landmark.category] }}
+                >
+                  <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
+                    {CATEGORY_LABEL[landmark.category]}
+                  </span>
+                </div>
+                <div className="p-4">
+                  <div className="mb-1 text-xs text-zinc-400">{landmark.city}</div>
+                  <div className="mb-1.5 font-bold leading-snug">{landmark.name}</div>
+                  <p className="line-clamp-2 text-sm text-zinc-500">{landmark.summary}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
