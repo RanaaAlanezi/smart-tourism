@@ -16,9 +16,10 @@ const AGE_PROMPTS: Record<AgeGroup, string> = {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { landmarkName, facts, ageGroup } = body as {
+  const { landmarkName, facts, keyFacts, ageGroup } = body as {
     landmarkName: string;
     facts: string;
+    keyFacts?: string;
     ageGroup: AgeGroup;
   };
 
@@ -29,13 +30,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // The small local model reliably garbles numbers/names pulled from a
+  // flowing Arabic prose paragraph (e.g. reads "302 meters" as "302
+  // months"), but gets them right from short labeled facts — so prefer
+  // keyFacts for grounding when we have it, falling back to prose facts.
+  const factsBlock = keyFacts ? `Facts (use these exactly, do not reinterpret the numbers):\n${keyFacts}` : `Facts: ${facts}`;
+
   try {
-    const result = await askQwen([
-      {
-        role: "user",
-        content: `Landmark: ${landmarkName}. Facts: ${facts}\n\n${AGE_PROMPTS[ageGroup]}`,
-      },
-    ]);
+    const result = await askQwen(
+      [
+        {
+          role: "user",
+          content:
+            `Landmark: ${landmarkName}. ${factsBlock}\n\n${AGE_PROMPTS[ageGroup]} ` +
+            `Only use the facts given above — do not add names, dates, or other facts that aren't there. ` +
+            `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") unless that exact claim is written in the facts above.`,
+        },
+      ],
+      { temperature: 0.2 }
+    );
     return NextResponse.json({ explanation: result.content, model: result.model });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 502 });

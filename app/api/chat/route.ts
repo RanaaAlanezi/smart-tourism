@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   const { messages, ageGroup, landmarkContext } = body as {
     messages: ChatTurn[];
     ageGroup: AgeGroup;
-    landmarkContext?: { name: string; facts: string };
+    landmarkContext?: { name: string; facts: string; keyFacts?: string };
   };
 
   if (!messages?.length || !ageGroup || !AGE_STYLE[ageGroup]) {
@@ -29,8 +29,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // The small local model reliably garbles numbers/names pulled from a
+  // flowing Arabic prose paragraph (e.g. reads "302 meters" as "302
+  // months"), but gets them right from short labeled facts — so prefer
+  // keyFacts for grounding when we have it, falling back to prose facts.
   let landmarkBlock = landmarkContext?.name
-    ? `Landmark: ${landmarkContext.name}. Facts: ${landmarkContext.facts}\n\n`
+    ? `Landmark: ${landmarkContext.name}. Facts: ${landmarkContext.keyFacts || landmarkContext.facts}\n\n`
     : "";
 
   // Without a specific landmark in focus, ground the model in our real data
@@ -42,7 +46,7 @@ export async function POST(req: NextRequest) {
       const landmarks = await getLandmarks();
       if (landmarks.length) {
         const digest = landmarks
-          .map((l) => `- ${l.name} (${l.city}): ${l.facts}`)
+          .map((l) => `- ${l.name} (${l.city}): ${l.keyFacts || l.facts}`)
           .join("\n");
         landmarkBlock = `Known landmarks in the Smart Tourism app:\n${digest}\n\n`;
       }
@@ -64,11 +68,12 @@ export async function POST(req: NextRequest) {
     `${landmarkBlock}${historyText}` +
     `A visitor of the "Smart Tourism" app asked a question about Saudi Arabia travel and landmarks. ` +
     `${AGE_STYLE[ageGroup]} Base your answer only on the facts given above when they cover the topic; do not invent names, dates, or facts that aren't there. ` +
+    `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") about anything unless that exact claim is written in the facts above — superlatives go out of date and are the most common way you get facts wrong. ` +
     `Write ONLY in Modern Standard Arabic (فصحى) — do not include any Chinese, English, or other language words anywhere in your answer.\n\n` +
     `Question: ${lastQuestion}`;
 
   try {
-    const result = await askQwen([{ role: "user", content: prompt }]);
+    const result = await askQwen([{ role: "user", content: prompt }], { temperature: 0.2 });
     return NextResponse.json({ reply: result.content, model: result.model });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 502 });

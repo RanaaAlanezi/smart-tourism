@@ -68,6 +68,7 @@ export default function LandmarkPage({
         body: JSON.stringify({
           landmarkName: landmark.name,
           facts: landmark.facts,
+          keyFacts: landmark.keyFacts,
           ageGroup,
         }),
       });
@@ -106,7 +107,7 @@ export default function LandmarkPage({
         body: JSON.stringify({
           messages: next,
           ageGroup,
-          landmarkContext: { name: landmark.name, facts: landmark.facts },
+          landmarkContext: { name: landmark.name, facts: landmark.facts, keyFacts: landmark.keyFacts },
         }),
       });
       const data = await res.json();
