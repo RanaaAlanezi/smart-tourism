@@ -12,14 +12,21 @@ import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { CATEGORY_LABEL } from "@/lib/categories";
 
-const CATEGORY_OPTIONS: Landmark["category"][] = ["heritage", "nature", "historic-district", "urban"];
+const CATEGORY_OPTIONS: Landmark["category"][] = [
+  "historical",
+  "archaeological",
+  "natural",
+  "beaches",
+  "urban",
+  "cultural",
+];
 
 const EMPTY_FORM = {
   id: "",
   name: "",
   city: "",
   region: "",
-  category: "heritage" as Landmark["category"],
+  category: "historical" as Landmark["category"],
   summary: "",
   facts: "",
   keyFacts: "",
@@ -113,10 +120,14 @@ function AdminLandmarks() {
       setError("عبّي على الأقل: المعرف، الاسم، المدينة، الوصف المختصر، والحقائق.");
       return;
     }
-    const lat = parseFloat(form.latitude);
-    const lon = parseFloat(form.longitude);
-    if (Number.isNaN(lat) || Number.isNaN(lon)) {
-      setError("خط العرض وخط الطول لازم يكونوا أرقام صحيحة.");
+    // Coordinates are optional — leave both blank for a draft entry with no
+    // verified location yet (it just won't get a map marker). If either is
+    // filled in, both must parse so we never end up with only one.
+    const hasCoords = form.latitude.trim() !== "" || form.longitude.trim() !== "";
+    const lat = hasCoords ? parseFloat(form.latitude) : null;
+    const lon = hasCoords ? parseFloat(form.longitude) : null;
+    if (hasCoords && (lat === null || lon === null || Number.isNaN(lat) || Number.isNaN(lon))) {
+      setError("لو بتدخلين الإحداثيات، عبّي خط العرض وخط الطول مع بعض كأرقام صحيحة.");
       return;
     }
 
@@ -248,7 +259,7 @@ function AdminLandmarks() {
               <div className="flex gap-3">
                 <div className="flex-1">
                   <label className="mb-1 block text-xs font-semibold" style={{ color: "var(--text-muted)" }}>
-                    خط العرض (Latitude) *
+                    خط العرض (Latitude)
                   </label>
                   <input
                     value={form.latitude}
@@ -261,7 +272,7 @@ function AdminLandmarks() {
                 </div>
                 <div className="flex-1">
                   <label className="mb-1 block text-xs font-semibold" style={{ color: "var(--text-muted)" }}>
-                    خط الطول (Longitude) *
+                    خط الطول (Longitude)
                   </label>
                   <input
                     value={form.longitude}
@@ -285,6 +296,9 @@ function AdminLandmarks() {
               افتحي Google Maps، اضغطي بالزر الأيمن على الموقع، وانسخي الإحداثيات
               <ExternalLink size={12} />
             </a>
+            <p className="mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
+              اتركي الإحداثيات فاضية إذا ماتأكدتي منها بعد — المعلم بيُحفظ بدون علامة على الخريطة لحين تأكيدها.
+            </p>
 
             <div className="mt-4">
               <label className="mb-1 block text-xs font-semibold" style={{ color: "var(--text-muted)" }}>

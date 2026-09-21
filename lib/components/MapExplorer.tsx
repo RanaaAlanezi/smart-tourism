@@ -5,7 +5,7 @@ import { LayoutGrid } from "lucide-react";
 import { SaudiMap } from "./SaudiMap";
 import { MapDetailPanel } from "./MapDetailPanel";
 import { Landmark as LandmarkType } from "@/lib/types";
-import { FilterCategory, FILTER_LABELS, CATEGORY_GROUP, CATEGORY_ICON } from "@/lib/categories";
+import { FilterCategory, FILTER_LABELS, CATEGORY_ICON } from "@/lib/categories";
 
 export function MapExplorer({
   landmarks,
@@ -26,7 +26,7 @@ export function MapExplorer({
   );
 
   const filtered = useMemo(
-    () => (category === "all" ? landmarks : landmarks.filter((l) => CATEGORY_GROUP[l.category] === category)),
+    () => (category === "all" ? landmarks : landmarks.filter((l) => l.category === category)),
     [landmarks, category]
   );
 

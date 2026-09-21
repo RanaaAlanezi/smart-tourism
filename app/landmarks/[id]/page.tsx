@@ -141,13 +141,15 @@ export default function LandmarkPage({
         signedIn={signedIn}
         onToggle={() => toggleFavorite(landmark.id)}
       />
-      <Link
-        href={`/map?id=${landmark.id}`}
-        className="flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-800 shadow-sm hover:bg-white"
-      >
-        <MapIcon size={14} />
-        عرض على الخريطة
-      </Link>
+      {landmark.latitude != null && landmark.longitude != null && (
+        <Link
+          href={`/map?id=${landmark.id}`}
+          className="flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-zinc-800 shadow-sm hover:bg-white"
+        >
+          <MapIcon size={14} />
+          عرض على الخريطة
+        </Link>
+      )}
     </div>
   );
 

@@ -1,44 +1,42 @@
-import { Landmark as LandmarkIcon, Mountain, Waves, Building2, Palette } from "lucide-react";
-import { Landmark } from "./types";
+import { Landmark as LandmarkIcon, Mountain, Waves, Building2, Palette, Pickaxe } from "lucide-react";
+import { LandmarkCategory } from "./types";
 
-// The Explore/homepage filters use a coarser, Arabic-first grouping than the
-// underlying data category, so new data categories can be added later
-// without having to touch every filter UI.
-export type FilterCategory = "historical" | "natural" | "beach" | "urban" | "cultural";
-
-export const CATEGORY_GROUP: Record<Landmark["category"], FilterCategory> = {
-  heritage: "historical",
-  "historic-district": "historical",
-  nature: "natural",
-  urban: "urban",
-};
-
-export const FILTER_LABELS: Record<FilterCategory, string> = {
+export const FILTER_LABELS: Record<LandmarkCategory, string> = {
   historical: "تاريخي",
+  archaeological: "أثري",
   natural: "طبيعي",
-  beach: "شواطئ",
+  beaches: "شواطئ",
   urban: "حضري",
   cultural: "ثقافي",
 };
 
-export const CATEGORY_ICON: Record<FilterCategory, typeof Mountain> = {
+export const CATEGORY_ICON: Record<LandmarkCategory, typeof Mountain> = {
   historical: LandmarkIcon,
+  archaeological: Pickaxe,
   natural: Mountain,
-  beach: Waves,
+  beaches: Waves,
   urban: Building2,
   cultural: Palette,
 };
 
-export const CATEGORY_LABEL: Record<Landmark["category"], string> = {
-  heritage: "موقع تراثي",
-  nature: "معلم طبيعي",
-  "historic-district": "حي تاريخي",
+export const CATEGORY_LABEL: Record<LandmarkCategory, string> = {
+  historical: "موقع تاريخي",
+  archaeological: "موقع أثري",
+  natural: "معلم طبيعي",
+  beaches: "شاطئ",
   urban: "معلم حضري",
+  cultural: "موقع ثقافي",
 };
 
-export const CATEGORY_GRADIENT: Record<Landmark["category"], string> = {
-  heritage: "linear-gradient(135deg,#0B5D48,#0E7A5C)",
-  nature: "linear-gradient(135deg,#0E4D63,#147A87)",
-  "historic-district": "linear-gradient(135deg,#7A4A1E,#B8873B)",
+export const CATEGORY_GRADIENT: Record<LandmarkCategory, string> = {
+  historical: "linear-gradient(135deg,#7A4A1E,#B8873B)",
+  archaeological: "linear-gradient(135deg,#5C4B32,#8A7350)",
+  natural: "linear-gradient(135deg,#0E4D63,#147A87)",
+  beaches: "linear-gradient(135deg,#0B5D6E,#1AA6A0)",
   urban: "linear-gradient(135deg,#1F2937,#C08A34)",
+  cultural: "linear-gradient(135deg,#0B5D48,#0E7A5C)",
 };
+
+// Kept as an alias so existing imports of `FilterCategory` keep working —
+// it's now exactly the data category, not a coarser grouping of it.
+export type FilterCategory = LandmarkCategory;

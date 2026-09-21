@@ -78,7 +78,7 @@ export function SaudiMap({
       </text>
 
       {landmarks.map((l) => {
-        if (l.latitude === undefined || l.longitude === undefined) return null;
+        if (l.latitude == null || l.longitude == null) return null;
         const { x, y } = project(l.latitude, l.longitude);
         const isSelected = selectedId === l.id;
         return (

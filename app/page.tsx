@@ -13,7 +13,7 @@ import { getCityTemperature } from "@/lib/weather";
 import { FilterCategory, FILTER_LABELS, CATEGORY_ICON } from "@/lib/categories";
 import { useFavorites } from "@/lib/favorites";
 
-const TYPE_TILES: FilterCategory[] = ["historical", "natural", "beach", "urban", "cultural"];
+const TYPE_TILES: FilterCategory[] = ["historical", "archaeological", "natural", "beaches", "urban", "cultural"];
 
 const AI_SUGGESTIONS = [
   "أبغى أماكن تاريخية في العلا",
@@ -52,7 +52,11 @@ export default function Home() {
     const q = query.trim();
     if (!q) return landmarks;
     return landmarks.filter(
-      (l) => l.name?.includes(q) || l.city?.includes(q) || l.summary?.includes(q)
+      (l) =>
+        l.name?.includes(q) ||
+        l.nameEn?.toLowerCase().includes(q.toLowerCase()) ||
+        l.city?.includes(q) ||
+        l.summary?.includes(q)
     );
   }, [landmarks, query]);
 
@@ -61,7 +65,16 @@ export default function Home() {
     [landmarks, favoriteIds]
   );
 
-  const spotlightLandmark = landmarks[spotlight % Math.max(landmarks.length, 1)];
+  // The homepage only ever showcases the curated "featured" subset — with
+  // 90+ landmarks now in Firestore (most bulk-imported and still missing
+  // photos/coordinates), showing everything here would flood the homepage
+  // with unverified placeholder cards. A live search still searches
+  // everything, since that's what a search box implies.
+  const featuredLandmarks = useMemo(() => landmarks.filter((l) => l.featured), [landmarks]);
+  const destinationsToShow = query.trim() ? filtered : featuredLandmarks;
+
+  const spotlightLandmark =
+    featuredLandmarks[spotlight % Math.max(featuredLandmarks.length, 1)];
 
   return (
     <>
@@ -145,13 +158,13 @@ export default function Home() {
               </div>
               <div className="flex shrink-0 items-center gap-3">
                 <span className="hidden text-xs font-semibold text-white/60 sm:inline">
-                  {String((spotlight % landmarks.length) + 1).padStart(2, "0")}/
-                  {String(landmarks.length).padStart(2, "0")}
+                  {String((spotlight % featuredLandmarks.length) + 1).padStart(2, "0")}/
+                  {String(featuredLandmarks.length).padStart(2, "0")}
                 </span>
                 <button
                   aria-label="السابق"
                   onClick={() =>
-                    setSpotlight((s) => (s - 1 + landmarks.length) % Math.max(landmarks.length, 1))
+                    setSpotlight((s) => (s - 1 + featuredLandmarks.length) % Math.max(featuredLandmarks.length, 1))
                   }
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
                 >
@@ -159,7 +172,7 @@ export default function Home() {
                 </button>
                 <button
                   aria-label="التالي"
-                  onClick={() => setSpotlight((s) => (s + 1) % Math.max(landmarks.length, 1))}
+                  onClick={() => setSpotlight((s) => (s + 1) % Math.max(featuredLandmarks.length, 1))}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white hover:bg-white/10"
                 >
                   <ChevronLeft size={16} />
@@ -180,7 +193,7 @@ export default function Home() {
               <ArrowLeft size={14} />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
             {TYPE_TILES.map((category) => {
               const Icon = CATEGORY_ICON[category];
               return (
@@ -210,12 +223,12 @@ export default function Home() {
 
           {loading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ التحميل من Firestore...</p>}
           {error && <p className="text-sm text-red-400">خطأ: {error}</p>}
-          {!loading && !error && filtered.length === 0 && (
+          {!loading && !error && destinationsToShow.length === 0 && (
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>لا توجد نتائج مطابقة.</p>
           )}
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {filtered.map((landmark) => (
+            {destinationsToShow.map((landmark) => (
               <DestinationCard
                 key={landmark.id}
                 landmark={landmark}
