@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Thermometer, MapPin, ArrowLeft } from "lucide-react";
+import { Thermometer, MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { Landmark } from "@/lib/types";
 import { CATEGORY_LABEL, CATEGORY_GRADIENT } from "@/lib/categories";
 import { FavoriteButton } from "./FavoriteButton";
@@ -13,12 +13,17 @@ export function DestinationCard({
   favorited = false,
   signedIn = true,
   onToggleFavorite,
+  aiNote,
 }: {
   landmark: Landmark;
   temp?: number;
   favorited?: boolean;
   signedIn?: boolean;
   onToggleFavorite?: (id: string) => void;
+  // Optional short AI-generated line (e.g. "why this matches your
+  // interests") shown below the summary — only used by the personalized
+  // recommendations feature, absent everywhere else.
+  aiNote?: string;
 }) {
   const image = landmark.image;
 
@@ -73,6 +78,13 @@ export function DestinationCard({
         <p className="mb-3 line-clamp-2 text-sm" style={{ color: "var(--text-muted)" }}>
           {landmark.summary}
         </p>
+
+        {aiNote && (
+          <p className="mb-3 flex items-start gap-1.5 text-xs leading-relaxed" style={{ color: "var(--brand-gold-light)" }}>
+            <Sparkles size={12} className="mt-0.5 shrink-0" />
+            <span>{aiNote}</span>
+          </p>
+        )}
 
         <span
           className="mt-auto inline-flex w-fit items-center gap-1 text-sm font-semibold"
