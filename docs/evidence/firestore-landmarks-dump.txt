@@ -1,118 +1,118 @@
 doc count: 9
 --- asir-mountains ---
 {
-  "facts": "تضم منطقة عسير جبل السودة، أعلى نقطة في السعودية بارتفاع يتجاوز 3000 متر. تشتهر المنطقة بالمدرجات الزراعية الحجرية التي بناها المزارعون على مدى قرون، وبمناخها المعتدل صيفًا.",
-  "city": "أبها",
-  "keyFacts": "Peak: Jebel Sawda | Height: over 3,000 meters (Saudi Arabia's highest point) | Region: Asir, near Abha | Feature: stone agricultural terraces | Climate: mild in summer",
-  "category": "nature",
-  "image": "/landmarks/asir-mountains.png",
   "latitude": 18.2409,
-  "region": "منطقة عسير",
+  "facts": "تضم منطقة عسير جبل السودة، أعلى نقطة في السعودية بارتفاع يتجاوز 3000 متر. تشتهر المنطقة بالمدرجات الزراعية الحجرية التي بناها المزارعون على مدى قرون، وبمناخها المعتدل صيفًا.",
   "summary": "أعلى قمم المملكة، مناخ معتدل ومدرجات زراعية تاريخية.",
+  "longitude": 42.36,
+  "keyFacts": "Peak: Jebel Sawda | Height: over 3,000 meters (Saudi Arabia's highest point) | Region: Asir, near Abha | Feature: stone agricultural terraces | Climate: mild in summer",
   "name": "جبال عسير (السودة)",
-  "longitude": 42.36
+  "city": "أبها",
+  "region": "منطقة عسير",
+  "category": "nature",
+  "image": "/landmarks/asir-mountains.png"
 }
 --- diriyah ---
 {
-  "facts": "تأسست الدرعية عام 1446م وكانت العاصمة الأولى للدولة السعودية الأولى (1727-1818). حي الطريف مبني بالكامل من الطين على الطراز النجدي التقليدي، ويضم قصر سلوى ومسجد الإمام محمد بن سعود. أُدرجت في قائمة التراث العالمي لليونسكو عام 2010.",
-  "city": "الرياض",
-  "keyFacts": "Founded: 1446 CE | Role: first capital of the First Saudi State (1727-1818) | Style: Najdi mud-brick | Includes: Salwa Palace, Imam Muhammad bin Saud Mosque | UNESCO listing: 2010",
-  "category": "heritage",
-  "image": "/landmarks/diriyah.png",
   "latitude": 24.7332,
-  "region": "منطقة الرياض",
+  "facts": "تأسست الدرعية عام 1446م وكانت العاصمة الأولى للدولة السعودية الأولى (1727-1818). حي الطريف مبني بالكامل من الطين على الطراز النجدي التقليدي، ويضم قصر سلوى ومسجد الإمام محمد بن سعود. أُدرجت في قائمة التراث العالمي لليونسكو عام 2010.",
   "summary": "المهد التاريخي للدولة السعودية الأولى، وموقع تراث عالمي لليونسكو.",
+  "longitude": 46.5719,
+  "keyFacts": "Founded: 1446 CE | Role: first capital of the First Saudi State (1727-1818) | Style: Najdi mud-brick | Includes: Salwa Palace, Imam Muhammad bin Saud Mosque | UNESCO listing: 2010",
   "name": "الدرعية (At-Turaif District)",
-  "longitude": 46.5719
+  "city": "الرياض",
+  "region": "منطقة الرياض",
+  "category": "heritage",
+  "image": "/landmarks/diriyah.png"
 }
 --- edge-of-world ---
 {
-  "image": "/landmarks/edge-of-world.png",
-  "region": "منطقة الرياض",
+  "longitude": 46.2989,
   "name": "حافة العالم (Edge of the World)",
-  "facts": "جزء من جبال طويق، ترتفع المنحدرات لأكثر من 300 متر فوق السهل المحيط. تكونت التضاريس نتيجة عوامل التعرية على مدى ملايين السنين، وهي وجهة شهيرة للتنزه والتصوير.",
-  "latitude": 24.9686,
-  "summary": "منحدرات صخرية شاهقة تطل على صحراء شاسعة، من أبرز المعالم الطبيعية قرب الرياض.",
-  "category": "nature",
-  "keyFacts": "Location: Jebel Tuwaiq range, near Riyadh | Cliff height: about 300 meters | Formed by: erosion over millions of years | Activity: hiking, photography",
+  "image": "/landmarks/edge-of-world.png",
   "city": "الرياض",
-  "longitude": 46.2989
+  "summary": "منحدرات صخرية شاهقة تطل على صحراء شاسعة، من أبرز المعالم الطبيعية قرب الرياض.",
+  "latitude": 24.9686,
+  "category": "nature",
+  "region": "منطقة الرياض",
+  "facts": "جزء من جبال طويق، ترتفع المنحدرات لأكثر من 300 متر فوق السهل المحيط. تكونت التضاريس نتيجة عوامل التعرية على مدى ملايين السنين، وهي وجهة شهيرة للتنزه والتصوير.",
+  "keyFacts": "Location: Jebel Tuwaiq range, near Riyadh | Cliff height: about 300 meters | Formed by: erosion over millions of years | Activity: hiking, photography"
 }
 --- faisaliah-tower ---
 {
-  "city": "الرياض",
-  "region": "منطقة الرياض",
-  "latitude": 24.6919,
-  "longitude": 46.6853,
-  "facts": "اكتمل برج الفيصلية عام 2000 بتصميم المعماري البريطاني نورمان فوستر، ويبلغ ارتفاعه نحو 267 مترًا. يشتهر بكرته الزجاجية الذهبية في القمة التي تضم مطعمًا يطل على الرياض، وكان يُعد لفترة أول ناطحة سحاب حقيقية في المملكة العربية السعودية.",
   "category": "urban",
   "keyFacts": "Height: 267 meters | Completed: 2000 | Architect: Norman Foster | Notable feature: golden globe at the top housing a restaurant | Historical note: one of Saudi Arabia's first skyscrapers",
   "image": "/landmarks/faisaliah-tower.png",
+  "region": "منطقة الرياض",
+  "facts": "اكتمل برج الفيصلية عام 2000 بتصميم المعماري البريطاني نورمان فوستر، ويبلغ ارتفاعه نحو 267 مترًا. يشتهر بكرته الزجاجية الذهبية في القمة التي تضم مطعمًا يطل على الرياض، وكان يُعد لفترة أول ناطحة سحاب حقيقية في المملكة العربية السعودية.",
   "summary": "أول ناطحة سحاب حقيقية في السعودية، بقمته الذهبية المميزة.",
+  "longitude": 46.6853,
+  "city": "الرياض",
+  "latitude": 24.6919,
   "name": "برج الفيصلية"
 }
 --- jabal-al-hada ---
 {
-  "region": "منطقة مكة المكرمة",
+  "longitude": 40.3033,
   "latitude": 21.3891,
   "facts": "يقع جبل الهدا على طريق الطائف - مكة المكرمة، ويشتهر بمنحدراته الجبلية الحادة وإطلالاته البانورامية على الوديان المحيطة. يضم التلفريك الشهير الذي يربط قمة الجبل بالوادي أسفله، وتنتشر فيه قرود البابون التي تجذب الزوار، إضافة إلى مناخه المعتدل صيفًا الذي يجعله وجهة مفضلة لأهل الطائف ومكة.",
-  "city": "الطائف",
+  "keyFacts": "Location: Taif-Mecca road | Feature: cable car (teleferique) connecting the summit to the valley | Wildlife: baboons | Climate: mild in summer",
   "image": "/landmarks/jabal-al-hada.png",
-  "longitude": 40.3033,
   "name": "جبل الهدا",
-  "summary": "طريق جبلي متعرج بإطلالات خلابة يربط الطائف بمكة المكرمة عبر سلسلة جبال السروات.",
   "category": "nature",
-  "keyFacts": "Location: Taif-Mecca road | Feature: cable car (teleferique) connecting the summit to the valley | Wildlife: baboons | Climate: mild in summer"
+  "region": "منطقة مكة المكرمة",
+  "city": "الطائف",
+  "summary": "طريق جبلي متعرج بإطلالات خلابة يربط الطائف بمكة المكرمة عبر سلسلة جبال السروات."
 }
 --- jeddah-historic ---
 {
-  "latitude": 21.4858,
-  "region": "منطقة مكة المكرمة",
-  "facts": "كانت جدة التاريخية بوابة الحجاج القادمين عبر البحر الأحمر لقرون. تتميز بالبيوت المبنية من الحجر المرجاني والرواشين الخشبية المزخرفة. أُدرجت في قائمة التراث العالمي لليونسكو عام 2014.",
-  "city": "جدة",
-  "image": "/landmarks/jeddah-historic.png",
   "longitude": 39.1925,
+  "latitude": 21.4858,
+  "facts": "كانت جدة التاريخية بوابة الحجاج القادمين عبر البحر الأحمر لقرون. تتميز بالبيوت المبنية من الحجر المرجاني والرواشين الخشبية المزخرفة. أُدرجت في قائمة التراث العالمي لليونسكو عام 2014.",
+  "keyFacts": "Area: Al-Balad, Jeddah | Historic role: pilgrim gateway via the Red Sea | Architecture: coral-stone houses, wooden roshan balconies | UNESCO listing: 2014",
   "name": "جدة التاريخية (البلد)",
-  "summary": "الحي التاريخي لجدة ببيوته المرجانية الشهيرة والرواشين الخشبية.",
+  "image": "/landmarks/jeddah-historic.png",
+  "city": "جدة",
   "category": "historic-district",
-  "keyFacts": "Area: Al-Balad, Jeddah | Historic role: pilgrim gateway via the Red Sea | Architecture: coral-stone houses, wooden roshan balconies | UNESCO listing: 2014"
+  "region": "منطقة مكة المكرمة",
+  "summary": "الحي التاريخي لجدة ببيوته المرجانية الشهيرة والرواشين الخشبية."
 }
 --- kingdom-tower ---
 {
-  "name": "برج المملكة",
-  "image": "/landmarks/kingdom-tower.png",
-  "keyFacts": "Height: 302 meters | Floors: 99 | Opened: 2002 | Location: Al Olaya district, Riyadh | Notable feature: Sky Bridge connecting the two upper legs",
-  "category": "urban",
   "facts": "افتُتح برج المملكة عام 2002 في حي العليا بالرياض، ويبلغ ارتفاعه نحو 302 مترًا بـ99 طابقًا. يتميز بتصميمه الفريد على شكل قوس مقلوب، ويضم جسر السماء (Sky Bridge) الذي يربط بين طرفيه العلويين ويوفر إطلالة بانورامية على المدينة، إضافة إلى فندق ومركز تسوق ومكاتب.",
-  "longitude": 46.6748,
+  "keyFacts": "Height: 302 meters | Floors: 99 | Opened: 2002 | Location: Al Olaya district, Riyadh | Notable feature: Sky Bridge connecting the two upper legs",
+  "city": "الرياض",
+  "name": "برج المملكة",
+  "category": "urban",
   "latitude": 24.7113,
+  "image": "/landmarks/kingdom-tower.png",
+  "longitude": 46.6748,
   "summary": "أحد أبرز رموز أفق الرياض، ببرجه المميز وجسره العلوي الشهير.",
-  "region": "منطقة الرياض",
-  "city": "الرياض"
+  "region": "منطقة الرياض"
 }
 --- madain-saleh ---
 {
+  "region": "منطقة المدينة المنورة",
+  "longitude": 37.9531,
+  "latitude": 26.7944,
   "image": "/landmarks/madain-saleh.png",
+  "city": "العلا",
   "name": "مدائن صالح (الحِجْر)",
+  "summary": "أول موقع سعودي مسجل في قائمة التراث العالمي لليونسكو، مقابر منحوتة في الصخر.",
   "category": "heritage",
   "keyFacts": "Civilization: Nabataean | Rank: second-largest Nabataean city after Petra | Tombs: over 100 carved rock facades | Era: 1st century CE | UNESCO listing: 2008 (Saudi Arabia's first)",
-  "facts": "الحِجْر هي ثاني أكبر مدينة للأنباط بعد البتراء في الأردن، وتضم أكثر من 100 مقبرة منحوتة في واجهات صخرية ضخمة يعود تاريخها إلى القرن الأول الميلادي. أُدرجت في قائمة اليونسكو عام 2008.",
-  "latitude": 26.7944,
-  "longitude": 37.9531,
-  "region": "منطقة المدينة المنورة",
-  "summary": "أول موقع سعودي مسجل في قائمة التراث العالمي لليونسكو، مقابر منحوتة في الصخر.",
-  "city": "العلا"
+  "facts": "الحِجْر هي ثاني أكبر مدينة للأنباط بعد البتراء في الأردن، وتضم أكثر من 100 مقبرة منحوتة في واجهات صخرية ضخمة يعود تاريخها إلى القرن الأول الميلادي. أُدرجت في قائمة اليونسكو عام 2008."
 }
 --- red-sea ---
 {
-  "region": "منطقة تبوك",
   "facts": "يضم الساحل السعودي على البحر الأحمر شعابًا مرجانية تُعد من الأقل تضررًا عالميًا، وموطنًا لأكثر من 1100 نوع من الأسماك. تشتهر منطقة أملج بمياهها الفيروزية الصافية التي أكسبتها لقب 'مالديف السعودية'، وتحتضن المنطقة مشروع البحر الأحمر السياحي الفاخر والمستدام، إضافة إلى فرص الغطس والرحلات البحرية.",
-  "city": "أملج",
-  "keyFacts": "Location: Umluj coast | Feature: coral reefs, over 1,100 fish species | Nickname: Maldives of Saudi Arabia | Project: Red Sea Global luxury tourism development",
-  "category": "nature",
-  "image": "/landmarks/red-sea.png",
   "latitude": 25.0213,
+  "category": "nature",
   "longitude": 37.2685,
+  "city": "أملج",
   "name": "البحر الأحمر",
+  "region": "منطقة تبوك",
+  "keyFacts": "Location: Umluj coast | Feature: coral reefs, over 1,100 fish species | Nickname: Maldives of Saudi Arabia | Project: Red Sea Global luxury tourism development",
+  "image": "/landmarks/red-sea.png",
   "summary": "شواطئ وشعاب مرجانية نقية على أحد أقل السواحل البحرية اضطرابًا في العالم."
 }
