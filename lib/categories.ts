@@ -1,5 +1,5 @@
 import { Landmark as LandmarkIcon, Mountain, Waves, Building2, Palette, Pickaxe } from "lucide-react";
-import { LandmarkCategory } from "./types";
+import { LandmarkCategory, LandmarkTag } from "./types";
 
 export const FILTER_LABELS: Record<LandmarkCategory, string> = {
   historical: "تاريخي",
@@ -40,3 +40,10 @@ export const CATEGORY_GRADIENT: Record<LandmarkCategory, string> = {
 // Kept as an alias so existing imports of `FilterCategory` keep working —
 // it's now exactly the data category, not a coarser grouping of it.
 export type FilterCategory = LandmarkCategory;
+
+// Display labels for optional landmark tags (see LandmarkTag) — used only
+// for a small badge on cards/detail pages and for search, never rendered
+// as an Explore filter option.
+export const TAG_LABELS: Record<LandmarkTag, { ar: string; en: string; emoji: string }> = {
+  religious: { ar: "ديني", en: "Religious", emoji: "🕌" },
+};

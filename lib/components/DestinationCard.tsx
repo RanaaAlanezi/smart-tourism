@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Thermometer, MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { Landmark } from "@/lib/types";
-import { CATEGORY_LABEL, CATEGORY_GRADIENT } from "@/lib/categories";
+import { CATEGORY_LABEL, CATEGORY_GRADIENT, TAG_LABELS } from "@/lib/categories";
 import { FavoriteButton } from "./FavoriteButton";
 
 export function DestinationCard({
@@ -64,8 +64,15 @@ export function DestinationCard({
             {Math.round(temp)}°
           </span>
         )}
-        <span className="relative rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
-          {CATEGORY_LABEL[landmark.category]}
+        <span className="relative flex flex-wrap gap-1.5">
+          <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
+            {CATEGORY_LABEL[landmark.category]}
+          </span>
+          {landmark.tags?.includes("religious") && (
+            <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
+              {TAG_LABELS.religious.emoji} {TAG_LABELS.religious.ar}
+            </span>
+          )}
         </span>
       </div>
 

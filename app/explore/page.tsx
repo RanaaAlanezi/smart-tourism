@@ -8,7 +8,7 @@ import { DestinationCard } from "@/lib/components/DestinationCard";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { getCityTemperature } from "@/lib/weather";
-import { FilterCategory, FILTER_LABELS } from "@/lib/categories";
+import { FilterCategory, FILTER_LABELS, TAG_LABELS } from "@/lib/categories";
 import { useFavorites } from "@/lib/favorites";
 
 function ExplorePageInner() {
@@ -48,12 +48,16 @@ function ExplorePageInner() {
   const filtered = useMemo(() => {
     const q = query.trim();
     return landmarks.filter((l) => {
+      const matchesTag = l.tags?.some(
+        (t) => TAG_LABELS[t].ar.includes(q) || TAG_LABELS[t].en.toLowerCase().includes(q.toLowerCase())
+      );
       const matchesQuery =
         !q ||
         l.name?.includes(q) ||
         l.nameEn?.toLowerCase().includes(q.toLowerCase()) ||
         l.city?.includes(q) ||
-        l.summary?.includes(q);
+        l.summary?.includes(q) ||
+        matchesTag;
       const matchesCategory = category === "all" || l.category === category;
       const matchesCity = city === "all" || l.city === city;
       return matchesQuery && matchesCategory && matchesCity;

@@ -28,3 +28,21 @@ body {
   color: var(--foreground);
   font-family: var(--font-cairo), "Segoe UI", Tahoma, sans-serif;
 }
+
+/* Subtle step-change transition for the "Discover Your Destination"
+   journey — no animation library installed, so this is a small real
+   utility rather than referencing plugin classes that don't exist here. */
+@keyframes step-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-fade-in {
+  animation: step-fade-in 0.25s ease-out;
+}

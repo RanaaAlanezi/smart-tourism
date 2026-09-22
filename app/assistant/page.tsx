@@ -4,11 +4,8 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Send, Sparkles } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
-import { DestinationCard } from "@/lib/components/DestinationCard";
-import { AgeGroup, Landmark, LandmarkCategory } from "@/lib/types";
-import { FILTER_LABELS } from "@/lib/categories";
-
-type RecommendedLandmark = Landmark & { explanation: string; aiFailed?: boolean };
+import { DiscoverJourney } from "@/lib/components/DiscoverJourney";
+import { AgeGroup } from "@/lib/types";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
   { value: "child", label: "👧 طفل" },
@@ -39,45 +36,6 @@ function AssistantPageInner() {
   const autoSentRef = useRef(false);
 
   const [mode, setMode] = useState<"chat" | "recommend">("chat");
-  const [interests, setInterests] = useState<Set<LandmarkCategory>>(new Set());
-  const [recLoading, setRecLoading] = useState(false);
-  const [recError, setRecError] = useState<string | null>(null);
-  const [recommendations, setRecommendations] = useState<RecommendedLandmark[] | null>(null);
-  const [recSubmitted, setRecSubmitted] = useState(false);
-
-  function toggleInterest(category: LandmarkCategory) {
-    setInterests((prev) => {
-      const next = new Set(prev);
-      if (next.has(category)) next.delete(category);
-      else next.add(category);
-      return next;
-    });
-  }
-
-  async function handleRecommend() {
-    if (interests.size === 0) {
-      setRecError("اختر اهتماماً واحداً على الأقل عشان نقدر نرشح لك معالم.");
-      return;
-    }
-    setRecLoading(true);
-    setRecError(null);
-    setRecSubmitted(true);
-    try {
-      const res = await fetch("/api/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ interests: Array.from(interests) }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "unknown error");
-      setRecommendations(data.recommendations);
-    } catch (err) {
-      setRecError("تعذر إعداد التوصيات حالياً. حاول مرة أخرى بعد قليل.");
-      console.error(err);
-    } finally {
-      setRecLoading(false);
-    }
-  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -138,7 +96,7 @@ function AssistantPageInner() {
             </div>
           )}
 
-          {/* mode switcher — chat vs. personalized recommendations */}
+          {/* mode switcher — chat vs. the "Discover Your Destination" journey */}
           <div className="mt-4 flex items-center justify-center gap-2">
             <button
               onClick={() => setMode("chat")}
@@ -161,62 +119,11 @@ function AssistantPageInner() {
               }
             >
               <Sparkles size={14} />
-              توصيات مخصصة
+              اكتشف وجهتك
             </button>
           </div>
 
-          {mode === "recommend" && (
-            <div className="mt-6">
-              <h2 className="text-center text-lg font-bold">وش يهمك؟</h2>
-              <p className="mt-1 text-center text-sm" style={{ color: "var(--text-muted)" }}>
-                اختر اهتماماتك السياحية وبنرشح لك أنسب المعالم من قاعدة البيانات.
-              </p>
-
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {(Object.keys(FILTER_LABELS) as LandmarkCategory[]).map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => toggleInterest(c)}
-                    className="rounded-full border px-4 py-1.5 text-sm font-semibold"
-                    style={
-                      interests.has(c)
-                        ? { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" }
-                        : { borderColor: "var(--brand-line)" }
-                    }
-                  >
-                    {FILTER_LABELS[c]}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-5 flex justify-center">
-                <button
-                  onClick={handleRecommend}
-                  disabled={recLoading}
-                  className="rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-50"
-                  style={{ background: "var(--brand-gold)", color: "var(--brand-green-dark)" }}
-                >
-                  {recLoading ? "جارٍ إعداد التوصيات..." : "أوصِ لي"}
-                </button>
-              </div>
-
-              {recError && <p className="mt-4 text-center text-sm text-red-400">{recError}</p>}
-
-              {recSubmitted && !recLoading && !recError && recommendations?.length === 0 && (
-                <p className="mt-6 text-center text-sm" style={{ color: "var(--text-muted)" }}>
-                  لا توجد معالم تطابق الاهتمامات المختارة حالياً.
-                </p>
-              )}
-
-              {recommendations && recommendations.length > 0 && (
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {recommendations.map((r) => (
-                    <DestinationCard key={r.id} landmark={r} aiNote={r.explanation} />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          {mode === "recommend" && <DiscoverJourney />}
 
           {/* age selector */}
           {mode === "chat" && (

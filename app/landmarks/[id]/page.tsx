@@ -11,7 +11,7 @@ import { getLandmark } from "@/lib/landmarks";
 import { AgeGroup, Landmark } from "@/lib/types";
 import { Navbar } from "@/lib/components/Navbar";
 import { FavoriteButton } from "@/lib/components/FavoriteButton";
-import { CATEGORY_LABEL } from "@/lib/categories";
+import { CATEGORY_LABEL, TAG_LABELS } from "@/lib/categories";
 import { useFavorites } from "@/lib/favorites";
 
 const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
@@ -165,6 +165,7 @@ export default function LandmarkPage({
               <h1 className="text-2xl font-bold text-white md:text-3xl">{landmark.name}</h1>
               <p className="text-white/80">
                 {landmark.city} · {CATEGORY_LABEL[landmark.category]}
+                {landmark.tags?.includes("religious") && ` · ${TAG_LABELS.religious.emoji} ${TAG_LABELS.religious.ar}`}
               </p>
             </div>
             {actionButtons}
@@ -178,6 +179,7 @@ export default function LandmarkPage({
             <h1 className="text-2xl font-semibold mb-1">{landmark.name}</h1>
             <p style={{ color: "var(--text-muted)" }}>
               {landmark.city} · {CATEGORY_LABEL[landmark.category]}
+              {landmark.tags?.includes("religious") && ` · ${TAG_LABELS.religious.emoji} ${TAG_LABELS.religious.ar}`}
             </p>
           </div>
           {actionButtons}

@@ -5,6 +5,14 @@ export type AgeGroup = "child" | "teen" | "adult";
 // layer, since this set is already the right granularity for both.
 export type LandmarkCategory = "historical" | "archaeological" | "natural" | "beaches" | "urban" | "cultural";
 
+// Internal metadata tags — separate from `category` on purpose. A tag adds
+// a matching signal (search, personalized recommendations, a small badge
+// on the detail page) without introducing another main Explore filter.
+// "religious" marks landmarks that are themselves places of worship or
+// explicitly religious sites (e.g. a historic mosque) — it never replaces
+// or overrides the landmark's main category.
+export type LandmarkTag = "religious";
+
 export interface Landmark {
   id: string;
   name: string;
@@ -33,6 +41,9 @@ export interface Landmark {
   // Curated flag for the homepage's "أشهر الوجهات" section — Explore
   // shows every landmark regardless of this flag.
   featured?: boolean;
+  // Optional metadata tags (see LandmarkTag) — additive signals for
+  // search/recommendations/detail-page badges, not a second category.
+  tags?: LandmarkTag[];
 }
 
 export interface Interaction {
