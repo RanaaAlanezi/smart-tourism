@@ -1,6 +1,6 @@
 "use client";
 
-import { MAP_VIEW, project, SAUDI_BORDER, smoothClosedPath } from "@/lib/landmark-coords";
+import { MAP_VIEW, project, SAUDI_BORDER, smoothClosedPath, declutterPoints } from "@/lib/landmark-coords";
 import { Landmark } from "@/lib/types";
 
 const BORDER_PATH = smoothClosedPath(SAUDI_BORDER.map(([lon, lat]) => project(lat, lon)));
@@ -19,6 +19,15 @@ export function SaudiMap({
   onSelect?: (landmark: Landmark) => void;
   interactive?: boolean;
 }) {
+  // Only landmarks with real, verified coordinates ever get a marker — see
+  // the SaudiMap doc comment on declutterPoints for why their positions are
+  // nudged apart when two real landmarks project to nearly the same pixel.
+  const validLandmarks = landmarks.filter((l) => l.latitude != null && l.longitude != null);
+  const positions = declutterPoints(
+    validLandmarks.map((l) => ({ id: l.id, ...project(l.latitude as number, l.longitude as number) }))
+  );
+  const positionById = new Map(positions.map((p) => [p.id, p]));
+
   return (
     <svg viewBox={`0 0 ${MAP_VIEW.width} ${MAP_VIEW.height}`} className="h-full w-full">
       <defs>
@@ -29,7 +38,7 @@ export function SaudiMap({
           <stop offset="0%" stopColor="#1D5B44" />
           <stop offset="100%" stopColor="#0E3F30" />
         </linearGradient>
-        {landmarks.map(
+        {validLandmarks.map(
           (l) =>
             l.image && (
               <clipPath key={l.id} id={`pin-clip-${l.id}`}>
@@ -77,9 +86,8 @@ export function SaudiMap({
         الخليج العربي
       </text>
 
-      {landmarks.map((l) => {
-        if (l.latitude == null || l.longitude == null) return null;
-        const { x, y } = project(l.latitude, l.longitude);
+      {validLandmarks.map((l) => {
+        const { x, y } = positionById.get(l.id)!;
         const isSelected = selectedId === l.id;
         return (
           <g

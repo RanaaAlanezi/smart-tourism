@@ -7,7 +7,8 @@ import { Pencil, Trash2, Plus, ExternalLink } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
 import { AdminGate } from "@/lib/components/AdminGate";
 import { db } from "@/lib/firebase";
-import { uploadLandmarkImage } from "@/lib/storage";
+import { uploadLandmarkImage, describeUploadError } from "@/lib/storage";
+import { BulkImageUpload } from "@/lib/components/BulkImageUpload";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { CATEGORY_LABEL } from "@/lib/categories";
@@ -112,6 +113,10 @@ function AdminLandmarks() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // Guards against a duplicate submit (e.g. a second Enter keypress while
+    // the first save is still in flight) firing a second, overlapping
+    // upload+write.
+    if (saving) return;
     setError(null);
     setNotice(null);
 
@@ -132,12 +137,23 @@ function AdminLandmarks() {
     }
 
     setSaving(true);
-    try {
-      let image = existingImage;
-      if (imageFile) {
+    // Uploading is isolated from the Firestore write below on purpose: a
+    // failed/slow image upload must never block saving the rest of the
+    // form (name, city, coordinates, ...). If it fails, we fall back to
+    // keeping the existing image and still save everything else, then
+    // report the image failure separately rather than losing the whole
+    // save.
+    let image = existingImage;
+    let imageErrorMessage: string | null = null;
+    if (imageFile) {
+      try {
         image = await uploadLandmarkImage(imageFile, id);
+      } catch (err) {
+        imageErrorMessage = describeUploadError(err);
       }
+    }
 
+    try {
       await setDoc(
         doc(db, "landmarks", id),
         {
@@ -157,9 +173,15 @@ function AdminLandmarks() {
 
       await refresh();
       if (!isEditing) resetFormFields();
-      setNotice(isEditing ? "تم تحديث المعلم." : "تم إضافة المعلم.");
+      if (imageErrorMessage) {
+        setError(imageErrorMessage);
+        setNotice("تم حفظ بيانات المعلم، لكن تعذر رفع الصورة الجديدة.");
+      } else {
+        setNotice("تم حفظ المعلم بنجاح");
+      }
     } catch (err) {
-      setError(String(err));
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`تعذر حفظ بيانات المعلم: ${message}`);
     } finally {
       setSaving(false);
     }
@@ -376,6 +398,8 @@ function AdminLandmarks() {
               {saving ? "جارٍ الحفظ..." : isEditing ? "حفظ التعديلات" : "إضافة المعلم"}
             </button>
           </form>
+
+          <BulkImageUpload landmarks={landmarks} landmarksLoading={loading} onUploaded={refresh} />
 
           {/* list */}
           <div className="mb-4 flex items-center justify-between">

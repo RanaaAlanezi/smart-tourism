@@ -10,6 +10,68 @@ export function project(lat: number, lon: number) {
   return { x, y };
 }
 
+// Markers are drawn with a ~15-17 unit radius. Two real landmarks that are
+// only a couple of km apart in reality (e.g. Kingdom Tower and Al Faisaliah
+// Tower, both in central Riyadh) can project to nearly the same pixel on
+// this small illustrative map, so one fully covers the other and becomes
+// unclickable — found by computing actual pairwise pixel distances between
+// every valid landmark: faisaliah-tower/kingdom-tower were 0.68px apart,
+// diriyah 3px from both. This never touches the underlying lat/lon data —
+// it only nudges apart markers that would otherwise visually collide,
+// arranging each such cluster in a small circle around its true average
+// position so every landmark stays visible and clickable.
+const MIN_MARKER_SEPARATION = 22;
+
+export function declutterPoints<T extends { x: number; y: number }>(
+  points: T[],
+  minSeparation = MIN_MARKER_SEPARATION
+): T[] {
+  const n = points.length;
+  const parent = Array.from({ length: n }, (_, i) => i);
+  function find(i: number): number {
+    while (parent[i] !== i) {
+      parent[i] = parent[parent[i]];
+      i = parent[i];
+    }
+    return i;
+  }
+  function union(i: number, j: number) {
+    const ri = find(i);
+    const rj = find(j);
+    if (ri !== rj) parent[ri] = rj;
+  }
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      const dx = points[i].x - points[j].x;
+      const dy = points[i].y - points[j].y;
+      if (Math.hypot(dx, dy) < minSeparation) union(i, j);
+    }
+  }
+
+  const groups = new Map<number, number[]>();
+  for (let i = 0; i < n; i++) {
+    const root = find(i);
+    if (!groups.has(root)) groups.set(root, []);
+    groups.get(root)!.push(i);
+  }
+
+  const result = points.map((p) => ({ ...p }));
+  for (const group of groups.values()) {
+    if (group.length <= 1) continue;
+    const cx = group.reduce((sum, i) => sum + points[i].x, 0) / group.length;
+    const cy = group.reduce((sum, i) => sum + points[i].y, 0) / group.length;
+    const spreadRadius = Math.max(minSeparation * 0.55, minSeparation * 0.32 * group.length);
+    group.forEach((i, idx) => {
+      const angle = (2 * Math.PI * idx) / group.length - Math.PI / 2;
+      result[i].x = cx + spreadRadius * Math.cos(angle);
+      result[i].y = cy + spreadRadius * Math.sin(angle);
+    });
+  }
+
+  return result;
+}
+
 // A hand-approximated outline of Saudi Arabia's borders (illustrative, not
 // survey-accurate) — [longitude, latitude] pairs walked clockwise from the
 // Gulf of Aqaba, smoothed into a soft blob rather than sharp polygon edges.
