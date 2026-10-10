@@ -1,0 +1,362 @@
+[
+  {
+    "id": "al-dosariyah-castle",
+    "lat": 16.88794,
+    "lon": 42.54551,
+    "source": "OpenStreetMap Nominatim: Al-Dosariyah Castle, King Abdulaziz St"
+  },
+  {
+    "id": "al-jum-ah-mosque",
+    "lat": 24.44556,
+    "lon": 39.61557,
+    "source": "OpenStreetMap Nominatim: Al Jum'a Mosque, Al Imam Ahmed Bin Hanbal Street"
+  },
+  {
+    "id": "al-marjan-island",
+    "lat": 26.48325,
+    "lon": 50.10493,
+    "source": "OpenStreetMap Nominatim: جزيرة المرجان, King Abdullah Road"
+  },
+  {
+    "id": "al-muftaha-village",
+    "lat": 18.21314,
+    "lon": 42.49556,
+    "source": "OpenStreetMap Nominatim: Al Muftaha Art Village, طريق الملك خالد"
+  },
+  {
+    "id": "al-qarah-mountain",
+    "lat": 25.4098,
+    "lon": 49.68788,
+    "source": "OpenStreetMap Nominatim: Al Qarah Mountain, Al-Hofuf"
+  },
+  {
+    "id": "al-tan-im-mosque",
+    "lat": 21.46761,
+    "lon": 39.80191,
+    "source": "OpenStreetMap Nominatim: Ayesha Mosque 350, Al Madinah Al Munawarah Road"
+  },
+  {
+    "id": "al-ukhdud-archaeological-site",
+    "lat": 17.48094,
+    "lon": 44.17753,
+    "source": "OpenStreetMap Nominatim: Al Ukhdud Archaeological Site entrance, Al Jurba Street"
+  },
+  {
+    "id": "al-zal-market",
+    "lat": 24.62897,
+    "lon": 46.71224,
+    "source": "OpenStreetMap Nominatim: Suq az Zall, Mohammed Bin Tulon"
+  },
+  {
+    "id": "boulevard-city",
+    "lat": 24.76842,
+    "lon": 46.60447,
+    "source": "OpenStreetMap Nominatim: Boulevard Riyadh City, Fountain St"
+  },
+  {
+    "id": "buraidah-museum",
+    "lat": 26.35025,
+    "lon": 43.95761,
+    "source": "OpenStreetMap Nominatim: Buraidah Museum, طريق الملك سلمان الفرعي"
+  },
+  {
+    "id": "buraidah-tower",
+    "lat": 26.3535,
+    "lon": 43.95589,
+    "source": "OpenStreetMap Nominatim: Buraida Tower, King Abdulaziz Road"
+  },
+  {
+    "id": "dadan",
+    "lat": 26.64668,
+    "lon": 37.91515,
+    "source": "OpenStreetMap Nominatim: Dadan visitor path, Al Ula"
+  },
+  {
+    "id": "dumat-al-jandal-lake",
+    "lat": 29.8165,
+    "lon": 39.90918,
+    "source": "OpenStreetMap Nominatim: Dawmat al Jandal Lake, Dawamat Al Jandal"
+  },
+  {
+    "id": "elephant-rock",
+    "lat": 26.68911,
+    "lon": 37.98159,
+    "source": "OpenStreetMap Nominatim: Elephant ROCK, ردمية جبل الفيل"
+  },
+  {
+    "id": "fakieh-aquarium",
+    "lat": 21.57229,
+    "lon": 39.10937,
+    "source": "OpenStreetMap Nominatim: Fakieh Aquarium, North Kurnaysh Road"
+  },
+  {
+    "id": "farasan-islands",
+    "lat": 16.76717,
+    "lon": 41.94563,
+    "source": "OpenStreetMap Nominatim: Farasan Islands, Saudi Arabia"
+  },
+  {
+    "id": "hira-cave",
+    "lat": 21.45737,
+    "lon": 39.8592,
+    "source": "OpenStreetMap Nominatim: Cave of Hira, Path to the Cave of Hira"
+  },
+  {
+    "id": "ibrahim-palace",
+    "lat": 25.37888,
+    "lon": 49.58676,
+    "source": "OpenStreetMap Nominatim: Ibrahim's Palace, شارع أبو ريالين"
+  },
+  {
+    "id": "jabal-al-nour",
+    "lat": 21.45778,
+    "lon": 39.85973,
+    "source": "OpenStreetMap Nominatim: Jabal an Nur, Makkah Al Mukarramah"
+  },
+  {
+    "id": "jabal-ikmah",
+    "lat": 26.68547,
+    "lon": 37.90289,
+    "source": "OpenStreetMap Nominatim: Jabal Ikmah, 375"
+  },
+  {
+    "id": "jabal-thawr",
+    "lat": 21.377,
+    "lon": 39.84987,
+    "source": "OpenStreetMap Nominatim: Jabal Thawr, Makkah Al Mukarramah"
+  },
+  {
+    "id": "khobar-corniche",
+    "lat": 26.29425,
+    "lon": 50.22501,
+    "source": "OpenStreetMap Nominatim: Khobar Corniche Seawalk, Al Khobar"
+  },
+  {
+    "id": "king-abdulaziz-center-for-world-culture-ithra",
+    "lat": 26.33541,
+    "lon": 50.12058,
+    "source": "OpenStreetMap Nominatim: King Abdulaziz Center for World Culture (Ithra), Dallah Road"
+  },
+  {
+    "id": "king-abdulaziz-historical-center",
+    "lat": 24.64716,
+    "lon": 46.70987,
+    "source": "OpenStreetMap Nominatim: King Abdulaziz Historical Center Park, Al Futah"
+  },
+  {
+    "id": "king-abdullah-financial-district",
+    "lat": 24.7657,
+    "lon": 46.64071,
+    "source": "OpenStreetMap Nominatim: KAFD, Municipality of Al Shamal"
+  },
+  {
+    "id": "king-abdullah-park",
+    "lat": 24.66656,
+    "lon": 46.73696,
+    "source": "OpenStreetMap Nominatim: King Abdullah Park, Al Malaz District"
+  },
+  {
+    "id": "king-fahd-s-fountain",
+    "lat": 21.51566,
+    "lon": 39.14505,
+    "source": "OpenStreetMap Nominatim: King Fahd's Fountain, al Corniche Road"
+  },
+  {
+    "id": "king-salman-park",
+    "lat": 24.72194,
+    "lon": 46.71731,
+    "source": "OpenStreetMap Nominatim: حديقة الملك سلمان, Riyadh"
+  },
+  {
+    "id": "makkah-gate",
+    "lat": 21.48526,
+    "lon": 39.1927,
+    "source": "OpenStreetMap Nominatim: Bab Mekka, Khalid Bin Al Walid Street"
+  },
+  {
+    "id": "marid-castle",
+    "lat": 29.81112,
+    "lon": 39.86699,
+    "source": "OpenStreetMap Nominatim: Marid Castle, طريق الملك سعود"
+  },
+  {
+    "id": "masjid-al-haram",
+    "lat": 21.42456,
+    "lon": 39.82487,
+    "source": "OpenStreetMap Nominatim: Great Mosque of Mecca, First Ring Road"
+  },
+  {
+    "id": "mount-uhud",
+    "lat": 24.52229,
+    "lon": 39.61704,
+    "source": "OpenStreetMap Nominatim: Jabal Uhud, Al Madinah Al Munawwarah"
+  },
+  {
+    "id": "murabba-palace",
+    "lat": 24.64646,
+    "lon": 46.70915,
+    "source": "OpenStreetMap Nominatim: Murraba Palace, Al Nasseriya"
+  },
+  {
+    "id": "naseef-house",
+    "lat": 21.48396,
+    "lon": 39.18767,
+    "source": "OpenStreetMap Nominatim: Biet Nassif, Souk Al Alawi"
+  },
+  {
+    "id": "national-museum-of-saudi-arabia",
+    "lat": 24.64714,
+    "lon": 46.7107,
+    "source": "OpenStreetMap Nominatim: National Museum of Saudi Arabia, Al Nasseriya"
+  },
+  {
+    "id": "prophet-s-mosque",
+    "lat": 24.46868,
+    "lon": 39.61116,
+    "source": "OpenStreetMap Nominatim: Prophet's Mosque, Kind Fahd Road"
+  },
+  {
+    "id": "qiblatain-mosque",
+    "lat": 24.48416,
+    "lon": 39.57886,
+    "source": "OpenStreetMap Nominatim: Mosque Al-Qiblatayn - Mosque of the Two Qiblas, خالد بن الوليد"
+  },
+  {
+    "id": "quba-mosque",
+    "lat": 24.43942,
+    "lon": 39.61746,
+    "source": "OpenStreetMap Nominatim: Quba Mosque, Quba Road"
+  },
+  {
+    "id": "raghadan-forest",
+    "lat": 20.02298,
+    "lon": 41.43581,
+    "source": "OpenStreetMap Nominatim: Raghdan park, Al Bahah"
+  },
+  {
+    "id": "rajajil-columns",
+    "lat": 29.81287,
+    "lon": 40.21967,
+    "source": "OpenStreetMap Nominatim: Rajajil standing stones, طريق خوعاء"
+  },
+  {
+    "id": "rijal-almaa-heritage-village",
+    "lat": 18.21246,
+    "lon": 42.27342,
+    "source": "OpenStreetMap Nominatim: Rijal Almaa Heritage Village, 211"
+  },
+  {
+    "id": "saqifah-bani-sa-idah",
+    "lat": 24.47026,
+    "lon": 39.60679,
+    "source": "OpenStreetMap Nominatim: Sokaifat Bani Saedah, Medina"
+  },
+  {
+    "id": "shada-palace",
+    "lat": 18.21659,
+    "lon": 42.501,
+    "source": "OpenStreetMap Nominatim: Shada Archaeological Palace, طريق الملك خالد"
+  },
+  {
+    "id": "souq-okaz",
+    "lat": 21.46836,
+    "lon": 40.64428,
+    "source": "OpenStreetMap Nominatim: Souk Okaz, Suq Ukadh"
+  },
+  {
+    "id": "tabuk-castle",
+    "lat": 28.38277,
+    "lon": 36.55665,
+    "source": "OpenStreetMap Nominatim: Tabuk castle, طريق الملك عبد العزيز"
+  },
+  {
+    "id": "thawr-cave",
+    "lat": 21.37712,
+    "lon": 39.84982,
+    "source": "OpenStreetMap Nominatim: Thawr cave, Third Ring Road"
+  },
+  {
+    "id": "wadi-hanifah",
+    "lat": 24.67169,
+    "lon": 46.61032,
+    "source": "OpenStreetMap Nominatim: وادي حنيفة, Hayy as Sifarat (Embassy Quarter)"
+  },
+  {
+    "id": "za-abal-castle",
+    "lat": 29.9931,
+    "lon": 40.2019,
+    "source": "OpenStreetMap Nominatim: Zabal Castle, طريق الملك خالد - الحزام"
+  },
+  {
+    "id": "diriyah-gate",
+    "lat": 24.7227,
+    "lon": 46.57964,
+    "source": "OpenStreetMap Nominatim: بوابة الدرعية (project site)"
+  },
+  {
+    "id": "shubra-palace",
+    "lat": 21.2859,
+    "lon": 40.41508,
+    "source": "OpenStreetMap Nominatim: Shubra Palace (museum)"
+  },
+  {
+    "id": "yanbu-sharm",
+    "lat": 24.14829,
+    "lon": 37.93297,
+    "source": "OpenStreetMap Nominatim: Sharm Yanbu (bay)"
+  },
+  {
+    "id": "al-shafa",
+    "lat": 21.06944,
+    "lon": 40.31194,
+    "source": "OpenStreetMap Nominatim: Ash Shafa (town)"
+  },
+  {
+    "id": "aja-and-salma-mountains",
+    "lat": 27.50427,
+    "lon": 41.55708,
+    "source": "OpenStreetMap Nominatim: جبال أجا, Hail"
+  },
+  {
+    "id": "alula-oasis",
+    "lat": 26.62696,
+    "lon": 37.91683,
+    "source": "OpenStreetMap Nominatim: AlUla oasis heritage trail"
+  },
+  {
+    "id": "alula-old-town",
+    "lat": 26.62558,
+    "lon": 37.91479,
+    "source": "OpenStreetMap Nominatim: Al Ula Old town"
+  },
+  {
+    "id": "farasan-island-beach",
+    "lat": 16.73793,
+    "lon": 41.90798,
+    "source": "OpenStreetMap Nominatim: Farasan Island (island centre, not a specific beach)"
+  },
+  {
+    "id": "jubbah-rock-art",
+    "lat": 28.01685,
+    "lon": 40.95299,
+    "source": "OpenStreetMap Nominatim: Jubbah (town centre, approximate)"
+  },
+  {
+    "id": "masmak-fortress",
+    "lat": 24.63125,
+    "lon": 46.71333,
+    "source": "OpenStreetMap Nominatim: Al Masmak Palace"
+  },
+  {
+    "id": "thee-ain-heritage-village",
+    "lat": 19.93062,
+    "lon": 41.4428,
+    "source": "OpenStreetMap Nominatim: Thee Ain village"
+  },
+  {
+    "id": "umar-ibn-al-khattab-mosque",
+    "lat": 29.81193,
+    "lon": 39.86746,
+    "source": "OpenStreetMap Nominatim: مسجد عمر بن الخطاب, Dumat Al-Jandal"
+  }
+]
