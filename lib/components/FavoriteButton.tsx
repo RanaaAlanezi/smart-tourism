@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Heart } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 
 export function FavoriteButton({
   active,
@@ -14,6 +15,7 @@ export function FavoriteButton({
   signedIn?: boolean;
   size?: number;
 }) {
+  const { t } = useLang();
   const [showNotice, setShowNotice] = useState(false);
 
   return (
@@ -29,7 +31,7 @@ export function FavoriteButton({
           }
           onToggle();
         }}
-        aria-label={active ? "إزالة من المحفوظات" : "حفظ في المحفوظات"}
+        aria-label={active ? t("إزالة من المحفوظات", "Remove from saved") : t("حفظ في المحفوظات", "Save")}
         aria-pressed={active}
         className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm transition hover:scale-105"
       >
@@ -41,7 +43,7 @@ export function FavoriteButton({
           className="absolute left-1/2 top-full z-10 mt-2 w-max -translate-x-1/2 rounded-lg px-3 py-1.5 text-xs font-medium text-white shadow-lg"
           style={{ background: "var(--brand-green-dark)" }}
         >
-          سجّلي الدخول لحفظ هذا المعلم
+          {t("سجّلي الدخول لحفظ هذا المعلم", "Sign in to save this landmark")}
         </div>
       )}
     </div>

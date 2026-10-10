@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AgeGroup } from "@/lib/types";
+import { AgeGroup, Lang } from "@/lib/types";
 import { askQwen } from "@/lib/services/aiService";
 
 // Instructions are written in English on purpose: the local quantized Qwen
@@ -7,11 +7,16 @@ import { askQwen } from "@/lib/services/aiService";
 // while still producing fluent Arabic output when explicitly told to.
 const AGE_PROMPTS: Record<AgeGroup, string> = {
   child:
-    "Write a short, fun explanation of this landmark for a 6-9 year old child, in 3-4 very simple sentences. No complex dates or difficult terms. Respond entirely in Modern Standard Arabic (فصحى).",
+    "Write a short, fun explanation of this landmark for a 6-9 year old child, in 3-4 very simple sentences. No complex dates or difficult terms.",
   teen:
-    "Write an engaging explanation of this landmark for a 13-17 year old teenager, connecting it to interesting stories or facts, with some simplified historical detail. One short paragraph (5-6 sentences). Respond entirely in Modern Standard Arabic (فصحى).",
+    "Write an engaging explanation of this landmark for a 13-17 year old teenager, connecting it to interesting stories or facts, with some simplified historical detail. One short paragraph (5-6 sentences).",
   adult:
-    "Write a precise, informative explanation of this landmark for an adult interested in culture and history, including historical context and cultural significance, in a formal register. Up to two paragraphs. Respond entirely in Modern Standard Arabic (فصحى).",
+    "Write a precise, informative explanation of this landmark for an adult interested in culture and history, including historical context and cultural significance, in a formal register. Up to two paragraphs.",
+};
+
+const LANGUAGE_RULE: Record<Lang, string> = {
+  ar: "Respond entirely in Modern Standard Arabic (فصحى).",
+  en: "Respond entirely in English.",
 };
 
 export async function POST(req: NextRequest) {
@@ -22,6 +27,7 @@ export async function POST(req: NextRequest) {
     keyFacts?: string;
     ageGroup: AgeGroup;
   };
+  const lang: Lang = body.lang === "en" ? "en" : "ar";
 
   if (!landmarkName || !facts || !ageGroup || !AGE_PROMPTS[ageGroup]) {
     return NextResponse.json(
@@ -42,7 +48,7 @@ export async function POST(req: NextRequest) {
         {
           role: "user",
           content:
-            `Landmark: ${landmarkName}. ${factsBlock}\n\n${AGE_PROMPTS[ageGroup]} ` +
+            `Landmark: ${landmarkName}. ${factsBlock}\n\n${AGE_PROMPTS[ageGroup]} ${LANGUAGE_RULE[lang]} ` +
             `Only use the facts given above — do not add names, dates, or other facts that aren't there. ` +
             `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") unless that exact claim is written in the facts above.`,
         },

@@ -8,13 +8,18 @@ import { DestinationCard } from "@/lib/components/DestinationCard";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { getCityTemperature } from "@/lib/weather";
-import { FilterCategory, FILTER_LABELS, TAG_LABELS } from "@/lib/categories";
+import { FilterCategory, FILTER_LABELS, filterLabel, TAG_LABELS } from "@/lib/categories";
+import { useLang } from "@/lib/i18n";
+import { localizeLandmarks } from "@/lib/landmark-i18n";
 import { useFavorites } from "@/lib/favorites";
 
 function ExplorePageInner() {
   const searchParams = useSearchParams();
 
-  const [landmarks, setLandmarks] = useState<Landmark[]>([]);
+  const { lang, t } = useLang();
+  // Stored as fetched (Arabic); shown in the visitor's language.
+  const [fetched, setLandmarks] = useState<Landmark[]>([]);
+  const landmarks = useMemo(() => localizeLandmarks(fetched, lang), [fetched, lang]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [temps, setTemps] = useState<Record<string, number>>({});
@@ -69,9 +74,9 @@ function ExplorePageInner() {
       <Navbar />
       <main className="flex-1 w-full" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-          <h1 className="text-2xl font-extrabold md:text-3xl">استكشف السعودية</h1>
+          <h1 className="text-2xl font-extrabold md:text-3xl">{t("استكشف السعودية", "Explore Saudi Arabia")}</h1>
           <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-            اكتشف المعالم والتجارب السياحية في مختلف مناطق المملكة.
+            {t("اكتشف المعالم والتجارب السياحية في مختلف مناطق المملكة.", "Discover landmarks and experiences across the regions of the Kingdom.")}
           </p>
 
           {/* controls */}
@@ -85,7 +90,7 @@ function ExplorePageInner() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="ابحث عن معلم، مدينة، أو تجربة سياحية..."
+                placeholder={t("ابحث عن معلم، مدينة، أو تجربة سياحية...", "Search for a landmark, city or experience...")}
                 className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-500"
               />
             </div>
@@ -96,7 +101,7 @@ function ExplorePageInner() {
               className="rounded-xl border px-4 py-2.5 text-sm"
               style={{ borderColor: "var(--brand-line)", background: "var(--surface)", color: "var(--foreground)" }}
             >
-              <option value="all">كل المدن</option>
+              <option value="all">{t("كل المدن", "All cities")}</option>
               {cities.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -116,7 +121,7 @@ function ExplorePageInner() {
                   : { borderColor: "var(--brand-line)" }
               }
             >
-              الكل
+              {t("الكل", "All")}
             </button>
             {(Object.keys(FILTER_LABELS) as FilterCategory[]).map((c) => (
               <button
@@ -129,17 +134,17 @@ function ExplorePageInner() {
                     : { borderColor: "var(--brand-line)" }
                 }
               >
-                {FILTER_LABELS[c]}
+                {filterLabel(c, lang)}
               </button>
             ))}
           </div>
 
           {/* results */}
           <div className="mt-8">
-            {loading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ التحميل من Firestore...</p>}
-            {error && <p className="text-sm text-red-400">خطأ: {error}</p>}
+            {loading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>{t("جارٍ تحميل الوجهات...", "Loading destinations...")}</p>}
+            {error && <p className="text-sm text-red-400">{t("تعذّر تحميل الوجهات. تحقق من اتصالك ثم أعد تحميل الصفحة.", "Couldn't load destinations. Check your connection and reload the page.")}</p>}
             {!loading && !error && filtered.length === 0 && (
-              <p className="text-sm" style={{ color: "var(--text-muted)" }}>لا توجد نتائج مطابقة لبحثك.</p>
+              <p className="text-sm" style={{ color: "var(--text-muted)" }}>{t("لا توجد نتائج مطابقة لبحثك.", "No results match your search.")}</p>
             )}
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

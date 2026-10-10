@@ -8,9 +8,14 @@ import { getLandmarks } from "@/lib/landmarks";
 import { Landmark } from "@/lib/types";
 import { getCityTemperature } from "@/lib/weather";
 import { useFavorites } from "@/lib/favorites";
+import { useLang } from "@/lib/i18n";
+import { localizeLandmarks } from "@/lib/landmark-i18n";
 
 export default function SavedPage() {
-  const [landmarks, setLandmarks] = useState<Landmark[]>([]);
+  const { lang, t } = useLang();
+  // Stored as fetched (Arabic); shown in the visitor's language.
+  const [fetched, setLandmarks] = useState<Landmark[]>([]);
+  const landmarks = useMemo(() => localizeLandmarks(fetched, lang), [fetched, lang]);
   const [loading, setLoading] = useState(true);
   const [temps, setTemps] = useState<Record<string, number>>({});
   const { favoriteIds, toggleFavorite, loading: favoritesLoading } = useFavorites();
@@ -41,12 +46,12 @@ export default function SavedPage() {
       <Navbar />
       <main className="flex-1 w-full" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-          <h1 className="text-2xl font-extrabold md:text-3xl">وجهاتي المحفوظة</h1>
+          <h1 className="text-2xl font-extrabold md:text-3xl">{t("وجهاتي المحفوظة", "My Saved Destinations")}</h1>
           <p className="mt-1 mb-8 text-sm" style={{ color: "var(--text-muted)" }}>
-            الوجهات التي حفظتِها لتراجعيها لاحقًا.
+            {t("الوجهات التي حفظتِها لتراجعيها لاحقًا.", "Destinations you saved to come back to later.")}
           </p>
 
-          {isLoading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>جارٍ التحميل...</p>}
+          {isLoading && <p className="text-sm" style={{ color: "var(--text-muted)" }}>{t("جارٍ التحميل...", "Loading...")}</p>}
 
           {!isLoading && saved.length === 0 && (
             <div className="flex flex-col items-center gap-3 rounded-2xl border py-20 text-center" style={{ borderColor: "var(--brand-line)" }}>
@@ -56,9 +61,9 @@ export default function SavedPage() {
               >
                 <HeartOff size={22} style={{ color: "var(--text-muted)" }} />
               </span>
-              <p className="font-semibold">لم تحفظ أي وجهات بعد</p>
+              <p className="font-semibold">{t("لم تحفظ أي وجهات بعد", "You haven't saved any destinations yet")}</p>
               <p className="max-w-sm text-sm" style={{ color: "var(--text-muted)" }}>
-                ابدأ باكتشاف وجهات جديدة واحفظ الأماكن التي تهمك.
+                {t("ابدأ باكتشاف وجهات جديدة واحفظ الأماكن التي تهمك.", "Start exploring and save the places that interest you.")}
               </p>
             </div>
           )}

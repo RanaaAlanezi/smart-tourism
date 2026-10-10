@@ -5,7 +5,8 @@ import { LayoutGrid } from "lucide-react";
 import { SaudiMap } from "./SaudiMap";
 import { MapDetailPanel } from "./MapDetailPanel";
 import { Landmark as LandmarkType } from "@/lib/types";
-import { FilterCategory, FILTER_LABELS, CATEGORY_ICON } from "@/lib/categories";
+import { FilterCategory, FILTER_LABELS, filterLabel, CATEGORY_ICON, CATEGORY_PIN_COLOR } from "@/lib/categories";
+import { useLang } from "@/lib/i18n";
 
 export function MapExplorer({
   landmarks,
@@ -18,12 +19,12 @@ export function MapExplorer({
   showFilters?: boolean;
   initialSelectedId?: string;
 }) {
+  const { lang, t } = useLang();
   const [category, setCategory] = useState<FilterCategory | "all">("all");
-  // Landmarks are only ever loaded once before this component mounts (see
-  // the map/homepage pages), so a lazy initializer is enough here.
-  const [selected, setSelected] = useState<LandmarkType | null>(() =>
-    initialSelectedId ? landmarks.find((l) => l.id === initialSelectedId) ?? null : null
-  );
+  // Held by id rather than as the landmark itself, so the detail panel
+  // follows a language switch instead of keeping the old language's copy.
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId ?? null);
+  const selected = landmarks.find((l) => l.id === selectedId) ?? null;
 
   const filtered = useMemo(
     () => (category === "all" ? landmarks : landmarks.filter((l) => l.category === category)),
@@ -37,7 +38,7 @@ export function MapExplorer({
     >
       {showFilters && (
         <div
-          className="flex min-w-0 shrink-0 gap-2 overflow-x-auto border-b p-3 md:w-40 md:flex-col md:overflow-visible md:border-b-0 md:border-l"
+          className="flex min-w-0 shrink-0 gap-2 overflow-x-auto border-b p-3 md:w-40 md:flex-col md:overflow-visible md:border-b-0 md:border-e"
           style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}
         >
           <button
@@ -50,7 +51,7 @@ export function MapExplorer({
             }
           >
             <LayoutGrid size={16} />
-            الكل
+            {t("الكل", "All")}
           </button>
           {(Object.keys(FILTER_LABELS) as FilterCategory[]).map((c) => {
             const Icon = CATEGORY_ICON[c];
@@ -65,8 +66,8 @@ export function MapExplorer({
                     : { color: "var(--foreground)" }
                 }
               >
-                <Icon size={16} />
-                {FILTER_LABELS[c]}
+                <Icon size={16} style={category === c ? undefined : { color: CATEGORY_PIN_COLOR[c] }} />
+                {filterLabel(c, lang)}
               </button>
             );
           })}
@@ -74,15 +75,11 @@ export function MapExplorer({
       )}
 
       <div className="relative flex-1" style={{ height, background: "linear-gradient(160deg,#05100C,#0B5D48)" }}>
-        <SaudiMap
-          landmarks={filtered}
-          selectedId={selected?.id}
-          onSelect={setSelected}
-        />
+        <SaudiMap landmarks={filtered} selectedId={selected?.id} onSelect={(landmark) => setSelectedId(landmark?.id ?? null)} />
       </div>
 
       <div
-        className="shrink-0 border-t md:w-72 md:border-t-0 md:border-r"
+        className="shrink-0 border-t md:w-72 md:border-t-0 md:border-s"
         style={{ borderColor: "var(--brand-line)", background: "var(--surface)", minHeight: 180 }}
       >
         <MapDetailPanel landmark={selected} />

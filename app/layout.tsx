@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthProvider";
+import { LangSync } from "@/lib/i18n";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" className={`${cairo.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <LangSync />
         <AuthProvider>
           <div className="flex flex-col flex-1">{children}</div>
         </AuthProvider>

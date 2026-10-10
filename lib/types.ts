@@ -1,3 +1,6 @@
+// The interface language.
+export type Lang = "ar" | "en";
+
 export type AgeGroup = "child" | "teen" | "adult";
 
 // A single flat category scheme, shared by the data and every filter UI
@@ -45,6 +48,19 @@ export interface Landmark {
   // search/recommendations/detail-page badges, not a second category.
   tags?: LandmarkTag[];
 }
+
+// A landmark the assistant's answer mentions — just enough to render a
+// link card under the reply.
+export type ChatSource = Pick<Landmark, "id" | "name" | "city" | "category" | "image">;
+
+// One line of the /api/chat response, which streams as newline-delimited
+// JSON: the reply's text in pieces, then the landmarks it mentioned. A
+// "reset" means the text sent so far was abandoned and the reply restarts.
+export type ChatStreamEvent =
+  | { type: "delta"; text: string }
+  | { type: "reset" }
+  | { type: "done"; sources: ChatSource[] }
+  | { type: "error"; message: string };
 
 export interface Interaction {
   id?: string;

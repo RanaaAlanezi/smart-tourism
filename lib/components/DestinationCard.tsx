@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Thermometer, MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { Landmark } from "@/lib/types";
-import { CATEGORY_LABEL, CATEGORY_GRADIENT, TAG_LABELS } from "@/lib/categories";
+import { categoryLabel, CATEGORY_GRADIENT, TAG_LABELS } from "@/lib/categories";
+import { useLang } from "@/lib/i18n";
 import { FavoriteButton } from "./FavoriteButton";
 
 export function DestinationCard({
@@ -25,6 +26,7 @@ export function DestinationCard({
   // recommendations feature, absent everywhere else.
   aiNote?: string;
 }) {
+  const { lang, t } = useLang();
   const image = landmark.image;
 
   return (
@@ -66,11 +68,11 @@ export function DestinationCard({
         )}
         <span className="relative flex flex-wrap gap-1.5">
           <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
-            {CATEGORY_LABEL[landmark.category]}
+            {categoryLabel(landmark.category, lang)}
           </span>
           {landmark.tags?.includes("religious") && (
             <span className="rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-semibold text-zinc-800">
-              {TAG_LABELS.religious.emoji} {TAG_LABELS.religious.ar}
+              {TAG_LABELS.religious.emoji} {t(TAG_LABELS.religious.ar, TAG_LABELS.religious.en)}
             </span>
           )}
         </span>
@@ -97,7 +99,7 @@ export function DestinationCard({
           className="mt-auto inline-flex w-fit items-center gap-1 text-sm font-semibold"
           style={{ color: "var(--brand-gold-light)" }}
         >
-          عرض التفاصيل
+          {t("عرض التفاصيل", "View details")}
           <ArrowLeft size={14} />
         </span>
       </div>

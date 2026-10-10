@@ -2,31 +2,38 @@
 
 import { Suspense, useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Send, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Send, Sparkles } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
 import { DiscoverJourney } from "@/lib/components/DiscoverJourney";
-import { AgeGroup } from "@/lib/types";
+import { streamChat } from "@/lib/chatClient";
+import { AgeGroup, ChatSource } from "@/lib/types";
+import { useLang } from "@/lib/i18n";
 
-const AGE_OPTIONS: { value: AgeGroup; label: string }[] = [
-  { value: "child", label: "👧 طفل" },
-  { value: "teen", label: "🧑 مراهق" },
-  { value: "adult", label: "👨 بالغ" },
+// Labels and questions below are [Arabic, English] pairs.
+const AGE_OPTIONS: { value: AgeGroup; label: [string, string] }[] = [
+  { value: "child", label: ["👧 طفل", "👧 Child"] },
+  { value: "teen", label: ["🧑 مراهق", "🧑 Teen"] },
+  { value: "adult", label: ["👨 بالغ", "👨 Adult"] },
 ];
 
-const SUGGESTED_QUESTIONS = [
-  "ما أفضل الأماكن التاريخية في العلا؟",
-  "أبغى أماكن مناسبة للعائلة.",
-  "اشرح لي الدرعية بطريقة بسيطة.",
-  "أبغى وجهة طبيعية وهادئة.",
+const SUGGESTED_QUESTIONS: [string, string][] = [
+  ["ما أفضل الأماكن التاريخية في العلا؟", "What are the best historical places in AlUla?"],
+  ["أبغى أماكن مناسبة للعائلة.", "I'd like places for a family trip."],
+  ["اشرح لي الدرعية بطريقة بسيطة.", "Explain Diriyah to me simply."],
+  ["أبغى وجهة طبيعية وهادئة.", "I'd like a quiet nature destination."],
 ];
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  // Landmarks the answer mentions, linked under it once it's complete.
+  sources?: ChatSource[];
 }
 
 function AssistantPageInner() {
   const searchParams = useSearchParams();
+  const { lang, t } = useLang();
   const [ageGroup, setAgeGroup] = useState<AgeGroup>("adult");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -52,16 +59,20 @@ function AssistantPageInner() {
     setError(null);
 
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages, ageGroup }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "unknown error");
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+      let reply = "";
+      const sources = await streamChat(
+        { messages: nextMessages.map(({ role, content }) => ({ role, content })), ageGroup, lang },
+        (replySoFar) => {
+          reply = replySoFar;
+          setMessages(reply ? [...nextMessages, { role: "assistant", content: reply }] : nextMessages);
+        }
+      );
+      setMessages([...nextMessages, { role: "assistant", content: reply, sources }]);
     } catch (err) {
-      setError(String(err));
+      // Drop a half-written answer rather than leave it in the conversation
+      // as if it were complete.
+      setMessages(nextMessages);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -89,9 +100,9 @@ function AssistantPageInner() {
               >
                 <Sparkles size={24} color="var(--brand-gold-light)" />
               </span>
-              <h1 className="text-2xl font-extrabold md:text-3xl">كيف يمكنني مساعدتك؟</h1>
+              <h1 className="text-2xl font-extrabold md:text-3xl">{t("كيف يمكنني مساعدتك؟", "How can I help you?")}</h1>
               <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
-                اسألني عن الوجهات والمعالم السياحية في السعودية.
+                {t("اسألني عن الوجهات والمعالم السياحية في السعودية.", "Ask me about destinations and landmarks in Saudi Arabia.")}
               </p>
             </div>
           )}
@@ -107,7 +118,7 @@ function AssistantPageInner() {
                   : { borderColor: "var(--brand-line)" }
               }
             >
-              اسأل المساعد
+              {t("اسأل المساعد", "Ask the assistant")}
             </button>
             <button
               onClick={() => setMode("recommend")}
@@ -119,7 +130,7 @@ function AssistantPageInner() {
               }
             >
               <Sparkles size={14} />
-              اكتشف وجهتك
+              {t("اكتشف وجهتك", "Find your destination")}
             </button>
           </div>
 
@@ -129,7 +140,7 @@ function AssistantPageInner() {
           {mode === "chat" && (
           <>
           <div className="mt-6 flex items-center justify-center gap-2">
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>اختر مستوى الشرح:</span>
+            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{t("اختر مستوى الشرح:", "Explain it for:")}</span>
             {AGE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
@@ -141,7 +152,7 @@ function AssistantPageInner() {
                     : { borderColor: "var(--brand-line)" }
                 }
               >
-                {opt.label}
+                {t(...opt.label)}
               </button>
             ))}
           </div>
@@ -149,11 +160,11 @@ function AssistantPageInner() {
           {/* suggested questions */}
           {messages.length === 0 && (
             <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {SUGGESTED_QUESTIONS.map((q) => (
+              {SUGGESTED_QUESTIONS.map((pair) => t(...pair)).map((q) => (
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className="rounded-xl border p-3 text-right text-sm transition hover:brightness-110"
+                  className="rounded-xl border p-3 text-start text-sm transition hover:brightness-110"
                   style={{ borderColor: "var(--brand-line)" }}
                 >
                   {q}
@@ -166,29 +177,47 @@ function AssistantPageInner() {
           <div className="mt-6 flex-1 space-y-4">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className="max-w-[80%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm"
-                  style={
-                    m.role === "user"
-                      ? { background: "var(--brand-green)", color: "white" }
-                      : { background: "var(--surface-2,#EFEAE0)", color: "var(--foreground)" }
-                  }
-                >
-                  {m.content}
+                <div className="max-w-[80%]">
+                  <div
+                    className="whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm"
+                    style={
+                      m.role === "user"
+                        ? { background: "var(--brand-green)", color: "white" }
+                        : { background: "var(--surface-2,#EFEAE0)", color: "var(--foreground)" }
+                    }
+                  >
+                    {m.content}
+                  </div>
+                  {m.sources && m.sources.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {m.sources.map((source) => (
+                        <Link
+                          key={source.id}
+                          href={`/landmarks/${source.id}`}
+                          className="flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition hover:brightness-110"
+                          style={{ borderColor: "var(--brand-line)" }}
+                        >
+                          <MapPin size={12} color="var(--brand-gold)" />
+                          {source.name}
+                          <span style={{ color: "var(--text-muted)" }}>· {source.city}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
-            {loading && (
+            {loading && messages[messages.length - 1]?.role === "user" && (
               <div className="flex justify-start">
                 <div
                   className="rounded-2xl px-4 py-2.5 text-sm"
                   style={{ color: "var(--text-muted)", background: "var(--surface-2)" }}
                 >
-                  جارٍ الكتابة...
+                  {t("جارٍ الكتابة...", "Writing...")}
                 </div>
               </div>
             )}
-            {error && <p className="text-sm text-red-400">خطأ: {error}</p>}
+            {error && <p className="text-sm text-red-400">{error}</p>}
             <div ref={bottomRef} />
           </div>
 
@@ -205,13 +234,13 @@ function AssistantPageInner() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="اكتب سؤالك هنا..."
+              placeholder={t("اكتب سؤالك هنا...", "Type your question here...")}
               className="w-full bg-transparent px-3 py-2 text-sm outline-none placeholder:text-zinc-500"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              aria-label="إرسال"
+              aria-label={t("إرسال", "Send")}
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white disabled:opacity-40"
               style={{ background: "var(--brand-green)" }}
             >

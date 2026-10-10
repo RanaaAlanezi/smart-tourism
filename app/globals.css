@@ -46,3 +46,104 @@ body {
 .step-fade-in {
   animation: step-fade-in 0.25s ease-out;
 }
+
+/* ---- Homepage motion ---- */
+
+/* Slow push-in on the hero photo, so the first screen doesn't sit still. */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.hero-zoom {
+  animation: hero-zoom 26s ease-in-out infinite alternate;
+}
+
+/* Entrance for the hero's headline, search and buttons — staggered with
+   an inline animation-delay on each element. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Sections that slide in as they scroll into view (see the Reveal
+   component, which adds .is-visible). */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The bar under the hero spotlight that fills until the next landmark. */
+@keyframes spotlight-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.spotlight-progress {
+  transform-origin: right;
+  animation: spotlight-progress linear both;
+}
+
+/* A soft glow that follows hover on the homepage's tiles. */
+.glow-tile {
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glow-tile:hover {
+  transform: translateY(-4px);
+  border-color: var(--brand-gold);
+  box-shadow: 0 12px 32px -12px rgba(199, 154, 69, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom,
+  .fade-up,
+  .spotlight-progress {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- English (left-to-right) ---- */
+
+/* "Forward" and "back" arrows are drawn for Arabic's right-to-left reading
+   direction; in English they point the other way. */
+html[dir="ltr"] .lucide-arrow-left,
+html[dir="ltr"] .lucide-arrow-right,
+html[dir="ltr"] .lucide-chevron-left,
+html[dir="ltr"] .lucide-chevron-right {
+  transform: scaleX(-1);
+}
+
+html[dir="ltr"] .spotlight-progress {
+  transform-origin: left;
+}

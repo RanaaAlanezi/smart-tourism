@@ -5,15 +5,20 @@ import { Sparkles, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { DestinationCard } from "./DestinationCard";
 import { getLandmarks } from "@/lib/landmarks";
 import { Landmark, LandmarkCategory } from "@/lib/types";
+import { useLang } from "@/lib/i18n";
+import { arabicCity, localizeLandmarks } from "@/lib/landmark-i18n";
 
 type RecommendedLandmark = Landmark & { explanation: string; aiFailed?: boolean };
 type Step = "location" | "experience" | "time" | "loading" | "results";
 type LocationMode = "all" | "city";
 
+// Labels below are [Arabic, English] pairs.
+type Pair = [string, string];
+
 interface ExperienceOption {
   key: string;
   emoji: string;
-  label: string;
+  label: Pair;
   categories: LandmarkCategory[];
 }
 
@@ -23,32 +28,34 @@ interface ExperienceOption {
 // both archaeological sites and untouched nature), which is fine: matching
 // any of them is still a real, dataset-backed match.
 const EXPERIENCE_OPTIONS: ExperienceOption[] = [
-  { key: "history", emoji: "🏛️", label: "تاريخ وثقافة", categories: ["historical", "cultural"] },
-  { key: "nature", emoji: "🌿", label: "طبيعة وهدوء", categories: ["natural"] },
-  { key: "sea", emoji: "🌊", label: "بحر واسترخاء", categories: ["beaches"] },
-  { key: "adventure", emoji: "🧭", label: "استكشاف ومغامرة", categories: ["archaeological", "natural"] },
-  { key: "city", emoji: "🏙️", label: "مدينة وحياة", categories: ["urban"] },
-  { key: "photo", emoji: "📸", label: "أماكن مميزة للتصوير", categories: ["natural", "beaches", "archaeological"] },
+  { key: "history", emoji: "🏛️", label: ["تاريخ وثقافة", "History & culture"], categories: ["historical", "cultural"] },
+  { key: "nature", emoji: "🌿", label: ["طبيعة وهدوء", "Nature & calm"], categories: ["natural"] },
+  { key: "sea", emoji: "🌊", label: ["بحر واسترخاء", "Sea & relaxation"], categories: ["beaches"] },
+  { key: "adventure", emoji: "🧭", label: ["استكشاف ومغامرة", "Exploration & adventure"], categories: ["archaeological", "natural"] },
+  { key: "city", emoji: "🏙️", label: ["مدينة وحياة", "City life"], categories: ["urban"] },
+  { key: "photo", emoji: "📸", label: ["أماكن مميزة للتصوير", "Great photo spots"], categories: ["natural", "beaches", "archaeological"] },
 ];
 
-const TIME_OPTIONS = [
-  { key: "short", emoji: "⏱️", label: "ساعتين – نصف يوم" },
-  { key: "day", emoji: "☀️", label: "يوم كامل" },
-  { key: "multi", emoji: "🗓️", label: "أكثر من يوم" },
+const TIME_OPTIONS: { key: string; emoji: string; label: Pair }[] = [
+  { key: "short", emoji: "⏱️", label: ["ساعتين – نصف يوم", "Two hours – half a day"] },
+  { key: "day", emoji: "☀️", label: ["يوم كامل", "A full day"] },
+  { key: "multi", emoji: "🗓️", label: ["أكثر من يوم", "More than a day"] },
 ];
 
-const FOCUS_OPTIONS = [
-  { key: "learn", emoji: "📚", label: "أتعلم" },
-  { key: "photo", emoji: "📸", label: "أصور" },
-  { key: "explore", emoji: "🧭", label: "أستكشف" },
-  { key: "relax", emoji: "🌿", label: "أسترخي" },
+const FOCUS_OPTIONS: { key: string; emoji: string; label: Pair }[] = [
+  { key: "learn", emoji: "📚", label: ["أتعلم", "Learn"] },
+  { key: "photo", emoji: "📸", label: ["أصور", "Take photos"] },
+  { key: "explore", emoji: "🧭", label: ["أستكشف", "Explore"] },
+  { key: "relax", emoji: "🌿", label: ["أسترخي", "Relax"] },
 ];
 
 const selectedPill = { background: "var(--brand-gold)", color: "var(--brand-green-dark)", borderColor: "var(--brand-gold)" };
 const unselectedPill = { borderColor: "var(--brand-line)" };
 
 export function DiscoverJourney() {
-  const [allLandmarks, setAllLandmarks] = useState<Landmark[]>([]);
+  const { lang, t } = useLang();
+  const [fetched, setAllLandmarks] = useState<Landmark[]>([]);
+  const allLandmarks = useMemo(() => localizeLandmarks(fetched, lang), [fetched, lang]);
 
   useEffect(() => {
     // Fetched purely to build the city list below from real data — the
@@ -58,8 +65,8 @@ export function DiscoverJourney() {
   }, []);
 
   const cities = useMemo(
-    () => [...new Set(allLandmarks.map((l) => l.city))].filter(Boolean).sort((a, b) => a.localeCompare(b, "ar")),
-    [allLandmarks]
+    () => [...new Set(allLandmarks.map((l) => l.city))].filter(Boolean).sort((a, b) => a.localeCompare(b, lang)),
+    [allLandmarks, lang]
   );
 
   const [step, setStep] = useState<Step>("location");
@@ -103,16 +110,18 @@ export function DiscoverJourney() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           interests,
-          city: overrideCity !== undefined ? overrideCity : locationMode === "city" ? city : null,
+          // The server matches cities by their Arabic name.
+          city: overrideCity !== undefined ? overrideCity : locationMode === "city" && city ? arabicCity(city) : null,
           time,
           focus,
+          lang,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "unknown error");
       setResults(data.recommendations);
     } catch (err) {
-      setError("تعذر إعداد التوصيات حالياً. حاول مرة أخرى بعد قليل.");
+      setError(t("تعذر إعداد التوصيات حالياً. حاول مرة أخرى بعد قليل.", "Couldn't prepare recommendations right now. Please try again shortly."));
       setResults(null);
       console.error(err);
     } finally {
@@ -154,41 +163,41 @@ export function DiscoverJourney() {
             >
               <Sparkles size={20} color="var(--brand-gold-light)" />
             </span>
-            <h2 className="text-xl font-extrabold">اكتشف وجهتك</h2>
+            <h2 className="text-xl font-extrabold">{t("اكتشف وجهتك", "Find your destination")}</h2>
             <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-              خلّنا نساعدك تلقى أماكن تناسبك في السعودية
+              {t("خلّنا نساعدك تلقى أماكن تناسبك في السعودية", "Let us help you find places in Saudi Arabia that suit you")}
             </p>
           </div>
 
-          <h3 className="mt-6 text-center font-bold">وين حاب تستكشف؟</h3>
+          <h3 className="mt-6 text-center font-bold">{t("وين حاب تستكشف؟", "Where would you like to explore?")}</h3>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
               onClick={() => {
                 setLocationMode("all");
                 setCity(null);
               }}
-              className="rounded-2xl border p-4 text-right transition"
+              className="rounded-2xl border p-4 text-start transition"
               style={locationMode === "all" ? selectedPill : { ...unselectedPill, background: "var(--surface)" }}
             >
-              <div className="font-bold">📍 كل السعودية</div>
+              <div className="font-bold">📍 {t("كل السعودية", "All of Saudi Arabia")}</div>
               <div
                 className="mt-1 text-xs"
                 style={{ color: locationMode === "all" ? "var(--brand-green-dark)" : "var(--text-muted)" }}
               >
-                خلّ النظام يختار لك من مختلف مناطق المملكة
+                {t("خلّ النظام يختار لك من مختلف مناطق المملكة", "Let the system pick from across the Kingdom")}
               </div>
             </button>
             <button
               onClick={() => setLocationMode("city")}
-              className="rounded-2xl border p-4 text-right transition"
+              className="rounded-2xl border p-4 text-start transition"
               style={locationMode === "city" ? selectedPill : { ...unselectedPill, background: "var(--surface)" }}
             >
-              <div className="font-bold">📍 اختر مدينة</div>
+              <div className="font-bold">📍 {t("اختر مدينة", "Choose a city")}</div>
               <div
                 className="mt-1 text-xs"
                 style={{ color: locationMode === "city" ? "var(--brand-green-dark)" : "var(--text-muted)" }}
               >
-                حدد مدينة معينة
+                {t("حدد مدينة معينة", "Pick a specific city")}
               </div>
             </button>
           </div>
@@ -203,7 +212,7 @@ export function DiscoverJourney() {
                 <input
                   value={cityQuery}
                   onChange={(e) => setCityQuery(e.target.value)}
-                  placeholder="ابحث عن مدينة..."
+                  placeholder={t("ابحث عن مدينة...", "Search for a city...")}
                   className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-500"
                 />
               </div>
@@ -220,7 +229,7 @@ export function DiscoverJourney() {
                 ))}
                 {filteredCities.length === 0 && (
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                    ما فيه مدينة مطابقة.
+                    {t("ما فيه مدينة مطابقة.", "No matching city.")}
                   </p>
                 )}
               </div>
@@ -234,7 +243,7 @@ export function DiscoverJourney() {
               className="flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-40"
               style={{ background: "var(--brand-gold)", color: "var(--brand-green-dark)" }}
             >
-              التالي
+              {t("التالي", "Next")}
               <ChevronLeft size={16} />
             </button>
           </div>
@@ -243,9 +252,9 @@ export function DiscoverJourney() {
 
       {step === "experience" && (
         <div className="step-fade-in">
-          <h3 className="text-center font-bold">وش نوع التجربة اللي تبحث عنها؟</h3>
+          <h3 className="text-center font-bold">{t("وش نوع التجربة اللي تبحث عنها؟", "What kind of experience are you after?")}</h3>
           <p className="mt-1 text-center text-xs" style={{ color: "var(--text-muted)" }}>
-            تقدر تختار أكثر من نوع.
+            {t("تقدر تختار أكثر من نوع.", "You can choose more than one.")}
           </p>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {EXPERIENCE_OPTIONS.map((opt) => (
@@ -256,7 +265,7 @@ export function DiscoverJourney() {
                 style={experiences.has(opt.key) ? selectedPill : { ...unselectedPill, background: "var(--surface)" }}
               >
                 <span className="text-2xl">{opt.emoji}</span>
-                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-sm font-semibold">{t(...opt.label)}</span>
               </button>
             ))}
           </div>
@@ -268,7 +277,7 @@ export function DiscoverJourney() {
               style={{ borderColor: "var(--brand-line)" }}
             >
               <ChevronRight size={16} />
-              رجوع
+              {t("رجوع", "Back")}
             </button>
             <button
               onClick={() => setStep("time")}
@@ -276,7 +285,7 @@ export function DiscoverJourney() {
               className="flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-bold disabled:opacity-40"
               style={{ background: "var(--brand-gold)", color: "var(--brand-green-dark)" }}
             >
-              التالي
+              {t("التالي", "Next")}
               <ChevronLeft size={16} />
             </button>
           </div>
@@ -285,7 +294,7 @@ export function DiscoverJourney() {
 
       {step === "time" && (
         <div className="step-fade-in">
-          <h3 className="text-center font-bold">كم عندك وقت؟</h3>
+          <h3 className="text-center font-bold">{t("كم عندك وقت؟", "How much time do you have?")}</h3>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {TIME_OPTIONS.map((opt) => (
               <button
@@ -294,13 +303,14 @@ export function DiscoverJourney() {
                 className="rounded-full border px-4 py-2 text-sm font-semibold"
                 style={time === opt.key ? selectedPill : unselectedPill}
               >
-                {opt.emoji} {opt.label}
+                {opt.emoji} {t(...opt.label)}
               </button>
             ))}
           </div>
 
           <p className="mt-6 text-center text-sm font-semibold">
-            وش يهمك أكثر؟ <span className="font-normal" style={{ color: "var(--text-muted)" }}>(اختياري)</span>
+            {t("وش يهمك أكثر؟", "What matters most to you?")}{" "}
+            <span className="font-normal" style={{ color: "var(--text-muted)" }}>{t("(اختياري)", "(optional)")}</span>
           </p>
           <div className="mt-3 flex flex-wrap justify-center gap-2">
             {FOCUS_OPTIONS.map((opt) => (
@@ -310,7 +320,7 @@ export function DiscoverJourney() {
                 className="rounded-full border px-3.5 py-1.5 text-sm font-semibold"
                 style={focus === opt.key ? selectedPill : unselectedPill}
               >
-                {opt.emoji} {opt.label}
+                {opt.emoji} {t(...opt.label)}
               </button>
             ))}
           </div>
@@ -322,7 +332,7 @@ export function DiscoverJourney() {
               style={{ borderColor: "var(--brand-line)" }}
             >
               <ChevronRight size={16} />
-              رجوع
+              {t("رجوع", "Back")}
             </button>
             <button
               onClick={() => runDiscovery()}
@@ -331,7 +341,7 @@ export function DiscoverJourney() {
               style={{ background: "var(--brand-gold)", color: "var(--brand-green-dark)" }}
             >
               <Sparkles size={16} />
-              اكتشف الوجهات
+              {t("اكتشف الوجهات", "Find destinations")}
             </button>
           </div>
         </div>
@@ -345,9 +355,9 @@ export function DiscoverJourney() {
           >
             <Sparkles size={24} color="var(--brand-gold-light)" />
           </span>
-          <p className="font-semibold">نبحث لك عن أماكن تناسبك...</p>
+          <p className="font-semibold">{t("نبحث لك عن أماكن تناسبك...", "Looking for places that suit you...")}</p>
           <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-            نحلل اختياراتك ونجهز لك اقتراحات مناسبة ✨
+            {t("نحلل اختياراتك ونجهز لك اقتراحات مناسبة ✨", "Going through your choices and preparing suggestions ✨")}
           </p>
         </div>
       )}
@@ -359,24 +369,24 @@ export function DiscoverJourney() {
             style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}
           >
             <p className="mb-2 text-xs font-semibold" style={{ color: "var(--text-muted)" }}>
-              اختياراتك
+              {t("اختياراتك", "Your choices")}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold">
               <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--brand-line)" }}>
-                📍 {locationMode === "city" && city ? city : "كل السعودية"}
+                📍 {locationMode === "city" && city ? city : t("كل السعودية", "All of Saudi Arabia")}
               </span>
               {[...experiences].map((key) => {
                 const opt = EXPERIENCE_OPTIONS.find((o) => o.key === key);
                 if (!opt) return null;
                 return (
                   <span key={key} className="rounded-full border px-3 py-1" style={{ borderColor: "var(--brand-line)" }}>
-                    {opt.emoji} {opt.label}
+                    {opt.emoji} {t(...opt.label)}
                   </span>
                 );
               })}
               {selectedTimeOption && (
                 <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--brand-line)" }}>
-                  {selectedTimeOption.emoji} {selectedTimeOption.label}
+                  {selectedTimeOption.emoji} {t(...selectedTimeOption.label)}
                 </span>
               )}
             </div>
@@ -387,7 +397,7 @@ export function DiscoverJourney() {
           {!error && results && results.length === 0 && (
             <div className="mt-8 text-center">
               <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-                ما لقينا أماكن مطابقة تمامًا لاختياراتك.
+                {t("ما لقينا أماكن مطابقة تمامًا لاختياراتك.", "We couldn't find places that fully match your choices.")}
               </p>
               {locationMode === "city" && (
                 <button
@@ -395,7 +405,7 @@ export function DiscoverJourney() {
                   className="mt-4 rounded-full px-6 py-2.5 text-sm font-bold"
                   style={{ background: "var(--brand-gold)", color: "var(--brand-green-dark)" }}
                 >
-                  استكشف كل السعودية
+                  {t("استكشف كل السعودية", "Explore all of Saudi Arabia")}
                 </button>
               )}
             </div>
@@ -403,12 +413,12 @@ export function DiscoverJourney() {
 
           {!error && results && results.length > 0 && (
             <>
-              <h2 className="mt-6 text-center text-xl font-extrabold">✨ توصياتنا لك</h2>
+              <h2 className="mt-6 text-center text-xl font-extrabold">✨ {t("توصياتنا لك", "Our picks for you")}</h2>
               <p className="mt-1 text-center text-sm" style={{ color: "var(--text-muted)" }}>
-                بناءً على اختياراتك، اخترنا لك هذه الأماكن:
+                {t("بناءً على اختياراتك، اخترنا لك هذه الأماكن:", "Based on your choices, we picked these places:")}
               </p>
               <p className="mt-1 text-center text-sm font-semibold" style={{ color: "var(--brand-gold-light)" }}>
-                وجدنا لك {results.length} أماكن قد تناسب رحلتك ✨
+                {t(`وجدنا لك ${results.length} أماكن قد تناسب رحلتك ✨`, `We found ${results.length} places that may suit your trip ✨`)}
               </p>
               <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {results.map((r) => (
@@ -424,7 +434,7 @@ export function DiscoverJourney() {
               className="rounded-full border px-5 py-2 text-sm font-semibold"
               style={{ borderColor: "var(--brand-line)" }}
             >
-              تعديل الاختيارات
+              {t("تعديل الاختيارات", "Change my choices")}
             </button>
           </div>
         </div>

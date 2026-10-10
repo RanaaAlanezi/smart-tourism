@@ -1,3 +1,5 @@
+import { arabicCity } from "./landmark-i18n";
+
 const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
   الرياض: { lat: 24.7136, lon: 46.6753 },
   العلا: { lat: 26.6089, lon: 37.9219 },
@@ -8,7 +10,8 @@ const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
 };
 
 export async function getCityTemperature(city: string): Promise<number | null> {
-  const coords = CITY_COORDS[city];
+  // Keyed by the Arabic name; the city may arrive in English.
+  const coords = CITY_COORDS[arabicCity(city)];
   if (!coords) return null;
 
   try {

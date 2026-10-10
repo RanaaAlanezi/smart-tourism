@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { LandmarkCategory } from "@/lib/types";
+import { Lang, LandmarkCategory } from "@/lib/types";
 import { getLandmarks } from "@/lib/landmarks";
 import { rankLandmarksForDiscovery } from "@/lib/recommendations";
 import { askQwen } from "@/lib/services/aiService";
+import { localizeLandmark } from "@/lib/landmark-i18n";
 
 const VALID_CATEGORIES: LandmarkCategory[] = [
   "historical",
@@ -31,7 +32,15 @@ const FOCUS_CONTEXT: Record<string, string> = {
   relax: "They especially want to relax.",
 };
 
-const FALLBACK_EXPLANATION = "هذا المكان يطابق اهتماماتك المختارة.";
+const FALLBACK_EXPLANATION: Record<Lang, string> = {
+  ar: "هذا المكان يطابق اهتماماتك المختارة.",
+  en: "This place matches the interests you chose.",
+};
+
+const LANGUAGE_RULE: Record<Lang, string> = {
+  ar: "Write ONLY in Modern Standard Arabic (فصحى) — do not include any Chinese, English, or other language words anywhere in your answer.",
+  en: "Write ONLY in English — do not include any Chinese, Arabic, or other language words anywhere in your answer.",
+};
 
 // The small local Qwen model occasionally "thinks out loud" in Chinese
 // before settling on a final Arabic sentence, leaves a stray English word
@@ -42,7 +51,7 @@ const FALLBACK_EXPLANATION = "هذا المكان يطابق اهتماماتك 
 // any residual CJK characters/punctuation, and reject the result outright
 // if it still isn't a clean, complete Arabic sentence, rather than ever
 // show the user garbled or truncated text.
-function sanitizeExplanation(raw: string): string | null {
+function sanitizeExplanation(raw: string, lang: Lang): string | null {
   const paragraphs = raw
     .split(/\n+/)
     .map((s) => s.trim())
@@ -55,7 +64,9 @@ function sanitizeExplanation(raw: string): string | null {
   // Trim a trailing comma (Arabic "،" or ASCII ",") — the model sometimes
   // cuts off mid-clause right after one.
   candidate = candidate.replace(/[,،\s]+$/, "").trim();
-  if (!candidate || candidate.length < 20 || /[A-Za-z]{3,}/.test(candidate)) return null;
+  // The other language turning up mid-sentence means the model drifted.
+  const otherLanguage = lang === "en" ? /[\u0600-\u06FF]{3,}/ : /[A-Za-z]{3,}/;
+  if (!candidate || candidate.length < 20 || otherLanguage.test(candidate)) return null;
   return candidate;
 }
 
@@ -67,6 +78,7 @@ export async function POST(req: NextRequest) {
     time?: string;
     focus?: string;
   };
+  const lang: Lang = body.lang === "en" ? "en" : "ar";
 
   if (
     !Array.isArray(interests) ||
@@ -93,7 +105,10 @@ export async function POST(req: NextRequest) {
   const context = [TIME_CONTEXT[time || ""], FOCUS_CONTEXT[focus || ""]].filter(Boolean).join(" ");
 
   const recommendations = await Promise.all(
-    candidates.map(async (landmark) => {
+    candidates.map(async (candidate) => {
+      // Ranked on the Arabic records; described to the model, and sent
+      // back to the page, in the visitor's language.
+      const landmark = localizeLandmark(candidate, lang);
       const tagsLine = landmark.tags?.length ? ` Tags: ${landmark.tags.join(", ")}.` : "";
       try {
         const result = await askQwen(
@@ -106,20 +121,20 @@ export async function POST(req: NextRequest) {
                 `Write one short sentence explaining why this landmark matches what they're looking for. ` +
                 `Only use the facts and tags given above — do not add names, dates, religious details, or other facts that aren't there. ` +
                 `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") unless that exact claim is written in the facts above. ` +
-                `Write ONLY in Modern Standard Arabic (فصحى) — do not include any Chinese, English, or other language words anywhere in your answer.`,
+                LANGUAGE_RULE[lang],
             },
           ],
           { temperature: 0.2 }
         );
-        const cleaned = sanitizeExplanation(result.content);
-        if (!cleaned) throw new Error("model output failed Arabic sanity check");
+        const cleaned = sanitizeExplanation(result.content, lang);
+        if (!cleaned) throw new Error("model output failed language sanity check");
         return { ...landmark, explanation: cleaned, aiFailed: false };
       } catch {
         // Qwen unavailable, or its output didn't pass the sanity check above
         // — either way, the landmark is still a valid, dataset-backed match,
         // so keep it visible with a deterministic fallback line instead of
         // dropping it, showing garbled text, or failing the whole request.
-        return { ...landmark, explanation: FALLBACK_EXPLANATION, aiFailed: true };
+        return { ...landmark, explanation: FALLBACK_EXPLANATION[lang], aiFailed: true };
       }
     })
   );
