@@ -147,3 +147,27 @@ html[dir="ltr"] .lucide-chevron-right {
 html[dir="ltr"] .spotlight-progress {
   transform-origin: left;
 }
+
+/* The three bouncing dots shown while the assistant is writing. */
+@keyframes typing-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+.typing-dot {
+  animation: typing-dot 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-dot {
+    animation: none;
+  }
+}

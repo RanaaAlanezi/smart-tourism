@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthProvider";
 import { LangSync } from "@/lib/i18n";
+import { Footer } from "@/lib/components/Footer";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <LangSync />
         <AuthProvider>
           <div className="flex flex-col flex-1">{children}</div>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

@@ -3,7 +3,7 @@
 import { Suspense, useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { MapPin, Send, Sparkles } from "lucide-react";
+import { MapPin, RotateCcw, Send, Sparkles } from "lucide-react";
 import { Navbar } from "@/lib/components/Navbar";
 import { DiscoverJourney } from "@/lib/components/DiscoverJourney";
 import { streamChat } from "@/lib/chatClient";
@@ -23,6 +23,18 @@ const SUGGESTED_QUESTIONS: [string, string][] = [
   ["اشرح لي الدرعية بطريقة بسيطة.", "Explain Diriyah to me simply."],
   ["أبغى وجهة طبيعية وهادئة.", "I'd like a quiet nature destination."],
 ];
+
+// The assistant's round avatar beside its messages.
+function AssistantAvatar() {
+  return (
+    <span
+      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+      style={{ background: "var(--brand-green)" }}
+    >
+      <Sparkles size={15} color="var(--brand-gold-light)" />
+    </span>
+  );
+}
 
 interface Message {
   role: "user" | "assistant";
@@ -164,26 +176,45 @@ function AssistantPageInner() {
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className="rounded-xl border p-3 text-start text-sm transition hover:brightness-110"
-                  style={{ borderColor: "var(--brand-line)" }}
+                  className="glow-tile flex items-center gap-3 rounded-xl border p-3.5 text-start text-sm"
+                  style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}
                 >
+                  <Sparkles size={14} className="shrink-0" color="var(--brand-gold)" />
                   {q}
                 </button>
               ))}
             </div>
           )}
 
+          {messages.length > 0 && (
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => {
+                  setMessages([]);
+                  setError(null);
+                }}
+                disabled={loading}
+                className="flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-semibold transition hover:border-[var(--brand-gold)] disabled:opacity-40"
+                style={{ borderColor: "var(--brand-line)", color: "var(--text-muted)" }}
+              >
+                <RotateCcw size={13} />
+                {t("محادثة جديدة", "New conversation")}
+              </button>
+            </div>
+          )}
+
           {/* messages */}
           <div className="mt-6 flex-1 space-y-4">
             {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={i} className={`step-fade-in flex gap-2.5 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                {m.role === "assistant" && <AssistantAvatar />}
                 <div className="max-w-[80%]">
                   <div
-                    className="whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm"
+                    className="whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-7"
                     style={
                       m.role === "user"
                         ? { background: "var(--brand-green)", color: "white" }
-                        : { background: "var(--surface-2,#EFEAE0)", color: "var(--foreground)" }
+                        : { background: "var(--surface-2)", color: "var(--foreground)" }
                     }
                   >
                     {m.content}
@@ -208,12 +239,21 @@ function AssistantPageInner() {
               </div>
             ))}
             {loading && messages[messages.length - 1]?.role === "user" && (
-              <div className="flex justify-start">
+              <div className="flex justify-start gap-2.5">
+                <AssistantAvatar />
                 <div
-                  className="rounded-2xl px-4 py-2.5 text-sm"
-                  style={{ color: "var(--text-muted)", background: "var(--surface-2)" }}
+                  role="status"
+                  aria-label={t("جارٍ الكتابة...", "Writing...")}
+                  className="flex items-center gap-1.5 rounded-2xl px-4 py-3.5"
+                  style={{ background: "var(--surface-2)" }}
                 >
-                  {t("جارٍ الكتابة...", "Writing...")}
+                  {[0, 1, 2].map((dot) => (
+                    <span
+                      key={dot}
+                      className="typing-dot h-2 w-2 rounded-full"
+                      style={{ background: "var(--brand-gold-light)", animationDelay: `${dot * 160}ms` }}
+                    />
+                  ))}
                 </div>
               </div>
             )}

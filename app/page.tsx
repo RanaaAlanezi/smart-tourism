@@ -50,6 +50,10 @@ const GAME_TILES: { title: Pair; subtitle: Pair; icon: typeof Brain }[] = [
   { title: ["ترتيب الأحداث", "Timeline"], subtitle: ["رتّب الخط الزمني", "Order the events"], icon: ListOrdered },
 ];
 
+// How many featured destinations the homepage shows before sending the
+// visitor to Explore for the rest.
+const FEATURED_ON_HOME = 8;
+
 // How long each landmark stays in the hero's spotlight before the next.
 const SPOTLIGHT_MS = 6000;
 
@@ -112,7 +116,7 @@ export default function Home() {
   // with unverified placeholder cards. A live search still searches
   // everything, since that's what a search box implies.
   const featuredLandmarks = useMemo(() => landmarks.filter((l) => l.featured), [landmarks]);
-  const destinationsToShow = query.trim() ? filtered : featuredLandmarks;
+  const destinationsToShow = query.trim() ? filtered : featuredLandmarks.slice(0, FEATURED_ON_HOME);
 
   const spotlightLandmark =
     featuredLandmarks[spotlight % Math.max(featuredLandmarks.length, 1)];
@@ -425,6 +429,19 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+
+          {!loading && !error && landmarks.length > destinationsToShow.length && (
+            <div className="mt-10 flex justify-center">
+              <Link
+                href="/explore"
+                className="flex items-center gap-2 rounded-full border px-7 py-3 text-sm font-bold transition hover:scale-105 hover:border-[var(--brand-gold)]"
+                style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}
+              >
+                {t(`استكشف كل الوجهات (${landmarks.length})`, `Explore all ${landmarks.length} destinations`)}
+                <ArrowLeft size={14} />
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* العب واكتشف */}
@@ -475,9 +492,11 @@ export default function Home() {
 
         {/* استكشف السعودية على الخريطة */}
         <Reveal className="mx-auto max-w-7xl px-6 py-12 md:px-10">
-          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+          {/* The map gets the wider column and no filter list here — with
+              both side panels in half the page width it was left a sliver. */}
+          <div className="grid gap-8 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:items-center">
             <div className="order-2 min-w-0 md:order-1">
-              <MapExplorer landmarks={landmarks} height={340} />
+              <MapExplorer landmarks={landmarks} height={340} showFilters={false} />
             </div>
             <div className="order-1 text-center md:order-2 md:text-start">
               <h2 className="text-2xl font-extrabold md:text-3xl">{t("استكشف السعودية على الخريطة", "Explore Saudi Arabia on the map")}</h2>
