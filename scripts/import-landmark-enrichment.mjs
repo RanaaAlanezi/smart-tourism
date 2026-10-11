@@ -13,7 +13,9 @@ import { getAuth, signInAnonymously } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
-const DATA = new URL("./data/landmark-enrichment.json", import.meta.url);
+// A data file other than the first batch can be named: --file=landmark-enrichment-2.json
+const fileArg = process.argv.find((a) => a.startsWith("--file="));
+const DATA = new URL(`./data/${fileArg ? fileArg.slice(7) : "landmark-enrichment.json"}`, import.meta.url);
 const BACKUP = new URL("./data/landmark-enrichment-backup.json", import.meta.url);
 const mode = process.argv.includes("--apply") ? "apply" : process.argv.includes("--restore") ? "restore" : "preview";
 
@@ -71,9 +73,11 @@ if (mode === "preview") {
   process.exit(0);
 }
 
-// Keep the very first backup: a second --apply must not overwrite the
-// original values with the already-enriched ones.
-if (!existsSync(BACKUP)) writeFileSync(BACKUP, JSON.stringify(backup, null, 2));
+// Keep each landmark's very first backup: a later --apply must not overwrite
+// the original values with already-enriched ones.
+const saved = existsSync(BACKUP) ? JSON.parse(readFileSync(BACKUP, "utf8")) : [];
+const known = new Set(saved.map((entry) => entry.id));
+writeFileSync(BACKUP, JSON.stringify([...saved, ...backup.filter((entry) => !known.has(entry.id))], null, 2));
 let written = 0;
 for (const entry of landmarks) {
   if (missing.includes(entry.id)) continue;

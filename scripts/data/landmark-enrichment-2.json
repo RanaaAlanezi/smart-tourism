@@ -1,0 +1,159 @@
+{
+  "_about": "Second batch of proposed fuller descriptions, for 22 of the 27 landmarks that still had a one-sentence record. FOR REVIEW: written from general knowledge, not from sources consulted for this file. 'verify' lists details deliberately left out of the text until checked. Not included (too little reliable information): farasan-island-beach, buraidah-museum, buraidah-tower, jazan-heritage-village, dumat-al-jandal-lake.",
+  "landmarks": [
+    {
+      "id": "boulevard-city",
+      "name": "بوليفارد سيتي",
+      "facts": "بوليفارد رياض سيتي منطقة ترفيهية في شمال الرياض، وهي من المناطق الرئيسية لفعاليات موسم الرياض. تضم مطاعم ومقاهي ومتاجر ومسارح ونوافير راقصة، وتُقام فيها حفلات غنائية وعروض ترفيهية حية.",
+      "keyFacts": "Type: entertainment zone | Part of: Riyadh Season | Includes: restaurants, cafes, shops, theaters, dancing fountains | Hosts: concerts and live shows | Location: north Riyadh",
+      "verify": ["سنة الافتتاح ومواعيد الفعاليات تتغير كل موسم ولم تُذكر"]
+    },
+    {
+      "id": "king-abdullah-financial-district",
+      "name": "مركز الملك عبدالله المالي",
+      "facts": "مركز الملك عبدالله المالي (كافد) حي أعمال حديث في شمال الرياض، يضم أبراجًا للمكاتب والسكن ومرافق تجارية وترفيهية. من أبرز مبانيه برج صندوق الاستثمارات العامة، وتربط بين مبانيه جسور مشاة مكيفة، وفيه محطة مترو من تصميم مكتب زها حديد.",
+      "keyFacts": "Also known as: KAFD | Type: modern business district | Notable buildings: PIF Tower, KAFD Metro Station (Zaha Hadid Architects) | Feature: air-conditioned skywalks between buildings | Location: north Riyadh",
+      "verify": ["ارتفاع برج صندوق الاستثمارات العامة وعدد الأبراج لم يُذكرا"]
+    },
+    {
+      "id": "king-salman-park",
+      "name": "حديقة الملك سلمان",
+      "facts": "حديقة الملك سلمان مشروع حديقة حضرية كبرى يُقام على أرض قاعدة الرياض الجوية السابقة وسط الرياض، أُعلن عنه عام 2019 ضمن مشاريع الرياض الكبرى. يضم مساحات خضراء ومرافق ثقافية ورياضية وترفيهية، وهو قيد الإنشاء.",
+      "keyFacts": "Type: large urban park project | Announced: 2019 | Site: the former Riyadh air base, central Riyadh | Includes: green spaces, cultural, sports and leisure facilities | Status: under construction",
+      "verify": ["المساحة (تُذكر أكثر من 16 كم²) لم تُذكر"]
+    },
+    {
+      "id": "king-abdullah-park",
+      "name": "حديقة الملك عبدالله",
+      "facts": "حديقة الملك عبدالله حديقة عامة في حي الملز بالرياض، تشتهر بنافورتها الراقصة المضاءة. تضم مسطحات خضراء واسعة ومضمارًا للمشي وملاعب للأطفال وجلسات للعائلات.",
+      "keyFacts": "Type: public park | Location: Al-Malaz district, Riyadh | Known for: illuminated dancing fountain | Includes: lawns, walking track, playgrounds, family seating",
+      "verify": ["سنة الافتتاح (تُذكر 2013م) لم تُذكر"]
+    },
+    {
+      "id": "diriyah-gate",
+      "name": "بوابة الدرعية",
+      "facts": "بوابة الدرعية مشروع تطوير ثقافي وسياحي كبير يحيط بحي الطريف التاريخي في الدرعية، تشرف عليه هيئة تطوير بوابة الدرعية. مبانيه على الطراز النجدي التقليدي، ويضم مطل البجيري بمطاعمه المطلة على حي الطريف.",
+      "keyFacts": "Type: cultural and tourism development | Surrounds: At-Turaif historic district | Managed by: Diriyah Gate Development Authority | Style: traditional Najdi | Includes: Bujairi Terrace dining area",
+      "verify": ["سنة تأسيس الهيئة (2017م) وسنة افتتاح مطل البجيري (2022م) لم تُذكرا"]
+    },
+    {
+      "id": "jax-district",
+      "name": "حي جاكس",
+      "facts": "حي جاكس منطقة مستودعات صناعية سابقة في الدرعية حُوّلت إلى حي للفنون والإبداع. يضم استوديوهات للفنانين ومعارض فنية، ويستضيف بينالي الدرعية للفن المعاصر.",
+      "keyFacts": "Type: arts and creative district | Origin: former industrial warehouses | Includes: artist studios, galleries | Hosts: the Diriyah Contemporary Art Biennale | Location: Diriyah",
+      "verify": []
+    },
+    {
+      "id": "al-zal-market",
+      "name": "سوق الزل",
+      "facts": "سوق الزل من أقدم الأسواق الشعبية في الرياض، يقع في منطقة الديرة قرب قصر المصمك. يشتهر ببيع السجاد (الزل) والبشوت والعود والبخور والتحف والمقتنيات التراثية.",
+      "keyFacts": "Type: traditional market | Location: Al-Dirah, near Masmak Fortress, Riyadh | Known for: carpets (zal), bishts, oud and incense, antiques",
+      "verify": ["سنة التأسيس (تُذكر 1901م) لم تُذكر"]
+    },
+    {
+      "id": "khobar-corniche",
+      "name": "كورنيش الخبر",
+      "facts": "كورنيش الخبر واجهة بحرية على ساحل الخليج العربي في مدينة الخبر. يضم مسارات للمشي والدراجات ومسطحات خضراء وملاعب للأطفال ومطاعم ومقاهي مطلة على البحر.",
+      "keyFacts": "Type: seafront promenade | Coast: Arabian Gulf | Includes: walking and cycling paths, lawns, playgrounds, restaurants and cafes | City: Khobar",
+      "verify": []
+    },
+    {
+      "id": "fakieh-aquarium",
+      "name": "فقيه أكواريوم",
+      "facts": "فقيه أكواريوم حوض أحياء مائية على كورنيش جدة، يعرض أنواعًا كثيرة من أحياء البحر الأحمر وبحار أخرى، منها أسماك القرش والسلاحف. يقدم كذلك عروضًا للدلافين.",
+      "keyFacts": "Type: public aquarium | Location: Jeddah Corniche | Shows: marine life of the Red Sea and other seas, including sharks and turtles | Also: dolphin shows",
+      "verify": ["سنة الافتتاح (تُذكر 2013م) وعدد الأنواع لم يُذكرا"]
+    },
+    {
+      "id": "al-shafa",
+      "name": "الشفا",
+      "facts": "الشفا منطقة جبلية مرتفعة جنوب الطائف ضمن جبال السروات. تشتهر بمناخها المعتدل صيفًا ومزارع الفواكه والورد الطائفي، وفيها جبل دكا المطل على تهامة.",
+      "keyFacts": "Type: mountain area | Range: Sarawat mountains | Location: south of Taif | Known for: mild summer climate, fruit farms, Taif roses | Viewpoint: Jabal Daka",
+      "verify": ["الارتفاع عن سطح البحر لم يُذكر"]
+    },
+    {
+      "id": "raghadan-forest",
+      "name": "غابة رغدان",
+      "facts": "غابة رغدان غابة جبلية قرب مدينة الباحة تطل على تهامة. تكسوها أشجار العرعر، وفيها ممرات للمشي وجلسات ومرافق للتنزه.",
+      "keyFacts": "Type: mountain forest park | Trees: juniper | Overlooks: Tihamah | Includes: walking paths, seating and picnic facilities | City: Al-Baha",
+      "verify": []
+    },
+    {
+      "id": "al-muftaha-village",
+      "name": "قرية المفتاحة",
+      "facts": "قرية المفتاحة قرية تراثية وسط أبها حُوّلت إلى قرية للفنون التشكيلية. مبانيها على الطراز العسيري التقليدي، وتضم مراسم للفنانين ومعارض ومسرحًا وسوقًا للحرف اليدوية.",
+      "keyFacts": "Type: heritage village turned arts village | Style: traditional Asiri architecture | Includes: artist studios, galleries, a theater, a crafts market | City: Abha",
+      "verify": []
+    },
+    {
+      "id": "shada-palace",
+      "name": "قصر شدا",
+      "facts": "قصر شدا قصر تاريخي وسط أبها بُني في عهد الملك عبدالعزيز ليكون مقرًا للإمارة. بُني على الطراز العسيري التقليدي، وهو اليوم متحف يعرض مقتنيات تراثية من المنطقة.",
+      "keyFacts": "Type: historic palace | Built as: the seat of the regional governorate, in King Abdulaziz's era | Style: traditional Asiri | Today: museum of regional heritage | City: Abha",
+      "verify": ["سنة البناء (تُذكر 1927م) لم تُذكر"]
+    },
+    {
+      "id": "za-abal-castle",
+      "name": "قلعة زعبل",
+      "facts": "قلعة زعبل حصن يقوم على تل مرتفع يطل على مدينة سكاكا. مبنية من الحجر والطين ولها أربعة أبراج للمراقبة، وبالقرب منها بئر سيسرا المنحوتة في الصخر.",
+      "keyFacts": "Type: hilltop fort | Built of: stone and mud | Towers: 4 watchtowers | Nearby: the rock-cut Sisra well | Overlooks: Sakaka",
+      "verify": ["عمر القلعة لم يُذكر"]
+    },
+    {
+      "id": "aja-and-salma-mountains",
+      "name": "قلعة أجا وسلمى",
+      "facts": "أجا وسلمى سلسلتان جبليتان في منطقة حائل، عُرفتا قديمًا بجبلي طيء نسبة إلى القبيلة التي سكنتهما. ارتبط اسماهما بقصة حب عربية قديمة، وتشتهر جبال أجا بتكويناتها الجرانيتية.",
+      "keyFacts": "Type: two mountain ranges | Historic name: the mountains of Tayy | Legend: named after the lovers Aja and Salma | Rock: granite (Aja) | Region: Hail",
+      "verify": ["اسم المعلم في قاعدة البيانات «قلعة أجا وسلمى» وهو مصنف طبيعي؛ يُراجع الاسم"]
+    },
+    {
+      "id": "al-bassam-heritage-house",
+      "name": "بيت البسام التراثي",
+      "facts": "بيت البسام بيت تراثي من الطين في عنيزة على الطراز النجدي. يتميز بفنائه الداخلي وأعمدته ونقوشه الجصية وأبوابه الخشبية المزخرفة، وتُقام فيه فعاليات تراثية.",
+      "keyFacts": "Type: traditional Najdi mud house | Features: inner courtyard, columns, gypsum carvings, decorated wooden doors | Use: heritage events | City: Unaizah",
+      "verify": ["سنة البناء لم تُذكر"]
+    },
+    {
+      "id": "al-mousokaf-traditional-market",
+      "name": "سوق المسوكف الشعبي",
+      "facts": "سوق المسوكف سوق شعبي في عنيزة مبني على الطراز النجدي، وسُمي بهذا الاسم لأنه مسقوف. تُباع فيه المنتجات الشعبية والحرف اليدوية والمأكولات التراثية، وتُقام فيه فعاليات تراثية.",
+      "keyFacts": "Type: traditional roofed market | Style: Najdi | Name meaning: the roofed market | Sells: local products, handicrafts, traditional food | City: Unaizah",
+      "verify": []
+    },
+    {
+      "id": "alula-oasis",
+      "name": "واحة العلا",
+      "facts": "واحة العلا واحة من النخيل وبساتين الحمضيات تمتد في وادي العلا بين الجبال الرملية. تشتهر بالتمور، وفيها مسارات للمشي بين المزارع القديمة.",
+      "keyFacts": "Type: palm oasis | Crops: dates, citrus | Setting: AlUla valley, between sandstone mountains | Activity: walking trails through the old farms",
+      "verify": ["عدد النخيل لم يُذكر"]
+    },
+    {
+      "id": "jabal-al-banat",
+      "name": "جبل البنات",
+      "facts": "جبل البنات، ويُعرف بقصر البنت، مجموعة من المقابر النبطية المنحوتة في واجهات الصخر ضمن موقع الحِجْر (مدائن صالح). تعود هذه المقابر إلى القرن الأول الميلادي.",
+      "keyFacts": "Also known as: Qasr Al-Bint | Type: group of Nabataean rock-cut tombs | Part of: Hegra (Madain Saleh) | Era: 1st century CE | City: AlUla",
+      "verify": ["عدد المقابر (يُذكر نحو 29) لم يُذكر"]
+    },
+    {
+      "id": "al-marjan-island",
+      "name": "جزيرة المرجان",
+      "facts": "جزيرة المرجان جزيرة اصطناعية في الخليج العربي قبالة كورنيش الدمام، يربطها به جسر. تضم مسطحات خضراء وجلسات وإطلالات على البحر، ويقصدها الزوار للتنزه.",
+      "keyFacts": "Type: artificial island | Location: off the Dammam Corniche, Arabian Gulf | Access: by a causeway | Includes: lawns, seating, sea views",
+      "verify": []
+    },
+    {
+      "id": "yanbu-sharm",
+      "name": "شرم ينبع",
+      "facts": "شرم ينبع منطقة ساحلية على البحر الأحمر شمال مدينة ينبع. تشتهر بمياهها الصافية وشعابها المرجانية، ويقصدها الزوار للسباحة والغوص.",
+      "keyFacts": "Type: coastal area | Sea: Red Sea | Location: north of Yanbu | Known for: clear water and coral reefs | Activities: swimming, diving",
+      "verify": []
+    },
+    {
+      "id": "al-dosariyah-castle",
+      "name": "قلعة الدوسرية",
+      "facts": "قلعة الدوسرية قلعة تاريخية تقوم على مرتفع يطل على مدينة جازان والبحر الأحمر. تعود إلى العهد العثماني، واستُخدمت موقعًا عسكريًا للمراقبة.",
+      "keyFacts": "Type: hilltop fort | Era: Ottoman | Use: military lookout | Overlooks: Jazan city and the Red Sea",
+      "verify": ["سنة البناء (تُذكر 1810م) لم تُذكر"]
+    }
+  ]
+}

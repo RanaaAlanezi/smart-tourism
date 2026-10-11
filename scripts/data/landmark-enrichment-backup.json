@@ -198,5 +198,115 @@
     "id": "salwa-palace",
     "facts": "مجمع قصر تاريخي في حي الطريف بالدرعية.",
     "keyFacts": null
+  },
+  {
+    "id": "boulevard-city",
+    "facts": "وجهة ترفيهية ونمط حياة رئيسية في الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-abdullah-financial-district",
+    "facts": "حي أعمال ومعماري حديث رئيسي في الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-salman-park",
+    "facts": "مشروع حديقة حضرية كبير في الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-abdullah-park",
+    "facts": "حديقة عامة كبيرة ووجهة ترفيهية.",
+    "keyFacts": null
+  },
+  {
+    "id": "diriyah-gate",
+    "facts": "بوابة رئيسية لمشروع تطوير ثقافي وسياحي كبير في الدرعية.",
+    "keyFacts": null
+  },
+  {
+    "id": "jax-district",
+    "facts": "حي إبداعي وثقافي في الدرعية.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-zal-market",
+    "facts": "منطقة سوق تقليدية تشتهر بالمنتجات والحرف التراثية.",
+    "keyFacts": null
+  },
+  {
+    "id": "khobar-corniche",
+    "facts": "ممشى بحري شهير على الخليج العربي.",
+    "keyFacts": null
+  },
+  {
+    "id": "fakieh-aquarium",
+    "facts": "معلم بحري وأكواريوم على واجهة جدة.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-shafa",
+    "facts": "وجهة جبلية تشتهر بمناظرها الطبيعية ومناخها المعتدل.",
+    "keyFacts": null
+  },
+  {
+    "id": "raghadan-forest",
+    "facts": "غابة جبلية ووجهة ترفيهية في الباحة.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-muftaha-village",
+    "facts": "قرية فنية وثقافية في أبها.",
+    "keyFacts": null
+  },
+  {
+    "id": "shada-palace",
+    "facts": "قصر تاريخي ومعلم تراثي في أبها.",
+    "keyFacts": null
+  },
+  {
+    "id": "za-abal-castle",
+    "facts": "قلعة تاريخية تطل على سكاكا.",
+    "keyFacts": null
+  },
+  {
+    "id": "aja-and-salma-mountains",
+    "facts": "مناظر جبلية مميزة تحيط بمدينة حائل.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-bassam-heritage-house",
+    "facts": "بيت تراثي نجدي تقليدي في عنيزة.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-mousokaf-traditional-market",
+    "facts": "سوق تقليدي يعرض التراث والحرف المحلية.",
+    "keyFacts": null
+  },
+  {
+    "id": "alula-oasis",
+    "facts": "منظر طبيعي لواحة تاريخية تحيط بها مواقع تراث العلا.",
+    "keyFacts": null
+  },
+  {
+    "id": "jabal-al-banat",
+    "facts": "منطقة مقابر ضخمة قديمة في العلا.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-marjan-island",
+    "facts": "جزيرة بحرية ووجهة ترفيهية في الدمام.",
+    "keyFacts": null
+  },
+  {
+    "id": "yanbu-sharm",
+    "facts": "وجهة ساحلية على البحر الأحمر.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-dosariyah-castle",
+    "facts": "معلم دفاعي تاريخي يطل على منطقة جازان.",
+    "keyFacts": null
   }
 ]
