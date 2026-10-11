@@ -131,7 +131,7 @@ const LAST_CJK = new RegExp(`([${CJK}])([^${CJK}]*)$`);
 // Temperatures for successive attempts at the same request. At the usual
 // low temperature Qwen repeats a failed answer word for word, so a retry
 // only helps if it is allowed to vary more.
-export const RETRY_TEMPERATURES = [0.2, 0.5, 0.8];
+export const RETRY_TEMPERATURES = [0.2, 0.5, 0.7, 0.9, 1.0];
 
 // True when a piece of model output shows Qwen drifting into Chinese.
 // The 7B model does this mid-answer: it stops, makes an aside in Chinese
