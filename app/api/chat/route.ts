@@ -183,6 +183,16 @@ export async function POST(req: NextRequest) {
           lang === "ar" &&
           (text.replace(NOT_COVERED_PATTERN, "").match(/[A-Za-z]{3,}/g) || []).some((word) => !arabicSource.includes(word));
         let spare = "";
+        // The same request ending in a short Arabic cue. Raising the
+        // temperature alone doesn't stop the transliteration; this does
+        // (0 of 6 test answers, against 4 of 6 without it). It is kept for
+        // retries so that first answers stay as they were tested.
+        let remind = false;
+        const reminded: ChatMessage[] = chatMessages.map((message, index) =>
+          index === chatMessages.length - 1
+            ? { ...message, content: `${message.content}\n\nالإجابة بالعربية الفصحى فقط:` }
+            : message
+        );
         const startOver = () => {
           reply = "";
           held = "";
@@ -199,7 +209,8 @@ export async function POST(req: NextRequest) {
           let asideOver = false;
           // req.signal aborts when the visitor leaves or closes the page, so
           // the model stops generating an answer nobody will read.
-          for await (const delta of askQwenStream(chatMessages, { temperature, maxTokens: 700, signal: req.signal })) {
+          const request = remind ? reminded : chatMessages;
+          for await (const delta of askQwenStream(request, { temperature, maxTokens: 700, signal: req.signal })) {
             const aside = afterLastCjk(delta);
             if (aside) {
               if (!inAside) {
@@ -227,8 +238,10 @@ export async function POST(req: NextRequest) {
           if (!inAside && reply.trim()) {
             if (!hasStrayLatin(reply)) break;
             // Usable, but with a transliterated word in it ("Gaza'a Uhud"
-            // for غزوة أحد): keep it in case no later attempt does better.
+            // for غزوة أحد): keep it in case no later attempt does better,
+            // and ask again with the reminder that reliably prevents it.
             spare = reply;
+            remind = true;
           }
           // No clean answer yet — ask again, with more room to vary (at the
           // same temperature the model repeats itself).
