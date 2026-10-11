@@ -116,7 +116,11 @@ export async function POST(req: NextRequest) {
             {
               role: "user",
               content:
-                `Landmark: ${landmark.name}. Facts: ${landmark.keyFacts || landmark.facts}${tagsLine}\n\n` +
+                // The prose facts, not the English keyFacts labels: one sentence
+                // needs wording rather than exact figures, and from the
+                // labels alone models mis-transliterate names into Arabic
+                // ("Umluj" came back as "أم لُج").
+                `Landmark: ${landmark.name}. Facts: ${landmark.facts}${tagsLine}\n\n` +
                 `A visitor of the "Smart Tourism" app is planning a trip in Saudi Arabia and said they are interested in: ${interests.join(", ")}. ${context} ` +
                 `Write one short sentence explaining why this landmark matches what they're looking for. ` +
                 `Only use the facts and tags given above — do not add names, dates, religious details, or other facts that aren't there. ` +

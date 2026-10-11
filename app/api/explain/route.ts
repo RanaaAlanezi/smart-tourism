@@ -38,9 +38,13 @@ export async function POST(req: NextRequest) {
 
   // The small local model reliably garbles numbers/names pulled from a
   // flowing Arabic prose paragraph (e.g. reads "302 meters" as "302
-  // months"), but gets them right from short labeled facts — so prefer
-  // keyFacts for grounding when we have it, falling back to prose facts.
-  const factsBlock = keyFacts ? `Facts (use these exactly, do not reinterpret the numbers):\n${keyFacts}` : `Facts: ${facts}`;
+  // months"), but gets them right from short labeled facts — so keyFacts
+  // go in alongside as the reference for figures. The prose stays the
+  // source of wording: given only the English labels, models leave words
+  // untranslated in an Arabic answer ("civilization النبطية").
+  const factsBlock = keyFacts
+    ? `Facts: ${facts}\nExact figures (use only to get numbers and dates exactly right; take names and wording from Facts): ${keyFacts}`
+    : `Facts: ${facts}`;
 
   try {
     const result = await askQwen(
