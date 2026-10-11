@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AgeGroup, Lang } from "@/lib/types";
-import { askQwen } from "@/lib/services/aiService";
+import { askQwen, RETRY_TEMPERATURES, withoutCjkAside } from "@/lib/services/aiService";
 
 // Instructions are written in English on purpose: the local quantized Qwen
 // model follows English instructions far more reliably and stays on-topic,
@@ -46,20 +46,21 @@ export async function POST(req: NextRequest) {
     ? `Facts: ${facts}\nExact figures (use only to get numbers and dates exactly right; take names and wording from Facts): ${keyFacts}`
     : `Facts: ${facts}`;
 
+  const prompt =
+    `Landmark: ${landmarkName}. ${factsBlock}\n\n${AGE_PROMPTS[ageGroup]} ${LANGUAGE_RULE[lang]} ` +
+    `Only use the facts given above — do not add names, dates, or other facts that aren't there. ` +
+    `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") unless that exact claim is written in the facts above.`;
+
   try {
-    const result = await askQwen(
-      [
-        {
-          role: "user",
-          content:
-            `Landmark: ${landmarkName}. ${factsBlock}\n\n${AGE_PROMPTS[ageGroup]} ${LANGUAGE_RULE[lang]} ` +
-            `Only use the facts given above — do not add names, dates, or other facts that aren't there. ` +
-            `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") unless that exact claim is written in the facts above.`,
-        },
-      ],
-      { temperature: 0.2 }
-    );
-    return NextResponse.json({ explanation: result.content, model: result.model });
+    // Qwen sometimes breaks off into a Chinese aside and then restates its
+    // answer (see hasCjk); keep the restated answer, or ask again if there
+    // isn't one.
+    for (const temperature of RETRY_TEMPERATURES) {
+      const result = await askQwen([{ role: "user", content: prompt }], { temperature });
+      const explanation = withoutCjkAside(result.content);
+      if (explanation) return NextResponse.json({ explanation, model: result.model });
+    }
+    throw new Error("model output kept drifting out of the requested language");
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 502 });
   }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AgeGroup, ChatSource, ChatStreamEvent, Lang, Landmark } from "@/lib/types";
-import { askQwenStream, ChatMessage, hasCjk } from "@/lib/services/aiService";
+import { afterLastCjk, askQwenStream, ChatMessage, RETRY_TEMPERATURES } from "@/lib/services/aiService";
 import { getLandmarks } from "@/lib/landmarks";
 import { arabicName, findRelevantLandmarks, landmarksMentionedIn } from "@/lib/landmarkSearch";
 import { localizeLandmarks } from "@/lib/landmark-i18n";
@@ -16,11 +16,6 @@ const AGE_STYLE: Record<AgeGroup, string> = {
 // model's context window.
 const MAX_HISTORY_TURNS = 6;
 const MAX_HISTORY_CHARS = 600;
-
-// The local model sometimes drifts into Chinese partway through an answer
-// (see hasCjk). It's random rather than tied to the question, so starting
-// the answer again nearly always comes out clean.
-const MAX_ATTEMPTS = 3;
 
 const UNAVAILABLE_MESSAGE: Record<Lang, string> = {
   ar: "تعذّر الوصول إلى المساعد الذكي حالياً. حاول مرة أخرى بعد قليل.",
@@ -152,24 +147,49 @@ export async function POST(req: NextRequest) {
       const send = (event: ChatStreamEvent) => controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
       try {
         let reply = "";
-        for (let attempt = 1; ; attempt++) {
-          let drifted = false;
+        for (const temperature of RETRY_TEMPERATURES) {
+          // Qwen sometimes stops mid-answer, makes an aside in Chinese, then
+          // writes the whole answer again (see hasCjk). While `inAside` the
+          // pieces are dropped; the restated answer starts on the line after
+          // the aside, or straight after its closing colon.
+          let inAside = false;
+          let asideOver = false;
           // req.signal aborts when the visitor leaves or closes the page, so
-          // the local model stops generating an answer nobody will read.
-          for await (const delta of askQwenStream(chatMessages, { temperature: 0.2, maxTokens: 700, signal: req.signal })) {
-            if (hasCjk(delta)) {
-              drifted = true;
-              break;
+          // the model stops generating an answer nobody will read.
+          for await (const delta of askQwenStream(chatMessages, { temperature, maxTokens: 700, signal: req.signal })) {
+            const aside = afterLastCjk(delta);
+            if (aside) {
+              if (!inAside) {
+                // Tell the page to throw away what it has shown so far.
+                inAside = true;
+                reply = "";
+                send({ type: "reset" });
+              }
+              asideOver = aside.last === "：" || aside.rest.includes("\n");
+              continue;
             }
-            reply += delta;
-            send({ type: "delta", text: delta });
+
+            let text = delta;
+            if (inAside) {
+              if (delta.includes("\n")) {
+                asideOver = true;
+                text = delta.slice(delta.lastIndexOf("\n") + 1);
+              }
+              if (!asideOver || !text.trim()) continue;
+              inAside = false;
+              text = text.trimStart();
+            }
+            reply += text;
+            send({ type: "delta", text });
           }
-          if (!drifted) break;
-          if (attempt === MAX_ATTEMPTS) throw new Error("model output kept drifting out of Arabic");
-          // Tell the page to throw away what it has shown and start over.
+
+          if (!inAside && reply.trim()) break;
+          // The aside never gave way to a usable answer — ask again, with
+          // more room to vary (at the same temperature it repeats itself).
           reply = "";
           send({ type: "reset" });
         }
+        if (!reply) throw new Error("model output kept drifting out of the requested language");
         send({ type: "done", sources: landmarksMentionedIn(reply, relevant).map(toSource) });
       } catch (err) {
         if (!req.signal.aborted) {

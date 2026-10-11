@@ -122,11 +122,38 @@ export async function* askQwenStream(
   }
 }
 
-// True when a piece of model output shows the small local Qwen model
-// drifting into Chinese mid-answer: CJK characters, fullwidth punctuation,
-// or the broken character (U+FFFD) that usually announces them. Once that
-// starts the rest of the answer is unusable — removing the characters
-// leaves fragments like "و30299" — so callers should discard it and retry.
+// Chinese characters, fullwidth punctuation, and the broken character
+// (U+FFFD) that sometimes announces them.
+const CJK = "\\u4E00-\\u9FFF\\u3000-\\u303F\\uFF00-\\uFFEF\\uFFFD";
+const HAS_CJK = new RegExp(`[${CJK}]`);
+const LAST_CJK = new RegExp(`([${CJK}])([^${CJK}]*)$`);
+
+// Temperatures for successive attempts at the same request. At the usual
+// low temperature Qwen repeats a failed answer word for word, so a retry
+// only helps if it is allowed to vary more.
+export const RETRY_TEMPERATURES = [0.2, 0.5, 0.8];
+
+// True when a piece of model output shows Qwen drifting into Chinese.
+// The 7B model does this mid-answer: it stops, makes an aside in Chinese
+// ("给你一个简单的答案：" — "here is a simple answer:"), then writes the
+// whole answer again, cleanly. The text before the aside is unusable —
+// it ends mid-word — but the restated answer after it is fine.
 export function hasCjk(text: string): boolean {
-  return /[一-鿿　-〿＀-￯�]/.test(text);
+  return HAS_CJK.test(text);
+}
+
+// The last Chinese character in a piece of text, and whatever follows it.
+export function afterLastCjk(text: string): { last: string; rest: string } | null {
+  const match = LAST_CJK.exec(text);
+  return match ? { last: match[1], rest: match[2] } : null;
+}
+
+// For a complete answer: unchanged when clean; when it contains a Chinese
+// aside, the restated answer that follows it; null if nothing usable
+// follows, in which case the caller should ask again.
+export function withoutCjkAside(text: string): string | null {
+  const after = afterLastCjk(text);
+  if (!after) return text;
+  const restated = after.rest.trim();
+  return restated.length >= 20 ? restated : null;
 }
