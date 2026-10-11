@@ -34,6 +34,16 @@ const SUGGESTED_QUESTIONS: [string, string][] = [
   ["ما الذي يمكنني رؤيته هنا؟", "What can I see here?"],
 ];
 
+// For landmarks whose record is a single sentence (no key facts yet): the
+// questions above would mostly get "no confirmed details", so these stick
+// to what such a record can answer.
+const BASIC_QUESTIONS: [string, string][] = [
+  ["اشرح لي هذا المكان", "Tell me about this place"],
+  ["أين يقع هذا المعلم؟", "Where is this landmark?"],
+  ["ما نوع هذا المعلم؟", "What kind of landmark is it?"],
+  ["ما الذي يمكنني رؤيته هنا؟", "What can I see here?"],
+];
+
 interface QaMessage {
   role: "user" | "assistant";
   content: string;
@@ -200,7 +210,16 @@ function LandmarkView({ landmark, landmarks }: { landmark: Landmark; landmarks: 
           messages: next,
           ageGroup,
           lang,
-          landmarkContext: { name: landmark.name, facts: landmark.facts, keyFacts: landmark.keyFacts },
+          landmarkContext: {
+            name: landmark.name,
+            facts: landmark.facts,
+            keyFacts: landmark.keyFacts,
+            summary: landmark.summary,
+            city: landmark.city,
+            region: landmark.region,
+            category: landmark.category,
+            tags: landmark.tags,
+          },
         },
         (replySoFar) => setQaMessages(replySoFar ? [...next, { role: "assistant", content: replySoFar }] : next)
       );
@@ -356,7 +375,7 @@ function LandmarkView({ landmark, landmarks }: { landmark: Landmark; landmarks: 
 
           {qaMessages.length === 0 && (
             <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {SUGGESTED_QUESTIONS.map((pair) => t(...pair)).map((q) => (
+              {(landmark.keyFacts ? SUGGESTED_QUESTIONS : BASIC_QUESTIONS).map((pair) => t(...pair)).map((q) => (
                 <button
                   key={q}
                   onClick={() => askAboutLandmark(q)}

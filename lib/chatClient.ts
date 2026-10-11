@@ -1,11 +1,11 @@
-import { AgeGroup, ChatSource, ChatStreamEvent, Lang } from "./types";
+import { AgeGroup, ChatSource, ChatStreamEvent, Lang, LandmarkContext } from "./types";
 
 export interface ChatRequest {
   messages: { role: "user" | "assistant"; content: string }[];
   ageGroup: AgeGroup;
   // The language to answer in (and to name landmarks in).
   lang: Lang;
-  landmarkContext?: { name: string; facts: string; keyFacts?: string };
+  landmarkContext?: LandmarkContext;
 }
 
 // Sends a chat request and calls onText with the reply so far each time

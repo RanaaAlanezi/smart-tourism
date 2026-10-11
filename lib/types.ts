@@ -49,6 +49,10 @@ export interface Landmark {
   tags?: LandmarkTag[];
 }
 
+// What a landmark's own page hands the assistant about it.
+export type LandmarkContext = Pick<Landmark, "name" | "facts" | "keyFacts"> &
+  Partial<Pick<Landmark, "summary" | "city" | "region" | "category" | "tags">>;
+
 // A landmark the assistant's answer mentions — just enough to render a
 // link card under the reply.
 export type ChatSource = Pick<Landmark, "id" | "name" | "city" | "category" | "image">;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AgeGroup, ChatSource, ChatStreamEvent, Lang, Landmark } from "@/lib/types";
+import { AgeGroup, ChatSource, ChatStreamEvent, Lang, Landmark, LandmarkContext } from "@/lib/types";
 import { afterLastCjk, askQwenStream, ChatMessage, RETRY_TEMPERATURES } from "@/lib/services/aiService";
 import { getLandmarks } from "@/lib/landmarks";
 import { arabicName, findRelevantLandmarks, landmarksMentionedIn } from "@/lib/landmarkSearch";
@@ -17,6 +17,19 @@ const AGE_STYLE: Record<AgeGroup, string> = {
 const MAX_HISTORY_TURNS = 6;
 const MAX_HISTORY_CHARS = 600;
 
+// What the model replies, on a landmark's page, when the record doesn't
+// answer the question. It is asked only for this marker, and the visitor is
+// shown NO_DETAILS below instead: left to word the refusal itself, the 7B
+// model either says a bare "that is not in the information provided" or
+// tacks the refusal onto answers that needed none.
+const NOT_COVERED = "NO_DETAILS";
+const NOT_COVERED_PATTERN = /NO[_\s-]?DETAILS\.?/i;
+
+const NO_DETAILS: Record<Lang, string> = {
+  ar: "لا تتوفر في المنصة تفاصيل موثّقة عن هذه النقطة حتى الآن.",
+  en: "The platform has no confirmed details on that point yet.",
+};
+
 const UNAVAILABLE_MESSAGE: Record<Lang, string> = {
   ar: "تعذّر الوصول إلى المساعد الذكي حالياً. حاول مرة أخرى بعد قليل.",
   en: "The AI assistant can't be reached right now. Please try again shortly.",
@@ -27,7 +40,6 @@ interface ChatTurn {
   content: string;
 }
 
-type LandmarkFacts = Pick<Landmark, "name" | "facts" | "keyFacts"> & Partial<Pick<Landmark, "city" | "category" | "tags">>;
 
 // The small local model reliably garbles numbers/names pulled from a
 // flowing Arabic prose paragraph (e.g. reads "302 meters" as "302
@@ -37,10 +49,11 @@ type LandmarkFacts = Pick<Landmark, "name" | "facts" | "keyFacts"> & Partial<Pic
 // turns "Nabataean" into "نباتية" and leaves "balconies" untranslated.
 // City and category are spelled out as labels for the same reason as the
 // numbers: left to infer them, the model moves landmarks between cities.
-function describeLandmark(landmark: LandmarkFacts, lang: Lang): string {
+function describeLandmark(landmark: LandmarkContext, lang: Lang): string {
   const labels = [
     `Name: ${lang === "en" ? landmark.name : arabicName(landmark.name)}`,
     landmark.city && `City: ${landmark.city}`,
+    landmark.region && `Region: ${landmark.region}`,
     landmark.category && `Category: ${landmark.category}`,
     landmark.tags?.length && `Tags: ${landmark.tags.join(", ")}`,
   ].filter(Boolean);
@@ -76,7 +89,9 @@ function buildSystemPrompt(ageGroup: AgeGroup, singleLandmark: boolean, lang: La
   return (
     `You are the assistant of "Smart Tourism", a guide to travel and landmarks in Saudi Arabia. ${scope} ` +
     `Base your answer only on the facts given; do not invent names, dates, or facts that aren't there. ` +
-    `If asked about something the facts don't state (e.g. opening hours, prices, suitability for families or children), say there is no confirmed information on that instead of guessing. ` +
+    (singleLandmark
+      ? `If the facts do not answer the visitor's question (e.g. its historical importance, opening hours, prices, suitability for families or children), never guess: reply with exactly ${NOT_COVERED} and nothing else. When the facts do answer the question, answer it normally and do not mention what is missing. `
+      : `If asked about something the facts don't state (e.g. opening hours, prices, suitability for families or children), say there is no confirmed information on that instead of guessing. `) +
     `Never state a superlative (e.g. "the tallest", "the largest", "the oldest", "the first", "the only") about anything unless that exact claim is written in the facts — superlatives go out of date and are the most common way you get facts wrong. ` +
     `${AGE_STYLE[ageGroup]} Keep the answer short and focused. Write plain text with no markdown symbols such as ** or #. ` +
     language
@@ -93,7 +108,7 @@ export async function POST(req: NextRequest) {
     messages: ChatTurn[];
     ageGroup: AgeGroup;
     lang?: Lang;
-    landmarkContext?: { name: string; facts: string; keyFacts?: string };
+    landmarkContext?: LandmarkContext;
   };
 
   if (!messages?.length || !ageGroup || !AGE_STYLE[ageGroup]) {
@@ -127,7 +142,7 @@ export async function POST(req: NextRequest) {
   // the visitor's language.
   relevant = localizeLandmarks(relevant, lang);
 
-  const grounding: LandmarkFacts[] = landmarkContext?.name ? [landmarkContext] : relevant;
+  const grounding: LandmarkContext[] = landmarkContext?.name ? [landmarkContext] : relevant;
   const landmarksBlock = grounding.length
     ? `Landmarks:\n${grounding.map((l) => describeLandmark(l, lang)).join("\n")}\n\n`
     : "";
@@ -147,6 +162,25 @@ export async function POST(req: NextRequest) {
       const send = (event: ChatStreamEvent) => controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
       try {
         let reply = "";
+        // The opening characters are held back until it's clear the answer
+        // isn't the NOT_COVERED marker, so the marker never reaches the page.
+        let held = "";
+        let holding = true;
+        const emit = (text: string) => {
+          reply += text;
+          if (!holding) return send({ type: "delta", text });
+          held += text;
+          if (held.trim().length <= NOT_COVERED.length + 2 || NOT_COVERED_PATTERN.test(held)) return;
+          holding = false;
+          send({ type: "delta", text: held });
+        };
+        const startOver = () => {
+          reply = "";
+          held = "";
+          holding = true;
+          send({ type: "reset" });
+        };
+
         for (const temperature of RETRY_TEMPERATURES) {
           // Qwen sometimes stops mid-answer, makes an aside in Chinese, then
           // writes the whole answer again (see hasCjk). While `inAside` the
@@ -160,10 +194,9 @@ export async function POST(req: NextRequest) {
             const aside = afterLastCjk(delta);
             if (aside) {
               if (!inAside) {
-                // Tell the page to throw away what it has shown so far.
+                // Throw away what has been shown so far.
                 inAside = true;
-                reply = "";
-                send({ type: "reset" });
+                startOver();
               }
               asideOver = aside.last === "：" || aside.rest.includes("\n");
               continue;
@@ -179,17 +212,26 @@ export async function POST(req: NextRequest) {
               inAside = false;
               text = text.trimStart();
             }
-            reply += text;
-            send({ type: "delta", text });
+            emit(text);
           }
 
           if (!inAside && reply.trim()) break;
           // The aside never gave way to a usable answer — ask again, with
           // more room to vary (at the same temperature it repeats itself).
-          reply = "";
-          send({ type: "reset" });
+          startOver();
         }
         if (!reply) throw new Error("model output kept drifting out of the requested language");
+
+        if (NOT_COVERED_PATTERN.test(reply)) {
+          // Say what the record does hold, then that this point isn't covered.
+          const known = landmarkContext?.summary || landmarkContext?.facts || "";
+          startOver();
+          reply = `${known} ${NO_DETAILS[lang]}`.trim();
+          send({ type: "delta", text: reply });
+        } else if (holding) {
+          // A short answer that never outgrew the held-back opening.
+          send({ type: "delta", text: held });
+        }
         send({ type: "done", sources: landmarksMentionedIn(reply, relevant).map(toSource) });
       } catch (err) {
         if (!req.signal.aborted) {
