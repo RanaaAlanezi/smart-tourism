@@ -132,12 +132,6 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [spotlight, featuredLandmarks.length]);
 
-  const categoryCounts = useMemo(() => {
-    const counts: Partial<Record<FilterCategory, number>> = {};
-    for (const l of landmarks) counts[l.category] = (counts[l.category] || 0) + 1;
-    return counts;
-  }, [landmarks]);
-
   const stats = [
     { label: t("معلم سياحي", "Landmarks"), value: landmarks.length },
     { label: t("مدينة", "Cities"), value: new Set(landmarks.map((l) => l.city)).size },
@@ -384,10 +378,6 @@ export default function Home() {
                     <Icon size={22} color={CATEGORY_PIN_COLOR[category]} />
                   </span>
                   <span className="text-sm font-bold">{filterLabel(category, lang)}</span>
-                  {/* Keeps its line while loading, so the tiles don't jump. */}
-                  <span className="min-h-4 text-xs" style={{ color: "var(--text-muted)" }}>
-                    {categoryCounts[category] ? t(`${categoryCounts[category]} معلم`, `${categoryCounts[category]} landmarks`) : ""}
-                  </span>
                 </Link>
               );
             })}
@@ -437,7 +427,7 @@ export default function Home() {
                 className="flex items-center gap-2 rounded-full border px-7 py-3 text-sm font-bold transition hover:scale-105 hover:border-[var(--brand-gold)]"
                 style={{ borderColor: "var(--brand-line)", background: "var(--surface)" }}
               >
-                {t(`استكشف كل الوجهات (${landmarks.length})`, `Explore all ${landmarks.length} destinations`)}
+                {t("استكشف كل الوجهات", "Explore all destinations")}
                 <ArrowLeft size={14} />
               </Link>
             </div>
