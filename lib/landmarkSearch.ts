@@ -109,7 +109,26 @@ interface QuestionSignals {
   nameHits: Map<string, number>;
   // Landmarks whose name only shares a city's name with the question.
   cityNameHits: Set<string>;
+  // Landmark id → how many of the question's subject words its description has.
+  contentHits: Map<string, number>;
 }
+
+// Filler words of a question, which say nothing about its subject.
+const STOP_WORDS = new Set(
+  [
+    "في", "من", "عن", "على", "إلى", "ما", "ماذا", "هل", "أين", "وين", "متى", "كيف", "لماذا", "ليش", "كم",
+    "هو", "هي", "هذا", "هذه", "ذلك", "هنا", "هناك", "كان", "كانت", "أبغى", "أبي", "أريد", "وش", "ايش",
+    "عند", "مع", "بعد", "قبل", "مكان", "أماكن", "معلم", "معالم", "وجهة", "وجهات", "أفضل", "أهم", "أشهر",
+    "السعودية", "المملكة", "زيارة", "أزور", "يوم", "أيام", "يومين", "لي", "عنها", "عنه", "فيها", "فيه",
+    "the", "and", "what", "where", "when", "which", "who", "how", "was", "were", "are", "did", "does",
+    "can", "for", "from", "with", "about", "tell", "place", "places", "landmark", "landmarks", "saudi",
+    "arabia", "visit", "best", "there", "this", "that", "have", "has", "show", "some", "any", "near", "you",
+  ].flatMap(tokenize)
+);
+
+// A description has to share at least this many subject words with the
+// question to count as being about it — one shared word is usually chance.
+const MIN_CONTENT_HITS = 2;
 
 function analyze(question: string, landmarks: Landmark[]): QuestionSignals {
   const tokens = new Set(tokenize(question));
@@ -161,7 +180,28 @@ function analyze(question: string, landmarks: Landmark[]): QuestionSignals {
     else if (matched.length > 0) cityNameHits.add(landmark.id);
   }
 
-  return { city, region, categories, religious, nameHits, cityNameHits };
+  // Subject words of the question found in a landmark's description — how
+  // "أين نزل الوحي أول مرة؟" finds غار حراء, which it never names. Words
+  // already handled above (places, kinds of place) are left out, so that a
+  // question about "historical mosques" doesn't match every description
+  // that happens to say "historical".
+  const isTopicWord = (w: string) =>
+    Object.values(CATEGORY_STEMS).some((stems) => stems.some((stem) => w.startsWith(stem))) ||
+    Object.values(CATEGORY_EXACT).some((words) => words.includes(w)) ||
+    RELIGIOUS_STEMS.some((stem) => w.startsWith(stem));
+  const subject = tokenList.filter(
+    (w) => w.length >= 3 && !STOP_WORDS.has(w) && !GENERIC_NAME_WORDS.has(w) && !isCityWord(w) && !isTopicWord(w)
+  );
+  const contentHits = new Map<string, number>();
+  if (subject.length >= MIN_CONTENT_HITS) {
+    for (const landmark of landmarks) {
+      const description = new Set(tokenize(`${landmark.facts} ${landmark.keyFacts || ""}`));
+      const hits = subject.filter((w) => hasWord(description, w)).length;
+      if (hits >= MIN_CONTENT_HITS) contentHits.set(landmark.id, hits);
+    }
+  }
+
+  return { city, region, categories, religious, nameHits, cityNameHits, contentHits };
 }
 
 // Curated/verified landmarks first — they have confirmed facts and photos.
@@ -221,7 +261,8 @@ export function findRelevantLandmarks(
   { previousQuestions = [], previousAnswer = "", limit = 8 }: LandmarkSearchOptions = {}
 ): Landmark[] {
   const signals = analyze(question, landmarks);
-  const hasTopic = signals.categories.length > 0 || signals.religious || signals.nameHits.size > 0;
+  const hasTopic =
+    signals.categories.length > 0 || signals.religious || signals.nameHits.size > 0 || signals.contentHits.size > 0;
 
   // A follow-up ("وماذا عن الشواطئ؟") usually still means the city the
   // conversation is about, so inherit the most recent one mentioned.
@@ -251,14 +292,21 @@ export function findRelevantLandmarks(
     .filter((l) => signals.nameHits.has(l.id))
     .sort(byScore((l) => signals.nameHits.get(l.id) || 0));
 
+  // Landmarks whose description is about what was asked, within the place
+  // asked about (if any).
+  const describedIn = (candidates: Landmark[]) =>
+    candidates.filter((l) => signals.contentHits.has(l.id)).sort(byScore((l) => signals.contentHits.get(l.id) || 0));
+
   let pool = landmarks.filter(inPlace);
   let onTopic = pool.filter((l) => topicScore(l) > 0).sort(byScore(topicScore));
+  let described = describedIn(pool);
   // The inherited city has nothing of the kind now being asked for (beaches
   // after a conversation about AlUla) — the question has moved on from it.
-  if (inherited && hasTopic && !onTopic.length && !named.length) {
+  if (inherited && hasTopic && !onTopic.length && !named.length && !described.length) {
     city = region = null;
     pool = landmarks;
     onTopic = pool.filter((l) => topicScore(l) > 0).sort(byScore(topicScore));
+    described = describedIn(pool);
   }
 
   const result: Landmark[] = [];
@@ -269,6 +317,7 @@ export function findRelevantLandmarks(
   };
 
   add(named);
+  add(described);
   add(onTopic);
   add(landmarks.filter((l) => signals.cityNameHits.has(l.id)).sort(byScore(() => 0)));
   if (city || region) {

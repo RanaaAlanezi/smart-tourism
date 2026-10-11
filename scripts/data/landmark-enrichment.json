@@ -1,0 +1,285 @@
+{
+  "_about": "Proposed fuller descriptions for landmarks whose record is a single sentence. FOR REVIEW: nothing here has been written to Firestore. 'facts' replaces the landmark's description shown on its page and given to the AI; 'keyFacts' is the short labelled line the AI uses for figures. 'verify' lists details deliberately LEFT OUT of the text because they should be checked against a source first. The text was written from general knowledge, not from sources consulted for this file, so review each entry before approving it.",
+  "landmarks": [
+    {
+      "id": "quba-mosque",
+      "name": "مسجد قباء",
+      "facts": "مسجد قباء هو أول مسجد بُني في الإسلام، أسسه النبي محمد ﷺ عند وصوله إلى قباء مهاجرًا من مكة المكرمة عام 622م (1هـ). يقع جنوب المدينة المنورة، وورد في فضل الصلاة فيه حديث نبوي.",
+      "keyFacts": "Significance: first mosque built in Islam | Founded by: the Prophet Muhammad, 622 CE (1 AH) | Location: Quba, south of Madinah",
+      "verify": []
+    },
+    {
+      "id": "qiblatain-mosque",
+      "name": "مسجد القبلتين",
+      "facts": "مسجد القبلتين هو المسجد الذي ارتبط بتحويل القبلة من بيت المقدس إلى الكعبة المشرفة في السنة الثانية للهجرة. سُمّي بهذا الاسم لأن المصلين صلّوا فيه صلاة واحدة إلى القبلتين.",
+      "keyFacts": "Significance: associated with the change of the qibla from Jerusalem to the Kaaba | Date of the event: 2 AH (about 624 CE) | Meaning of the name: mosque of the two qiblas | City: Madinah",
+      "verify": []
+    },
+    {
+      "id": "prophet-s-mosque",
+      "name": "المسجد النبوي",
+      "facts": "المسجد النبوي ثاني أقدس المساجد في الإسلام بعد المسجد الحرام، بناه النبي محمد ﷺ بعد هجرته إلى المدينة المنورة عام 622م (1هـ). يضم الروضة الشريفة والحجرة النبوية التي فيها قبر النبي ﷺ، وتعلوها القبة الخضراء.",
+      "keyFacts": "Significance: second holiest mosque in Islam | Built by: the Prophet Muhammad, 622 CE (1 AH) | Contains: the Rawdah, the Prophet's chamber and tomb, the Green Dome | City: Madinah",
+      "verify": []
+    },
+    {
+      "id": "masjid-al-haram",
+      "name": "المسجد الحرام",
+      "facts": "المسجد الحرام أقدس مسجد في الإسلام، يحيط بالكعبة المشرفة التي يتجه إليها المسلمون في صلاتهم. يضم الحجر الأسود ومقام إبراهيم وبئر زمزم والمسعى بين الصفا والمروة، ويقصده المسلمون لأداء الحج والعمرة.",
+      "keyFacts": "Significance: holiest mosque in Islam | Surrounds: the Kaaba, the direction of prayer for Muslims | Contains: the Black Stone, Maqam Ibrahim, the Zamzam well, Safa and Marwah | Visited for: Hajj and Umrah | City: Makkah",
+      "verify": []
+    },
+    {
+      "id": "al-jum-ah-mosque",
+      "name": "مسجد الجمعة",
+      "facts": "مسجد الجمعة هو الموضع الذي صلّى فيه النبي محمد ﷺ أول صلاة جمعة بعد هجرته إلى المدينة المنورة عام 622م (1هـ). يقع في وادي رانوناء بين قباء ووسط المدينة المنورة.",
+      "keyFacts": "Significance: site of the first Friday prayer led by the Prophet Muhammad after the Hijrah | Date: 622 CE (1 AH) | Location: Wadi Ranuna, between Quba and central Madinah",
+      "verify": []
+    },
+    {
+      "id": "al-tan-im-mosque",
+      "name": "مسجد التنعيم",
+      "facts": "مسجد التنعيم، ويُعرف بمسجد السيدة عائشة، يقع على حدود الحرم شمال مكة المكرمة. هو أقرب مواضع الحِلّ إلى المسجد الحرام، ومنه يُحرم أهل مكة والمقيمون فيها لأداء العمرة، ومنه أحرمت أم المؤمنين عائشة رضي الله عنها.",
+      "keyFacts": "Also known as: Masjid Aisha | Role: nearest point outside the Haram boundary, where residents of Makkah enter ihram for Umrah | Location: north of Makkah",
+      "verify": ["المسافة عن المسجد الحرام لم تُذكر"]
+    },
+    {
+      "id": "hira-cave",
+      "name": "غار حراء",
+      "facts": "غار حراء هو الغار الذي كان النبي محمد ﷺ يتعبد فيه قبل البعثة، وفيه نزل عليه الوحي أول مرة بأوائل سورة العلق نحو عام 610م. يقع في أعلى جبل النور شمال شرق مكة المكرمة.",
+      "keyFacts": "Significance: where the first revelation of the Quran came to the Prophet Muhammad | Date: about 610 CE | Location: near the top of Jabal Al-Nour, north-east of Makkah",
+      "verify": []
+    },
+    {
+      "id": "jabal-al-nour",
+      "name": "جبل النور",
+      "facts": "جبل النور جبل يقع شمال شرق مكة المكرمة، وفي أعلاه غار حراء الذي نزل فيه الوحي أول مرة على النبي محمد ﷺ نحو عام 610م. يصعد إليه الزوار عبر درج طويل للوصول إلى الغار.",
+      "keyFacts": "Significance: the mountain of Hira Cave, where the first revelation came | Date of the event: about 610 CE | Location: north-east of Makkah | Access: a long stairway to the cave",
+      "verify": ["ارتفاع الجبل لم يُذكر"]
+    },
+    {
+      "id": "thawr-cave",
+      "name": "غار ثور",
+      "facts": "غار ثور هو الغار الذي اختبأ فيه النبي محمد ﷺ وصاحبه أبو بكر الصديق رضي الله عنه ثلاث ليالٍ في طريق الهجرة إلى المدينة المنورة عام 622م. يقع في جبل ثور جنوب مكة المكرمة.",
+      "keyFacts": "Significance: where the Prophet Muhammad and Abu Bakr hid for three nights during the Hijrah | Date: 622 CE | Location: Jabal Thawr, south of Makkah",
+      "verify": []
+    },
+    {
+      "id": "jabal-thawr",
+      "name": "جبل ثور",
+      "facts": "جبل ثور جبل يقع جنوب مكة المكرمة، وفيه غار ثور الذي اختبأ فيه النبي محمد ﷺ وصاحبه أبو بكر الصديق رضي الله عنه ثلاث ليالٍ في طريق الهجرة إلى المدينة المنورة عام 622م.",
+      "keyFacts": "Significance: the mountain of Thawr Cave, a stop on the Hijrah route | Date of the event: 622 CE | Location: south of Makkah",
+      "verify": ["ارتفاع الجبل لم يُذكر"]
+    },
+    {
+      "id": "mount-uhud",
+      "name": "جبل أحد",
+      "facts": "جبل أحد جبل يقع شمال المدينة المنورة، وقعت عنده غزوة أحد في السنة الثالثة للهجرة (625م). عند سفحه مقبرة شهداء أحد، وفيها حمزة بن عبدالمطلب رضي الله عنه.",
+      "keyFacts": "Significance: site of the Battle of Uhud | Date: 3 AH (625 CE) | Nearby: the cemetery of the martyrs of Uhud, including Hamza ibn Abdul-Muttalib | Location: north of Madinah",
+      "verify": []
+    },
+    {
+      "id": "saqifah-bani-sa-idah",
+      "name": "سقيفة بني ساعدة",
+      "facts": "سقيفة بني ساعدة هي الموضع الذي اجتمع فيه المهاجرون والأنصار بعد وفاة النبي محمد ﷺ عام 11هـ (632م)، وفيه بويع أبو بكر الصديق رضي الله عنه بالخلافة. تقع قرب المسجد النبوي في المدينة المنورة.",
+      "keyFacts": "Significance: where Abu Bakr was given the pledge of allegiance as the first caliph | Date: 11 AH (632 CE) | Location: near the Prophet's Mosque, Madinah",
+      "verify": []
+    },
+    {
+      "id": "masmak-fortress",
+      "name": "قصر المصمك",
+      "facts": "قصر المصمك حصن من الطين واللبن في وسط الرياض القديمة. ارتبط باستعادة الملك عبدالعزيز للرياض عام 1902م، وهو الحدث الذي مهّد لتوحيد المملكة العربية السعودية، وقد حُوّل إلى متحف.",
+      "keyFacts": "Type: clay and mud-brick fort | Key event: recaptured by King Abdulaziz in 1902 | Significance: the event that opened the way to the unification of Saudi Arabia | Today: museum | Location: old central Riyadh",
+      "verify": ["سنة بناء الحصن (تُذكر عادة 1865م) لم تُذكر"]
+    },
+    {
+      "id": "murabba-palace",
+      "name": "قصر المربع",
+      "facts": "قصر المربع قصر بناه الملك عبدالعزيز خارج أسوار الرياض القديمة ليكون مقرًا لسكنه وديوانه. بُني من الطين على الطراز النجدي التقليدي، وهو اليوم جزء من مركز الملك عبدالعزيز التاريخي.",
+      "keyFacts": "Built by: King Abdulaziz, outside the old walls of Riyadh | Use: his residence and court | Style: traditional Najdi mud-brick | Today: part of the King Abdulaziz Historical Center",
+      "verify": ["سنة اكتمال البناء (تُذكر 1938م) لم تُذكر"]
+    },
+    {
+      "id": "national-museum-of-saudi-arabia",
+      "name": "المتحف الوطني السعودي",
+      "facts": "المتحف الوطني السعودي افتُتح عام 1999م ضمن مركز الملك عبدالعزيز التاريخي في الرياض. يعرض في ثماني قاعات تاريخ الجزيرة العربية منذ عصور ما قبل التاريخ حتى توحيد المملكة.",
+      "keyFacts": "Opened: 1999 | Halls: 8 | Covers: the history of the Arabian Peninsula from prehistory to the unification of the Kingdom | Location: King Abdulaziz Historical Center, Riyadh",
+      "verify": []
+    },
+    {
+      "id": "king-abdulaziz-historical-center",
+      "name": "المركز التاريخي للملك عبدالعزيز",
+      "facts": "مركز الملك عبدالعزيز التاريخي مجمع ثقافي في وسط الرياض افتُتح عام 1999م. يضم المتحف الوطني السعودي وقصر المربع ودارة الملك عبدالعزيز، وتحيط به حدائق عامة.",
+      "keyFacts": "Opened: 1999 | Includes: the National Museum of Saudi Arabia, Murabba Palace, the King Abdulaziz Foundation (Darah) | Setting: public gardens in central Riyadh",
+      "verify": []
+    },
+    {
+      "id": "king-abdulaziz-center-for-world-culture-ithra",
+      "name": "مركز الملك عبدالعزيز الثقافي العالمي (إثراء)",
+      "facts": "مركز الملك عبدالعزيز الثقافي العالمي (إثراء) مركز ثقافي أنشأته أرامكو السعودية في الظهران، قرب موقع أول بئر نفط تجاري في المملكة. يضم مكتبة ومسرحًا وسينما ومتحفًا ومعارض ومتحفًا للطفل، وصممه مكتب سنوهيتا النرويجي للعمارة.",
+      "keyFacts": "Built by: Saudi Aramco | Location: Dhahran, near the Kingdom's first commercial oil well | Includes: library, theater, cinema, museum, galleries, children's museum | Architect: Snohetta",
+      "verify": ["سنة الافتتاح للجمهور (تُذكر 2018م) لم تُذكر"]
+    },
+    {
+      "id": "king-fahd-s-fountain",
+      "name": "نافورة الملك فهد",
+      "facts": "نافورة الملك فهد نافورة تضخ مياه البحر الأحمر إلى ارتفاع شاهق قبالة كورنيش جدة، وتُرى من أنحاء واسعة من المدينة. أُهديت إلى مدينة جدة من الملك فهد بن عبدالعزيز، وتُضاء ليلًا.",
+      "keyFacts": "Type: sea-water fountain off the Jeddah Corniche | Donated by: King Fahd bin Abdulaziz | Feature: lit at night and visible across much of the city",
+      "verify": ["الارتفاع (تذكر المصادر 260م أو 312م) وسنة التشغيل (1985م) لم يُذكرا لتعارض المصادر"]
+    },
+    {
+      "id": "naseef-house",
+      "name": "بيت نصيف",
+      "facts": "بيت نصيف من بيوت جدة التاريخية في حي البلد، بُني في أواخر القرن التاسع عشر للتاجر عمر أفندي نصيف. نزل فيه الملك عبدالعزيز عند دخوله جدة عام 1925م، وهو اليوم مركز ثقافي ومتحف.",
+      "keyFacts": "Built: late 19th century for the merchant Omar Effendi Naseef | Key event: King Abdulaziz stayed here on entering Jeddah in 1925 | Today: cultural center and museum | Location: Al-Balad, Jeddah",
+      "verify": ["سنوات البناء الدقيقة (تُذكر 1872–1881م)"]
+    },
+    {
+      "id": "makkah-gate",
+      "name": "باب مكة",
+      "facts": "باب مكة أحد أبواب سور جدة القديم، يقع في الجهة الشرقية من البلد. كان مدخل القادمين من مكة المكرمة ومخرج المتجهين إليها، وتحيط به اليوم أسواق شعبية.",
+      "keyFacts": "Type: one of the gates of Jeddah's old city wall | Side: east of Al-Balad | Role: the route to and from Makkah | Surroundings: traditional markets",
+      "verify": []
+    },
+    {
+      "id": "alula-old-town",
+      "name": "البلدة القديمة بالعلا",
+      "facts": "البلدة القديمة بالعلا بلدة من الطين والحجر بقيت مأهولة قرونًا حتى ثمانينيات القرن العشرين. كانت محطة على طريق الحج الشامي، وتتلاصق بيوتها لتشكل سورًا يحميها، وتعلوها قلعة العلا.",
+      "keyFacts": "Built of: mud-brick and stone | Inhabited: for centuries, until the 1980s | Role: a stop on the Syrian pilgrimage route | Feature: houses joined to form a defensive wall, with AlUla Castle above",
+      "verify": ["عدد البيوت (نحو 900) وتاريخ النشأة (القرن 12م) لم يُذكرا"]
+    },
+    {
+      "id": "dadan",
+      "name": "دادان",
+      "facts": "دادان كانت عاصمة مملكتي دادان ولحيان في الألف الأول قبل الميلاد، وكانت محطة مهمة على طريق تجارة البخور. تشتهر بمقابر الأسود المنحوتة في واجهة الجبل.",
+      "keyFacts": "Role: capital of the Dadanite and Lihyanite kingdoms | Era: first millennium BCE | Trade: a station on the incense route | Known for: the Lion Tombs carved into the cliff",
+      "verify": []
+    },
+    {
+      "id": "jabal-ikmah",
+      "name": "جبل عكمة",
+      "facts": "جبل عكمة يُوصف بأنه مكتبة مفتوحة، إذ تضم صخوره مئات النقوش والكتابات الدادانية واللحيانية القديمة. توثق هذه النقوش جوانب من الحياة الدينية والاجتماعية في مملكتي دادان ولحيان.",
+      "keyFacts": "Known as: an open-air library | Contains: hundreds of Dadanitic and Lihyanite inscriptions | Records: religious and social life in the Dadanite and Lihyanite kingdoms | Location: AlUla",
+      "verify": ["إدراجه في سجل ذاكرة العالم لليونسكو (يُذكر 2023م) لم يُذكر"]
+    },
+    {
+      "id": "elephant-rock",
+      "name": "صخرة الفيل",
+      "facts": "صخرة الفيل، وتُعرف بجبل الفيل، تكوين من الحجر الرملي نحتته عوامل التعرية من رياح ومياه عبر ملايين السنين حتى صار يشبه فيلًا يمد خرطومه إلى الأرض.",
+      "keyFacts": "Also known as: Jabal Al-Fil | Material: sandstone | Formed by: wind and water erosion over millions of years | Shape: an elephant with its trunk reaching the ground",
+      "verify": ["الارتفاع (يُذكر نحو 52م) لم يُذكر"]
+    },
+    {
+      "id": "rijal-almaa-heritage-village",
+      "name": "قرية رجال ألمع التراثية",
+      "facts": "قرية رجال ألمع قرية تراثية في منطقة عسير، تتكون من مبانٍ حجرية متعددة الطوابق تُزيَّن نوافذها بحجر المرو الأبيض. كانت مركزًا تجاريًا يربط بين اليمن والحجاز، وتشتهر بفن القَط العسيري في تزيين الجدران الداخلية.",
+      "keyFacts": "Architecture: multi-storey stone buildings with white quartz around the windows | Historic role: trading center between Yemen and the Hijaz | Known for: Al-Qatt Al-Asiri wall painting | Region: Asir",
+      "verify": ["عمر القرية (يُذكر نحو 900 سنة) لم يُذكر"]
+    },
+    {
+      "id": "thee-ain-heritage-village",
+      "name": "قرية ذي عين التراثية",
+      "facts": "قرية ذي عين قرية تراثية في تهامة الباحة، بُنيت بيوتها الحجرية على تل من الرخام الأبيض. سُميت بهذا الاسم نسبة إلى عين ماء جارية تسقي مزارع الموز والكادي أسفلها.",
+      "keyFacts": "Built on: a white marble hill | Houses: stone | Named after: a flowing spring | Farms: banana and kadi below the village | Region: Al-Baha",
+      "verify": ["عمر القرية (يُذكر نحو 400 سنة) لم يُذكر"]
+    },
+    {
+      "id": "al-ukhdud-archaeological-site",
+      "name": "الأخدود الأثري",
+      "facts": "الأخدود الأثري موقع مدينة نجران القديمة، ويضم بقايا قلعة وأسوار ومبانٍ حجرية ونقوشًا. يرتبط الموقع بقصة أصحاب الأخدود التي ورد ذكرها في القرآن الكريم في سورة البروج.",
+      "keyFacts": "Site of: the ancient city of Najran | Remains: citadel, walls, stone buildings, inscriptions | Associated with: the story of the People of the Ditch in Surat Al-Buruj",
+      "verify": []
+    },
+    {
+      "id": "jubbah-rock-art",
+      "name": "جبة الصخرية",
+      "facts": "جبة موقع أثري في صحراء النفود بمنطقة حائل، يضم رسومًا ونقوشًا صخرية تعود إلى آلاف السنين وتصور الإنسان والحيوان. أُدرج مع موقع الشويمس في قائمة التراث العالمي لليونسكو عام 2015 باسم «الفن الصخري في منطقة حائل».",
+      "keyFacts": "Contains: rock carvings and drawings of people and animals, thousands of years old | Setting: the Nafud desert, Hail Region | UNESCO listing: 2015 (Rock Art in the Hail Region, with Shuwaymis)",
+      "verify": []
+    },
+    {
+      "id": "marid-castle",
+      "name": "قلعة مارد",
+      "facts": "قلعة مارد حصن حجري يقوم على تل يشرف على دومة الجندل. ورد ذكرها في أخبار القرن الثالث الميلادي عند محاولة الملكة زنوبيا ملكة تدمر الاستيلاء عليها.",
+      "keyFacts": "Type: stone fort on a hill | Overlooks: Dumat Al-Jandal | Earliest mention: 3rd century CE, in accounts of Queen Zenobia of Palmyra's campaign",
+      "verify": []
+    },
+    {
+      "id": "umar-ibn-al-khattab-mosque",
+      "name": "مسجد عمر بن الخطاب بدومة الجندل",
+      "facts": "مسجد عمر بن الخطاب في دومة الجندل من المساجد التاريخية القديمة، ويُنسب بناؤه إلى الخليفة عمر بن الخطاب رضي الله عنه. يتميز بمئذنته الحجرية، ويقع بجوار قلعة مارد والحي القديم.",
+      "keyFacts": "Attributed to: Caliph Umar ibn al-Khattab | Feature: stone minaret | Location: beside Marid Castle and the old quarter of Dumat Al-Jandal",
+      "verify": ["نسبة البناء إلى عمر بن الخطاب وتاريخه (يُذكر نحو 17هـ) تحتاج توثيقًا"]
+    },
+    {
+      "id": "rajajil-columns",
+      "name": "أعمدة الرجاجيل",
+      "facts": "أعمدة الرجاجيل مجموعات من الأعمدة الحجرية المنتصبة قرب سكاكا، تعود إلى عصور ما قبل التاريخ.",
+      "keyFacts": "Type: groups of standing stone pillars | Era: prehistoric | Location: near Sakaka, Al-Jouf Region",
+      "verify": ["التأريخ (يُذكر الألف الرابع قبل الميلاد) ووظيفة الأعمدة لم يُذكرا"]
+    },
+    {
+      "id": "tabuk-castle",
+      "name": "قلعة تبوك",
+      "facts": "قلعة تبوك قلعة تاريخية تعود إلى العهد العثماني، كانت محطة على طريق الحج الشامي يستريح فيها الحجاج ويتزودون بالماء. رُممت وحُولت إلى متحف يعرض تاريخ المنطقة.",
+      "keyFacts": "Era: Ottoman | Role: a station on the Syrian pilgrimage route where pilgrims rested and took water | Today: museum of the area's history",
+      "verify": ["سنة البناء (تُذكر 1559م) لم تُذكر"]
+    },
+    {
+      "id": "ibrahim-palace",
+      "name": "قصر إبراهيم",
+      "facts": "قصر إبراهيم قصر وحصن في حي الكوت بالهفوف يعود إلى العهد العثماني. يجمع بين العمارة العسكرية والدينية، ويضم مسجد القبة ذا القبة الكبيرة.",
+      "keyFacts": "Era: Ottoman | Type: palace and fort | Combines: military and religious architecture | Includes: the Dome Mosque (Masjid Al-Qubba) | Location: Al-Kut district, Hofuf",
+      "verify": ["تاريخ البناء (يُذكر القرن 16م) لم يُذكر"]
+    },
+    {
+      "id": "qaisariyah-souq",
+      "name": "سوق القيصرية",
+      "facts": "سوق القيصرية سوق شعبي تاريخي في وسط الهفوف، يتكون من ممرات مسقوفة تصطف على جانبيها الدكاكين. يشتهر ببيع البشوت والعطور والتوابل والمشغولات التقليدية.",
+      "keyFacts": "Type: historic covered market | Layout: roofed passages lined with shops | Known for: bishts, perfumes, spices, traditional crafts | Location: central Hofuf, Al-Ahsa",
+      "verify": ["سنة التأسيس (تُذكر 1822م) وعدد الدكاكين لم يُذكرا"]
+    },
+    {
+      "id": "al-qarah-mountain",
+      "name": "جبل القارة",
+      "facts": "جبل القارة جبل من الحجر الجيري في واحة الأحساء، يشتهر بكهوفه ومغاراته التي تبقى باردة صيفًا ودافئة شتاءً. يطل على بساتين النخيل في الواحة.",
+      "keyFacts": "Material: limestone | Known for: caves that stay cool in summer and warm in winter | Overlooks: the palm groves of the Al-Ahsa oasis",
+      "verify": ["علاقته بتسجيل واحة الأحساء في اليونسكو (2018م) لم تُذكر"]
+    },
+    {
+      "id": "shubra-palace",
+      "name": "قصر شبرا",
+      "facts": "قصر شبرا قصر تاريخي في الطائف يجمع بين الطراز الحجازي والتأثيرات المعمارية الرومانية والإسلامية، وهو اليوم متحف.",
+      "keyFacts": "Style: Hijazi with Roman and Islamic influences | Today: museum | City: Taif",
+      "verify": ["سنة البناء (تُذكر 1905م) وإقامة الملك عبدالعزيز والملك فيصل فيه لم يُذكرا"]
+    },
+    {
+      "id": "souq-okaz",
+      "name": "سوق عكاظ",
+      "facts": "سوق عكاظ من أشهر أسواق العرب قبل الإسلام، كانت القبائل تجتمع فيه للتجارة وإلقاء الشعر والخطابة. أُعيد إحياؤه في موقعه شمال الطائف كوجهة ثقافية تقام فيها فعاليات تراثية وأدبية.",
+      "keyFacts": "Historic role: pre-Islamic Arab market where tribes met for trade, poetry and oratory | Today: revived cultural destination with heritage and literary events | Location: north of Taif",
+      "verify": ["سنة إعادة الإحياء (تُذكر 2007م) لم تُذكر"]
+    },
+    {
+      "id": "farasan-islands",
+      "name": "جزر فرسان",
+      "facts": "جزر فرسان أرخبيل في جنوب البحر الأحمر قبالة ساحل جازان، وهي محمية طبيعية. تشتهر بشواطئها وشعابها المرجانية وغابات المانغروف، وتعيش فيها غزلان فرسان وطيور بحرية مهاجرة.",
+      "keyFacts": "Type: archipelago and nature reserve | Location: southern Red Sea, off the Jazan coast | Known for: beaches, coral reefs, mangroves | Wildlife: Farasan gazelle, migratory sea birds",
+      "verify": ["عدد الجزر وتسجيلها محمية محيط حيوي في اليونسكو (يُذكر 2021م) لم يُذكرا"]
+    },
+    {
+      "id": "wadi-hanifah",
+      "name": "وادي حنيفة",
+      "facts": "وادي حنيفة وادٍ يخترق مدينة الرياض من شمالها الغربي إلى جنوبها، وقامت على ضفافه بلدات نجد التاريخية ومنها الدرعية. أُعيد تأهيله بيئيًا ليصبح متنزهًا طبيعيًا بمسارات للمشي وبحيرات.",
+      "keyFacts": "Course: through Riyadh from the north-west to the south | History: historic Najdi towns, including Diriyah, grew on its banks | Today: environmentally restored park with walking trails and lakes",
+      "verify": ["طول الوادي (يُذكر نحو 120 كم) وجائزة الآغا خان للعمارة (2010م) لم يُذكرا"]
+    },
+    {
+      "id": "salwa-palace",
+      "name": "قصر سلوى",
+      "facts": "قصر سلوى مجمع قصور في حي الطريف بالدرعية، كان مقر الحكم وسكن أئمة الدولة السعودية الأولى. بُني من الطين على الطراز النجدي، وهو جزء من حي الطريف المسجل في قائمة التراث العالمي لليونسكو عام 2010.",
+      "keyFacts": "Role: seat of government and home of the imams of the First Saudi State | Style: Najdi mud-brick | Part of: At-Turaif District, on the UNESCO World Heritage List since 2010 | Location: Diriyah",
+      "verify": []
+    }
+  ]
+}

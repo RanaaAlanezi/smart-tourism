@@ -1,0 +1,202 @@
+[
+  {
+    "id": "quba-mosque",
+    "facts": "مسجد تاريخي في المدينة المنورة.",
+    "keyFacts": null
+  },
+  {
+    "id": "qiblatain-mosque",
+    "facts": "مسجد تاريخي مرتبط بتحويل القبلة.",
+    "keyFacts": null
+  },
+  {
+    "id": "prophet-s-mosque",
+    "facts": "معلم إسلامي رئيسي ومسجد في المدينة المنورة.",
+    "keyFacts": null
+  },
+  {
+    "id": "masjid-al-haram",
+    "facts": "المسجد الكبير المحيط بالكعبة، وأحد أقدس الأماكن في الإسلام.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-jum-ah-mosque",
+    "facts": "مسجد تاريخي في المدينة المنورة.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-tan-im-mosque",
+    "facts": "مسجد معروف ونقطة ميقات بالقرب من مكة المكرمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "hira-cave",
+    "facts": "كهف تاريخي يقع على جبل النور.",
+    "keyFacts": null
+  },
+  {
+    "id": "jabal-al-nour",
+    "facts": "جبل مرتبط بغار حراء بالقرب من مكة المكرمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "thawr-cave",
+    "facts": "كهف تاريخي يقع على جبل ثور.",
+    "keyFacts": null
+  },
+  {
+    "id": "jabal-thawr",
+    "facts": "جبل يقع جنوب مكة المكرمة ويرتبط بغار ثور.",
+    "keyFacts": null
+  },
+  {
+    "id": "mount-uhud",
+    "facts": "جبل تاريخي ومعلم رئيسي شمال المدينة المنورة.",
+    "keyFacts": null
+  },
+  {
+    "id": "saqifah-bani-sa-idah",
+    "facts": "موقع تاريخي في قلب المدينة المنورة القديمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "masmak-fortress",
+    "facts": "حصن تاريخي ومعلم بارز في وسط الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "murabba-palace",
+    "facts": "قصر تاريخي مرتبط بالتاريخ الحديث المبكر لمدينة الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "national-museum-of-saudi-arabia",
+    "facts": "متحف وطني رئيسي يعرض تاريخ وتراث المملكة العربية السعودية.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-abdulaziz-historical-center",
+    "facts": "مجمع ثقافي وتاريخي في وسط الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-abdulaziz-center-for-world-culture-ithra",
+    "facts": "مركز ثقافي كبير يضم متاحف ومعارض ومكتبة وفعاليات.",
+    "keyFacts": null
+  },
+  {
+    "id": "king-fahd-s-fountain",
+    "facts": "نافورة بحرية شهيرة في جدة.",
+    "keyFacts": null
+  },
+  {
+    "id": "naseef-house",
+    "facts": "بيت تاريخي ومعلم بارز في حي البلد.",
+    "keyFacts": null
+  },
+  {
+    "id": "makkah-gate",
+    "facts": "بوابة تاريخية مرتبطة بمدينة جدة القديمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "alula-old-town",
+    "facts": "مستوطنة تاريخية من الطوب اللبن في العلا.",
+    "keyFacts": null
+  },
+  {
+    "id": "dadan",
+    "facts": "مملكة ومستوطنة أثرية قديمة في العلا.",
+    "keyFacts": null
+  },
+  {
+    "id": "jabal-ikmah",
+    "facts": "موقع تراثي صخري يشتهر بالنقوش القديمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "elephant-rock",
+    "facts": "تكوين صخري طبيعي بارز في صحراء العلا.",
+    "keyFacts": null
+  },
+  {
+    "id": "rijal-almaa-heritage-village",
+    "facts": "قرية جبلية تاريخية تشتهر بعمارتها الحجرية التقليدية.",
+    "keyFacts": null
+  },
+  {
+    "id": "thee-ain-heritage-village",
+    "facts": "قرية تراثية مبنية بالحجارة على منحدر جبلي.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-ukhdud-archaeological-site",
+    "facts": "موقع أثري مهم في نجران.",
+    "keyFacts": null
+  },
+  {
+    "id": "jubbah-rock-art",
+    "facts": "موقع أثري مهم يضم نقوشاً صخرية قديمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "marid-castle",
+    "facts": "حصن تاريخي يطل على دومة الجندل.",
+    "keyFacts": null
+  },
+  {
+    "id": "umar-ibn-al-khattab-mosque",
+    "facts": "مسجد تاريخي بالقرب من قلعة مارد والبلدة القديمة.",
+    "keyFacts": null
+  },
+  {
+    "id": "rajajil-columns",
+    "facts": "أعمدة حجرية قديمة تشكل موقعاً أثرياً مميزاً.",
+    "keyFacts": null
+  },
+  {
+    "id": "tabuk-castle",
+    "facts": "حصن تاريخي في مدينة تبوك.",
+    "keyFacts": null
+  },
+  {
+    "id": "ibrahim-palace",
+    "facts": "قصر وحصن تاريخي في الهفوف.",
+    "keyFacts": null
+  },
+  {
+    "id": "qaisariyah-souq",
+    "facts": "سوق تقليدي تاريخي في الهفوف.",
+    "keyFacts": null
+  },
+  {
+    "id": "al-qarah-mountain",
+    "facts": "تكوين جبلي مميز بالقرب من الهفوف وواحة الأحساء.",
+    "keyFacts": null
+  },
+  {
+    "id": "shubra-palace",
+    "facts": "قصر تاريخي ومعلم معماري في الطائف.",
+    "keyFacts": null
+  },
+  {
+    "id": "souq-okaz",
+    "facts": "وجهة ثقافية مستوحاة من سوق عكاظ التاريخي.",
+    "keyFacts": null
+  },
+  {
+    "id": "farasan-islands",
+    "facts": "أرخبيل في البحر الأحمر يشتهر بالشواطئ والجزر والبيئة البحرية.",
+    "keyFacts": null
+  },
+  {
+    "id": "wadi-hanifah",
+    "facts": "وادٍ رئيسي ومعلم طبيعي يمتد عبر مدينة الرياض.",
+    "keyFacts": null
+  },
+  {
+    "id": "salwa-palace",
+    "facts": "مجمع قصر تاريخي في حي الطريف بالدرعية.",
+    "keyFacts": null
+  }
+]
