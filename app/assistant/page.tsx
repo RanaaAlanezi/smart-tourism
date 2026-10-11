@@ -19,7 +19,7 @@ const AGE_OPTIONS: { value: AgeGroup; label: [string, string] }[] = [
 
 const SUGGESTED_QUESTIONS: [string, string][] = [
   ["ما أفضل الأماكن التاريخية في العلا؟", "What are the best historical places in AlUla?"],
-  ["أبغى أماكن مناسبة للعائلة.", "I'd like places for a family trip."],
+  ["ما أول مسجد بُني في الإسلام؟", "What was the first mosque built in Islam?"],
   ["اشرح لي الدرعية بطريقة بسيطة.", "Explain Diriyah to me simply."],
   ["أبغى وجهة طبيعية وهادئة.", "I'd like a quiet nature destination."],
 ];

@@ -59,7 +59,7 @@ const SPOTLIGHT_MS = 6000;
 
 const AI_SUGGESTIONS: Pair[] = [
   ["أبغى أماكن تاريخية في العلا", "Historical places in AlUla"],
-  ["وجهة مناسبة للعائلة", "A destination for a family trip"],
+  ["وش أسوي في جدة يومين؟", "What can I do in Jeddah in two days?"],
   ["أماكن طبيعية وأجواء باردة", "Nature spots with cool weather"],
 ];
 

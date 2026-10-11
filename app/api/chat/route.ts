@@ -174,6 +174,15 @@ export async function POST(req: NextRequest) {
           holding = false;
           send({ type: "delta", text: held });
         };
+        // In an Arabic answer, a word in Latin letters that the landmarks'
+        // own names and descriptions don't contain is the model slipping
+        // into transliteration. (Words such as "Sky Bridge" that do appear
+        // in a description are fine.)
+        const arabicSource = grounding.map((l) => `${l.name} ${l.facts}`).join(" ");
+        const hasStrayLatin = (text: string) =>
+          lang === "ar" &&
+          (text.replace(NOT_COVERED_PATTERN, "").match(/[A-Za-z]{3,}/g) || []).some((word) => !arabicSource.includes(word));
+        let spare = "";
         const startOver = () => {
           reply = "";
           held = "";
@@ -215,10 +224,20 @@ export async function POST(req: NextRequest) {
             emit(text);
           }
 
-          if (!inAside && reply.trim()) break;
-          // The aside never gave way to a usable answer — ask again, with
-          // more room to vary (at the same temperature it repeats itself).
+          if (!inAside && reply.trim()) {
+            if (!hasStrayLatin(reply)) break;
+            // Usable, but with a transliterated word in it ("Gaza'a Uhud"
+            // for غزوة أحد): keep it in case no later attempt does better.
+            spare = reply;
+          }
+          // No clean answer yet — ask again, with more room to vary (at the
+          // same temperature the model repeats itself).
           startOver();
+        }
+        if (!reply && spare) {
+          reply = spare;
+          holding = false;
+          send({ type: "delta", text: reply });
         }
         if (!reply) throw new Error("model output kept drifting out of the requested language");
 
