@@ -30,7 +30,7 @@ const AGE_OPTIONS: { value: AgeGroup; label: [string, string] }[] = [
 const SUGGESTED_QUESTIONS: [string, string][] = [
   ["اشرح لي هذا المكان", "Tell me about this place"],
   ["ما أهميته التاريخية؟", "Why is it historically important?"],
-  ["هل هو مناسب للأطفال؟", "Is it suitable for children?"],
+  ["أين يقع هذا المعلم؟", "Where is this landmark?"],
   ["ما الذي يمكنني رؤيته هنا؟", "What can I see here?"],
 ];
 
