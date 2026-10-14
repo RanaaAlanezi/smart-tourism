@@ -29,6 +29,7 @@ const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
   أملج: { lat: 25.0213, lon: 37.2685 },
   سكاكا: { lat: 29.9697, lon: 40.2064 },
   "دومة الجندل": { lat: 29.8114, lon: 39.8667 },
+  عرعر: { lat: 30.9816, lon: 41.0165 },
 };
 
 // A city is asked about once per page, by several components and effects;

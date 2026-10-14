@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { AgeGroup, ChatSource, ChatStreamEvent, Lang, Landmark, LandmarkContext } from "@/lib/types";
 import { afterLastCjk, askQwenStream, ChatMessage, RETRY_TEMPERATURES } from "@/lib/services/aiService";
 import { getLandmarks } from "@/lib/landmarks";
-import { arabicName, findRelevantLandmarks, landmarksMentionedIn } from "@/lib/landmarkSearch";
-import { localizeLandmarks } from "@/lib/landmark-i18n";
+import { arabicName, findRelevantLandmarks, landmarksMentionedIn, placeAskedAbout } from "@/lib/landmarkSearch";
+import { CITY_EN, REGION_EN, localizeLandmarks } from "@/lib/landmark-i18n";
 
 const AGE_STYLE: Record<AgeGroup, string> = {
   child: "Explain things in very simple words suitable for a 6-9 year old child, with short sentences and no complex terms.",
@@ -61,6 +61,31 @@ function describeLandmark(landmark: LandmarkContext, lang: Lang): string {
   return `- ${labels.join(" | ")}\n  Facts: ${landmark.facts}${figures}`;
 }
 
+// Left to notice it from the "City" labels alone, the 7B model goes along
+// with the visitor: asked whether Kingdom Tower is in Jeddah it answered
+// "yes", and asked about beaches after a conversation about Jeddah it wrote
+// "in Jeddah you can visit the Red Sea beach in Umluj". So when landmarks
+// handed over are not in the place being asked about, that is stated outright.
+function placeNote(relevant: Landmark[], outside: Set<string>, place: string | null, lang: Lang): string {
+  if (!place || !outside.size) return "";
+  const nameOf = (l: Landmark) => (lang === "en" ? l.name : arabicName(l.name));
+  if (outside.size === relevant.length) {
+    return (
+      `Note: the visitor is asking about ${place}, and none of these landmarks is in ${place}. ` +
+      `Your first sentence must say that the app has no place of that kind in ${place} yet. ` +
+      `Only then offer the listed landmarks as alternatives elsewhere, naming the city each one is really in. Never write that they are in ${place}.\n\n`
+    );
+  }
+  // A landmark filed under a neighbouring city but named after the place
+  // (الدرعية, under الرياض) is what the visitor means, not a mistake.
+  const elsewhere = relevant.filter((l) => outside.has(l.id) && !l.name.includes(place));
+  if (!elsewhere.length) return "";
+  return (
+    `Note: ${elsewhere.map((l) => `${nameOf(l)} is in ${l.city}, not in ${place}`).join("; ")}. ` +
+    `If the visitor's question assumes otherwise, tell them plainly that this is not correct and give the real city.\n\n`
+  );
+}
+
 // Instructions are written in English on purpose: the local quantized Qwen
 // model follows English instructions far more reliably and stays on-topic,
 // while still producing fluent Arabic output when explicitly told to.
@@ -84,7 +109,8 @@ function buildSystemPrompt(ageGroup: AgeGroup, singleLandmark: boolean, lang: La
       `Mention ONLY landmarks from that list, with their names written exactly as listed, and never place a landmark in a city other than its "City". ` +
       `When recommending, pick at most 4 landmarks that best fit the question and give each one or two sentences drawn from its facts. ` +
       `For a trip plan, arrange only the listed landmarks into days. ` +
-      `If none of the listed landmarks fits what was asked (a city or kind of place that isn't there), say the app has no record of that yet, then offer the closest listed ones.`;
+      `If none of the listed landmarks fits what was asked (a city or kind of place that isn't there), say the app has no record of that yet, then offer the closest listed ones. ` +
+      `If the visitor's question assumes something the records contradict (such as a landmark being in a different city), do not agree: say plainly that it is not correct and give what the record says.`;
 
   return (
     `You are the assistant of "Smart Tourism", a guide to travel and landmarks in Saudi Arabia. ${scope} ` +
@@ -127,12 +153,24 @@ export async function POST(req: NextRequest) {
   // the few landmarks the question is about, chosen here rather than by
   // the model (see findRelevantLandmarks).
   let relevant: Landmark[] = [];
+  // The city or region being asked about, and which of the landmarks handed
+  // over are somewhere else: spelled out for the model by placeNote.
+  let askedPlace: string | null = null;
+  let outsidePlace = new Set<string>();
   if (!landmarkContext?.name) {
     try {
-      relevant = findRelevantLandmarks(await getLandmarks(), lastQuestion, {
-        previousQuestions: history.filter((m) => m.role === "user").map((m) => m.content),
+      const landmarks = await getLandmarks();
+      const previousQuestions = history.filter((m) => m.role === "user").map((m) => m.content);
+      relevant = findRelevantLandmarks(landmarks, lastQuestion, {
+        previousQuestions,
         previousAnswer: history.findLast((m) => m.role === "assistant")?.content,
       });
+      const { city, region } = placeAskedAbout(landmarks, lastQuestion, previousQuestions);
+      const place = city || region;
+      if (place) {
+        askedPlace = lang === "en" ? CITY_EN[place] || REGION_EN[place] || place : place;
+        outsidePlace = new Set(relevant.filter((l) => (city ? l.city !== city : l.region !== region)).map((l) => l.id));
+      }
     } catch {
       // Firestore unavailable — fall back to the model's general knowledge.
     }
@@ -144,7 +182,7 @@ export async function POST(req: NextRequest) {
 
   const grounding: LandmarkContext[] = landmarkContext?.name ? [landmarkContext] : relevant;
   const landmarksBlock = grounding.length
-    ? `Landmarks:\n${grounding.map((l) => describeLandmark(l, lang)).join("\n")}\n\n`
+    ? `Landmarks:\n${grounding.map((l) => describeLandmark(l, lang)).join("\n")}\n\n${placeNote(relevant, outsidePlace, askedPlace, lang)}`
     : "";
 
   const chatMessages: ChatMessage[] = [

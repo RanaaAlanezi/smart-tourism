@@ -248,6 +248,20 @@ export function landmarksMentionedIn(text: string, landmarks: Landmark[]): Landm
   });
 }
 
+// The city or region a question is about: the one it names or, failing
+// that, the most recent one named earlier in the conversation.
+export function placeAskedAbout(
+  landmarks: Landmark[],
+  question: string,
+  previousQuestions: string[] = []
+): { city: string | null; region: string | null } {
+  for (const text of [question, ...[...previousQuestions].reverse()]) {
+    const { city, region } = analyze(text, landmarks);
+    if (city || region) return { city, region };
+  }
+  return { city: null, region: null };
+}
+
 export interface LandmarkSearchOptions {
   // Earlier user questions in this conversation, oldest first.
   previousQuestions?: string[];

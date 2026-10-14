@@ -33,6 +33,7 @@ export const CITY_EN: Record<string, string> = {
   "رجال ألمع": "Rijal Almaa",
   تبوك: "Tabuk",
   ينبع: "Yanbu",
+  عرعر: "Arar",
 };
 
 export const REGION_EN: Record<string, string> = {
@@ -48,6 +49,7 @@ export const REGION_EN: Record<string, string> = {
   "منطقة الجوف": "Al-Jouf Region",
   "منطقة الباحة": "Al-Baha Region",
   "منطقة تبوك": "Tabuk Region",
+  "منطقة الحدود الشمالية": "Northern Borders Region",
 };
 
 interface LandmarkEnglish {
@@ -66,6 +68,7 @@ const LANDMARK_EN: Record<string, LandmarkEnglish> = {
   "al-marjan-island": { summary: "A sea island and leisure destination in Dammam." },
   "al-mousokaf-traditional-market": { summary: "A traditional market showcasing local heritage and crafts." },
   "al-muftaha-village": { summary: "An arts and culture village in Abha." },
+  "al-nakheel-park-arar": { summary: "A public park and garden in the city of Arar." },
   "al-qarah-mountain": { summary: "A distinctive mountain formation near Hofuf and the Al-Ahsa oasis." },
   "al-shafa": { summary: "A mountain destination known for its natural scenery and mild climate." },
   "al-tan-im-mosque": { summary: "A well-known mosque and miqat point near Makkah." },
@@ -73,6 +76,11 @@ const LANDMARK_EN: Record<string, LandmarkEnglish> = {
   "al-zal-market": { summary: "A traditional market area known for heritage goods and crafts." },
   "alula-oasis": { summary: "A historic oasis landscape surrounded by AlUla's heritage sites." },
   "alula-old-town": { summary: "A historic mud-brick settlement in AlUla." },
+  "arar-flower-garden": {
+    summary: "A public garden in Arar known for its hundreds of thousands of seasonal flowers.",
+    facts:
+      "The Flower Garden is one of the most attractive destinations in the city of Arar, covering about 35,000 square meters. It holds more than 350,000 seasonal flowers along with acacia and bougainvillea trees, has a children's play complex, and welcomes families and visitors all year round.",
+  },
   "asir-mountains": {
     name: "Asir Mountains (Al-Soudah)",
     summary: "The Kingdom's highest peaks, with a mild climate and historic farming terraces.",
@@ -180,9 +188,19 @@ const LANDMARK_EN: Record<string, LandmarkEnglish> = {
   "shubra-palace": { summary: "A historic palace and architectural landmark in Taif." },
   "souq-okaz": { summary: "A cultural destination inspired by the historic Souq Okaz." },
   "tabuk-castle": { summary: "A historic fort in the city of Tabuk." },
+  "tapline-arar": {
+    summary: "The historic oil pipeline along which the city of Arar grew, and the Kingdom's first industrial heritage site.",
+    facts:
+      "The Tapline is the Trans-Arabian oil pipeline, running from the east of the Kingdom to the port of Sidon in Lebanon. It took three years to build and opened in 1950; in the 1950s Arar was known as \"Arar oil station\", and the city grew to house the pipeline's workers. It was finally decommissioned in 1990, and in 2020 the Heritage Commission chose it for the National Industrial Heritage Register as the first industrial heritage site in the Kingdom.",
+  },
   "thawr-cave": { summary: "A historic cave on Jabal Thawr." },
   "thee-ain-heritage-village": { summary: "A heritage village built of stone on a mountain slope." },
   "umar-ibn-al-khattab-mosque": { summary: "A historic mosque near Marid Castle and the old town." },
+  "wadi-arar": {
+    summary: "A large valley passing through the city of Arar, among the largest in the Kingdom.",
+    facts:
+      "Wadi Arar is one of three large valleys that cross the lands of Arar, together with Wadi Badanah and Wadi Al-Uwaysi, which are among the largest valleys in the Kingdom. The valley passes through the city of Arar, and dolomite and limestone are quarried from the banks of these valleys, making them one of the most important environmental resources in the Northern Borders Region.",
+  },
   "wadi-hanifah": { summary: "A major valley and natural landmark running through the city of Riyadh." },
   "yanbu-sharm": { summary: "A coastal destination on the Red Sea." },
   "za-abal-castle": { summary: "A historic castle overlooking Sakaka." },
