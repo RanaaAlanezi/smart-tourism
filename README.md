@@ -44,8 +44,7 @@ Most tourism content is one-size-fits-all: the same paragraph for a curious chil
 | Authentication | Firebase Authentication |
 | AI Integration | OpenRouter (Qwen) |
 | Source Control | GitHub |
-| Deployment | Hugging Face Spaces |
-| Containerization | Docker |
+| Deployment | Vwrcel |
 
 ---
 
